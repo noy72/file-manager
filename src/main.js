@@ -1,7 +1,11 @@
-const {app, BrowserWindow} = require('electron');
+const fs = require('fs');
+
+const {app, dialog, BrowserWindow} = require('electron');
+
+let mainWindow = null;
 
 function createWindow() {
-    const win = new BrowserWindow({
+    mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
         webPreferences: {
@@ -9,10 +13,13 @@ function createWindow() {
         }
     });
 
-    win.loadFile('src/index.html');
+    mainWindow.loadFile('src/index.html');
 }
 
-app.whenReady().then(createWindow);
+app.whenReady().then(() => {
+    createWindow();
+    readDataFile();
+});
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
@@ -25,3 +32,11 @@ app.on('activate', () => {
         createWindow();
     }
 });
+
+function readDataFile() {
+    //TODO: ファイルが存在しない時の処理
+    const data = JSON.parse(fs.readFileSync('data.json').toString());
+    console.log(data);
+}
+
+
