@@ -1,3 +1,5 @@
 {
-  "hello": "world"
+  "locations": [
+    "/Users/noy/work/WebstormProjects/explower/tests/sample_dir"
+  ]
 }
