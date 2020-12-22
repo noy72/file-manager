@@ -1,7 +1,7 @@
 const assert = require('assert');
 const rootPath = require('app-root-path');
 const controller = require(`${rootPath}/src/controller`);
-const ItemInfo = require(`${rootPath}/src/model`);
+const {ItemInfo} = require(`${rootPath}/src/model`);
 
 const sampleDirPath = `${rootPath}/tests/sample_dir`;
 const data = {
@@ -30,13 +30,17 @@ it('findNewItemPaths', () => {
 it('syncDataFileWithItems', () => {
     const expectItems = {
         [`${sampleDirPath}/dir01`]: null,
-        [`${sampleDirPath}/dir02`]: new ItemInfo,
+        [`${sampleDirPath}/dir02`]: new ItemInfo(`${sampleDirPath}/dir02`),
         [`${sampleDirPath}/dir03`]: null,
-        [`${sampleDirPath}/dir04`]: new ItemInfo,
+        [`${sampleDirPath}/dir04`]: new ItemInfo(`${sampleDirPath}/dir04`),
         [`${sampleDirPath}/dir05`]: null,
     };
     const newData = controller.syncDataFileWithItems(data);
     for (const [key, value] of Object.entries(newData["items"])) {
-        assert.deepStrictEqual(value, expectItems[key])
+        if (value == null) {
+            assert.strictEqual(value, null);
+        } else {
+            assert.strictEqual(value.thumbnail, expectItems[key].thumbnail)
+        }
     }
 });
