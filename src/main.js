@@ -1,6 +1,9 @@
 const fs = require('fs');
-
+const rootPath = require('app-root-path');
 const {app, dialog, BrowserWindow} = require('electron');
+
+const jsonio = require(`${rootPath}/src/utils/jsonio`);
+const {syncDataFileWithItems} = require(`${rootPath}/src/controller`);
 
 let mainWindow = null;
 
@@ -16,8 +19,14 @@ function createWindow() {
     mainWindow.loadFile('src/index.html');
 }
 
+const backupDataFile = () => fs.copyFile('data.json', 'data.backup.json', () => console.log("data.json backed up."));
+
+const syncDataFile = () => jsonio.write('data.json', syncDataFileWithItems(jsonio.read('data.json')));
+
 app.whenReady().then(() => {
     createWindow();
+    backupDataFile();
+    syncDataFile();
     readDataFile();
 });
 
