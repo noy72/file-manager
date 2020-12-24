@@ -1,6 +1,6 @@
 const assert = require('assert');
 const rootPath = require('app-root-path');
-const {sampleDirPath}=  require(`${rootPath}/tests/testUtils`);
+const {sampleDirPath} = require(`${rootPath}/tests/testUtils`);
 const controller = require(`${rootPath}/src/controller`);
 const {ItemInfo} = require(`${rootPath}/src/model`);
 
@@ -43,4 +43,45 @@ it('syncDataFileWithItems', () => {
             assert.strictEqual(value.thumbnail, expectItems[key].thumbnail)
         }
     }
+});
+
+it('searchItemsByTitle', () => {
+    const items = {
+        "a": 0,
+        "abc": 1,
+        "def": 2,
+        "zzazz": 3
+    };
+    assert.deepStrictEqual(
+        controller.searchItemsByTitle(items, 'a'),
+        {
+            "a": 0,
+            "abc": 1,
+            "zzazz": 3
+        }
+    );
+    assert.deepStrictEqual(
+        controller.searchItemsByTitle(items, 'df'),
+        {}
+    );
+    assert.deepStrictEqual(
+        controller.searchItemsByTitle(items, ''),
+        items
+    );
+});
+
+it('__searchItems', () => {
+    const items = {
+        "a b c": 0,
+        "b c z": 1,
+        "a a": 2,
+        "c b a": 3,
+    };
+    assert.deepStrictEqual(
+        controller.__searchItems(items, '', 'b c a'.split(' ')),
+        {
+            "a b c": 0,
+            "c b a": 3,
+        }
+    )
 });
