@@ -37,7 +37,7 @@ const isTag = (str) => str[0] === '#';
 exports.searchItemsByTitle = (items, title) => {
     let result = {};
     for (const [key, value] of Object.entries(items)) {
-        if (key.includes(title)) {
+        if (path.basename(key).includes(title)) {
             result[key] = value;
         }
     }
