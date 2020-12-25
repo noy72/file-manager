@@ -4,6 +4,7 @@ const path = require('path');
 exports.itemCard = (dirPath, itemInfo) => {
     //TODO: サムネイルが存在しないときの処理
     //TODO: クリックしたときの処理
+    //TODO: 画像サイズの制限
     return `<div class="col">
     <div class="card">
         <img src="${itemInfo.thumbnail}" class="card-img-top">
