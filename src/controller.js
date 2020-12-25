@@ -15,7 +15,7 @@ exports.syncDataFileWithItems = (data) => {
     return data;
 };
 
-exports.searchItems = (query) => __searchItems(getAllItems(), '', query.split(' '));
+exports.searchItems = (query) => exports.__searchItems(exports.getAllItems(), '', query.split(' '));
 
 exports.getAllItems = () => jsonio.read('data.json')["items"];
 

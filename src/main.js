@@ -1,9 +1,9 @@
 const fs = require('fs');
 const rootPath = require('app-root-path');
-const {app, BrowserWindow} = require('electron');
+const {app, BrowserWindow, ipcMain} = require('electron');
 
 const jsonio = require(`${rootPath}/src/utils/jsonio`);
-const {syncDataFileWithItems, getAllItems} = require(`${rootPath}/src/controller`);
+const {syncDataFileWithItems, getAllItems, searchItems} = require(`${rootPath}/src/controller`);
 
 let mainWindow = null;
 
@@ -47,3 +47,4 @@ app.on('activate', () => {
     }
 });
 
+ipcMain.handle('sendQuery', async (event, query) => searchItems(query));
