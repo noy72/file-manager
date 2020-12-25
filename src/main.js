@@ -1,4 +1,5 @@
 const fs = require('fs');
+const spawn = require('child_process').spawn;
 const rootPath = require('app-root-path');
 const {app, BrowserWindow, ipcMain} = require('electron');
 
@@ -6,11 +7,13 @@ const jsonio = require(`${rootPath}/src/utils/jsonio`);
 const {syncDataFileWithItems, getAllItems, searchItems} = require(`${rootPath}/src/controller`);
 
 let mainWindow = null;
+let applicationPaths = null;
 
 app.whenReady().then(() => {
     createWindow();
     backupDataFile();
     syncDataFile();
+    applicationPaths = readApplicationPaths();
 });
 
 function createWindow() {
@@ -34,6 +37,7 @@ const backupDataFile = () => fs.copyFile('data.json', 'data.backup.json', () => 
 
 const syncDataFile = () => jsonio.write('data.json', syncDataFileWithItems(jsonio.read('data.json')));
 
+const readApplicationPaths = () => jsonio.read('data.json')['applications'];
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
@@ -48,3 +52,8 @@ app.on('activate', () => {
 });
 
 ipcMain.handle('sendQuery', async (event, query) => searchItems(query));
+
+ipcMain.on('openItem', (event, [dirPath, dirType]) => {
+    const [command, args] = applicationPaths[dirType];
+    spawn(command, [...args, dirPath]);
+});
