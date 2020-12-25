@@ -1,6 +1,6 @@
 const fs = require('fs');
 const rootPath = require('app-root-path');
-const {app, dialog, BrowserWindow} = require('electron');
+const {app, BrowserWindow} = require('electron');
 
 const jsonio = require(`${rootPath}/src/utils/jsonio`);
 const {syncDataFileWithItems, getAllItems} = require(`${rootPath}/src/controller`);
@@ -11,7 +11,6 @@ app.whenReady().then(() => {
     createWindow();
     backupDataFile();
     syncDataFile();
-    readDataFile();
 });
 
 function createWindow() {
@@ -47,12 +46,4 @@ app.on('activate', () => {
         createWindow();
     }
 });
-
-
-function readDataFile() {
-    //TODO: ファイルが存在しない時の処理
-    const data = JSON.parse(fs.readFileSync('data.json').toString());
-    console.log(data);
-}
-
 
