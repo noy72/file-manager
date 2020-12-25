@@ -7,6 +7,13 @@ const {syncDataFileWithItems, getAllItems} = require(`${rootPath}/src/controller
 
 let mainWindow = null;
 
+app.whenReady().then(() => {
+    createWindow();
+    backupDataFile();
+    syncDataFile();
+    readDataFile();
+});
+
 function createWindow() {
     mainWindow = new BrowserWindow({
         width: 800,
@@ -22,16 +29,12 @@ function createWindow() {
     });
 }
 
+const renderItems = (items) => BrowserWindow.getFocusedWindow().webContents.send('renderItems', items);
+
 const backupDataFile = () => fs.copyFile('data.json', 'data.backup.json', () => console.log("data.json backed up."));
 
 const syncDataFile = () => jsonio.write('data.json', syncDataFileWithItems(jsonio.read('data.json')));
 
-app.whenReady().then(() => {
-    createWindow();
-    backupDataFile();
-    syncDataFile();
-    readDataFile();
-});
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
@@ -45,8 +48,6 @@ app.on('activate', () => {
     }
 });
 
-
-const renderItems = (items) => BrowserWindow.getFocusedWindow().webContents.send('renderItems', items);
 
 function readDataFile() {
     //TODO: ファイルが存在しない時の処理
