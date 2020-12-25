@@ -11,7 +11,7 @@ exports.findNewItemPaths = (data) => exports.getLocatedAllItemPaths(data["locati
     .filter(itemPath => !data['items'].hasOwnProperty(itemPath));
 
 exports.syncDataFileWithItems = (data) => {
-    exports.findNewItemPaths(data).forEach(itemPath => data["items"][itemPath] = new ItemInfo(itemPath));
+    exports.findNewItemPaths(data).filter(itemPath => fs.statSync(itemPath).isDirectory()).forEach(itemPath => data["items"][itemPath] = new ItemInfo(itemPath));
     return data;
 };
 
