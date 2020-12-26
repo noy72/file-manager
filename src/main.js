@@ -4,7 +4,7 @@ const rootPath = require('app-root-path');
 const {app, BrowserWindow, ipcMain} = require('electron');
 
 const jsonio = require(`${rootPath}/src/utils/jsonio`);
-const {syncDataFileWithItems, getAllItems, searchItems} = require(`${rootPath}/src/controller`);
+const {syncDataFileWithItems, searchItems} = require(`${rootPath}/src/controller`);
 
 let mainWindow = null;
 let applicationPaths = null;
@@ -27,7 +27,7 @@ function createWindow() {
 
     mainWindow.loadFile('src/index.html');
     mainWindow.webContents.once('did-finish-load', function () {
-        renderItems(getAllItems());
+        renderItems(searchItems(''));
     });
 }
 

@@ -1,8 +1,11 @@
 const assert = require('assert');
+const rewire = require('rewire');
 const rootPath = require('app-root-path');
 const {sampleDirPath} = require(`${rootPath}/tests/testUtils`);
 const controller = require(`${rootPath}/src/controller`);
 const {ItemInfo} = require(`${rootPath}/src/model`);
+
+const rewireController = rewire(`${rootPath}/src/controller`);
 
 const data = {
     "locations": [sampleDirPath],
@@ -14,7 +17,7 @@ const data = {
 };
 
 it('getLocatedAllItemPaths', () => {
-    const itemPaths = controller.getLocatedAllItemPaths(data["locations"]).sort();
+    const itemPaths = rewireController.__get__('getLocatedAllItemPaths')(data["locations"]).sort();
     assert.strictEqual(itemPaths[0], `${sampleDirPath}/.DS_Store`);
     for (let i = 1; i < itemPaths.length; i++) {
         assert.strictEqual(itemPaths[i], `${sampleDirPath}/dir0${i}`)
@@ -47,7 +50,7 @@ it('searchItemsByTitle', () => {
         "zzazz": 3
     };
     assert.deepStrictEqual(
-        controller.searchItemsByTitle(items, 'a'),
+        rewireController.__get__('searchItemsByTitle')(items, 'a'),
         {
             "a": 0,
             "abc": 1,
@@ -55,11 +58,11 @@ it('searchItemsByTitle', () => {
         }
     );
     assert.deepStrictEqual(
-        controller.searchItemsByTitle(items, 'df'),
+        rewireController.__get__('searchItemsByTitle')(items, 'df'),
         {}
     );
     assert.deepStrictEqual(
-        controller.searchItemsByTitle(items, ''),
+        rewireController.__get__('searchItemsByTitle')(items, ''),
         items
     );
 });
@@ -72,7 +75,7 @@ it('__searchItems', () => {
         "c b a": 3,
     };
     assert.deepStrictEqual(
-        controller.__searchItems(items, '', 'b c a'.split(' ')),
+        rewireController.__get__('searchItemsWithANDQuery')(items, '', 'b c a'.split(' ')),
         {
             "a b c": 0,
             "c b a": 3,
