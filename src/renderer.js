@@ -1,6 +1,5 @@
 const {ipcRenderer} = require('electron');
-const rootPath = require('app-root-path');
-const components = require(`${rootPath}/src/components`);
+const components = require('./components');
 
 const itemList = document.querySelector('.container .item-list');
 const searchBox = document.querySelector('body > div > form > div.col-9 > input');

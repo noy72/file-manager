@@ -1,7 +1,6 @@
 const assert = require('assert');
-const rootPath = require('app-root-path');
-const {sampleDirPath}=  require(`${rootPath}/tests/testUtils`);
-const {ItemInfo, itemTypes} = require(`${rootPath}/src/model`);
+const {sampleDirPath} = require('./testUtils');
+const {ItemInfo, itemTypes} = require('../src/model');
 
 const dir04Path = `${sampleDirPath}/dir04`;
 const dir05Path = `${sampleDirPath}/dir05`;

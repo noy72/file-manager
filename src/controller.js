@@ -1,8 +1,7 @@
 const fs = require('fs');
 const path = require('path');
-const rootPath = require('app-root-path');
-const {ItemInfo} = require(`${rootPath}/src/model`);
-const jsonio = require(`${rootPath}/src/utils/jsonio`);
+const {ItemInfo} = require('./model');
+const jsonio = require('./utils/jsonio');
 
 const getLocatedAllItemPaths = (locations) => locations
     .flatMap(location => fs.readdirSync(location).flatMap(dir => path.join(location, dir)));

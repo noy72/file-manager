@@ -1,7 +1,6 @@
 const assert = require('assert').strict;
 const fs = require('fs');
-const rootPath = require('app-root-path');
-const sampleDirPath = `${rootPath}/tests/sample_dir`;
+const {sampleDirPath} = require('./testUtils');
 
 it('readdirSync', function () {
     const dirs = fs.readdirSync(sampleDirPath);

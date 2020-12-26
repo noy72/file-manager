@@ -1,11 +1,10 @@
 const assert = require('assert');
 const rewire = require('rewire');
-const rootPath = require('app-root-path');
-const {sampleDirPath} = require(`${rootPath}/tests/testUtils`);
-const controller = require(`${rootPath}/src/controller`);
-const {ItemInfo} = require(`${rootPath}/src/model`);
+const {sampleDirPath} = require('./testUtils');
+const controller = require('../src/controller');
+const {ItemInfo} = require('../src/model');
 
-const rewireController = rewire(`${rootPath}/src/controller`);
+const rewireController = rewire('../src/controller');
 
 const data = {
     "locations": [sampleDirPath],

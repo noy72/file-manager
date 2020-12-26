@@ -1,7 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const rootPath = require('app-root-path');
-const file = require(`${rootPath}/src/utils/file`);
+const file = require('./utils/file');
 
 exports.ItemInfo = class ItemInfo {
     constructor(itemPath) {

@@ -1,10 +1,9 @@
 const fs = require('fs');
 const spawn = require('child_process').spawn;
-const rootPath = require('app-root-path');
 const {app, BrowserWindow, ipcMain} = require('electron');
 
-const jsonio = require(`${rootPath}/src/utils/jsonio`);
-const {syncDataFileWithItems, searchItems} = require(`${rootPath}/src/controller`);
+const jsonio = require('./utils/jsonio');
+const {syncDataFileWithItems, searchItems} = require('./controller');
 
 let mainWindow = null;
 let applicationPaths = null;
