@@ -20,13 +20,6 @@ it('getLocatedAllItemPaths', () => {
     }
 });
 
-it('findNewItemPaths', () => {
-    const newItemPaths = controller.findNewItemPaths(data).sort();
-    for (let i = 0; i < newItemPaths.length; i++) {
-        assert.strictEqual(newItemPaths[i], `${sampleDirPath}/dir0${i * 2 + 2}`)
-    }
-});
-
 it('syncDataFileWithItems', () => {
     const expectItems = {
         [`${sampleDirPath}/dir01`]: null,

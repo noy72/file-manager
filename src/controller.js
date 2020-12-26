@@ -7,11 +7,11 @@ const jsonio = require(`${rootPath}/src/utils/jsonio`);
 exports.getLocatedAllItemPaths = (locations) => locations
     .flatMap(location => fs.readdirSync(location).flatMap(dir => path.join(location, dir)));
 
-exports.findNewItemPaths = (data) => exports.getLocatedAllItemPaths(data["locations"])
-    .filter(itemPath => !data['items'].hasOwnProperty(itemPath));
-
 exports.syncDataFileWithItems = (data) => {
-    exports.findNewItemPaths(data).filter(itemPath => fs.statSync(itemPath).isDirectory()).forEach(itemPath => data["items"][itemPath] = new ItemInfo(itemPath));
+    exports.getLocatedAllItemPaths(data["locations"])
+        .filter(itemPath => fs.statSync(itemPath).isDirectory())
+        .filter(itemPath => !data["items"].hasOwnProperty(itemPath))
+        .forEach(itemPath => data["items"][itemPath] = new ItemInfo(itemPath));
     return data;
 };
 
