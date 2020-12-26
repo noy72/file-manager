@@ -15,8 +15,9 @@ const data = {
 
 it('getLocatedAllItemPaths', () => {
     const itemPaths = controller.getLocatedAllItemPaths(data["locations"]).sort();
-    for (let i = 0; i < itemPaths.length; i++) {
-        assert.strictEqual(itemPaths[i], `${sampleDirPath}/dir0${i + 1}`)
+    assert.strictEqual(itemPaths[0], `${sampleDirPath}/.DS_Store`);
+    for (let i = 1; i < itemPaths.length; i++) {
+        assert.strictEqual(itemPaths[i], `${sampleDirPath}/dir0${i}`)
     }
 });
 

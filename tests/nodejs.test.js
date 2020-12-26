@@ -5,8 +5,8 @@ const sampleDirPath = `${rootPath}/tests/sample_dir`;
 
 it('readdirSync', function () {
     const dirs = fs.readdirSync(sampleDirPath);
-    assert.equal(dirs.length, 5);
-    for (let i = 0; i < dirs.length; i++) {
-        assert.equal(dirs[i], `dir0${i + 1}`);
+    assert.equal(dirs.length, 6);
+    for (let i = 1; i < dirs.length; i++) {
+        assert.equal(dirs[i], `dir0${i}`);
     }
 });
