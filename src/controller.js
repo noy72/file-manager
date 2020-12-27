@@ -18,7 +18,7 @@ exports.searchItems = (query) => searchItemsWithANDQuery(getAllItems(), '', quer
 
 const getAllItems = () => jsonio.read('data.json')["items"];
 
-const searchItemsWithANDQuery = function (items, word, words) {
+const searchItemsWithANDQuery = function (items, word, ...words) {
     let result = null;
     if (isTag(word)) {
         //TODO: add searchItemsByTag() here
@@ -27,7 +27,7 @@ const searchItemsWithANDQuery = function (items, word, words) {
     }
 
     if (words.length === 0) return result;
-    return searchItemsWithANDQuery(result, words[0], words.slice(1, words.length));
+    return searchItemsWithANDQuery(result, ...words);
 };
 
 
