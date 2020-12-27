@@ -27,7 +27,8 @@ const renderItems = (items) => {
                 const menu = new Menu();
                 menu.append(new MenuItem({
                     label: 'Tags', click() {
-                        console.log('item 1 clicked', itemEntries[index])
+                        const dirPath = itemEntries[index][0];
+                        ipcRenderer.send('open-tags-window', dirPath)
                     }
                 }));
                 menu.popup(

@@ -57,3 +57,17 @@ ipcMain.on('openItem', (event, [dirPath, dirType]) => {
     const [command, args] = applicationPaths[dirType];
     spawn(command, [...args, dirPath]);
 });
+
+ipcMain.on('open-tags-window', (event, dirPath) => {
+    const tagPoolWindow = new BrowserWindow({
+        width: 600,
+        height: 400,
+        webPreferences: {
+            nodeIntegration: false,
+            enableRemoteModule: false
+        }
+    });
+
+    tagPoolWindow.loadFile('src/tagpool.html');
+    //mainWindow.webContents.once('did-finish-load', function () { renderItems(searchItems('')); });
+});
