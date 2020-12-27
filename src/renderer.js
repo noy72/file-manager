@@ -1,4 +1,5 @@
-const {ipcRenderer} = require('electron');
+const {ipcRenderer, remote} = require('electron');
+const {Menu, MenuItem} = remote;
 const components = require('./components');
 
 const itemList = document.querySelector('.container .item-list');
@@ -20,6 +21,21 @@ const renderItems = (items) => {
     for (let index = 0; index < itemEntries.length; index++) {
         itemList.childNodes.item(index)
             .addEventListener('click', () => openItemWithExternalApp(...itemEntries[index]))
+        itemList.childNodes.item(index)
+            .addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                const menu = new Menu();
+                menu.append(new MenuItem({
+                    label: 'Tags', click() {
+                        console.log('item 1 clicked', itemEntries[index])
+                    }
+                }));
+                menu.popup(
+                    {
+                        window: remote.getCurrentWindow()
+                    }
+                )
+            }, false);
     }
 };
 
@@ -31,3 +47,4 @@ searchButton.addEventListener('click', (e) => {
 const openItemWithExternalApp = (dirPath, {type: dirType}) => {
     ipcRenderer.send('openItem', [dirPath, dirType]);
 };
+
