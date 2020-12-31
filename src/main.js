@@ -6,13 +6,12 @@ const {searchItems} = require('./controller');
 const {readAllTags, readTags, readApplicationPaths, backupDataFile} = require('./database');
 
 let mainWindow = null;
-let applicationPaths = null;
+const applicationPaths = readApplicationPaths();
 
 app.whenReady().then(() => {
     createWindow();
     backupDataFile();
     syncDataFile();
-    applicationPaths = readApplicationPaths();
 });
 
 function createWindow() {
