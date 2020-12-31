@@ -3,7 +3,8 @@ const spawn = require('child_process').spawn;
 const {app, BrowserWindow, ipcMain} = require('electron');
 
 const jsonio = require('./utils/jsonio');
-const {syncDataFileWithItems, searchItems, getTags, getAllTags} = require('./controller');
+const {syncDataFileWithItems, searchItems} = require('./controller');
+const {readAllTags, readTags, readApplicationPaths} = require('./database');
 
 let mainWindow = null;
 let applicationPaths = null;
@@ -38,7 +39,6 @@ const backupDataFile = () => fs.copyFile('data.json', 'data.backup.json', () => 
 
 const syncDataFile = () => jsonio.write('data.json', syncDataFileWithItems(jsonio.read('data.json')));
 
-const readApplicationPaths = () => jsonio.read('data.json')['applications'];
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
@@ -71,6 +71,6 @@ ipcMain.on('open-tags-window', (event, dirPath) => {
 
     tagPoolWindow.loadFile('src/tagpool.html');
     tagPoolWindow.webContents.once('did-finish-load', () => {
-        tagPoolWindow.send('render-tags', [getAllTags(), getTags(dirPath)])
+        tagPoolWindow.send('render-tags', [readAllTags(), readTags(dirPath)])
     });
 });

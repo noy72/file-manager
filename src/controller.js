@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const {ItemInfo} = require('./model');
-const jsonio = require('./utils/jsonio');
+const {readAllItems} = require('./database');
 
 const getLocatedAllItemPaths = (locations) => locations
     .flatMap(location => fs.readdirSync(location).flatMap(dir => path.join(location, dir)));
@@ -14,9 +14,7 @@ exports.syncDataFileWithItems = (data) => {
     return data;
 };
 
-exports.searchItems = (query) => searchItemsWithANDQuery(getAllItems(), '', query.split(' '));
-
-const getAllItems = () => jsonio.read('data.json')["items"];
+exports.searchItems = (query) => searchItemsWithANDQuery(readAllItems(), '', query.split(' '));
 
 const searchItemsWithANDQuery = function (items, word, ...words) {
     let result = null;
@@ -42,7 +40,3 @@ const searchItemsByTitle = (items, title) => {
     }
     return result;
 };
-
-exports.getTags = (dirPath) => jsonio.read('data.json')["items"][dirPath].tags;
-
-exports.getAllTags = () => jsonio.read('data.json')["tags"];
