@@ -20,7 +20,7 @@ const renderItems = (items) => {
     itemList.innerHTML = cardListElements;
     for (let index = 0; index < itemEntries.length; index++) {
         itemList.childNodes.item(index)
-            .addEventListener('click', () => openItemWithExternalApp(...itemEntries[index]))
+            .addEventListener('click', () => openItemWithExternalApp(...itemEntries[index]));
         itemList.childNodes.item(index)
             .addEventListener('contextmenu', (e) => {
                 e.preventDefault();
