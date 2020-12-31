@@ -43,4 +43,4 @@ const searchItemsByTitle = (items, title) => {
     return result;
 };
 
-exports.syncDataFile = () => jsonio.write('data.json', syncDataFileWithItems(jsonio.read('data.json')));
+exports.syncDataFile = () => jsonio.write('data.json', exports.syncDataFileWithItems(jsonio.read('data.json')));
