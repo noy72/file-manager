@@ -33,7 +33,7 @@ function createWindow() {
     });
 }
 
-const renderItems = (items) => BrowserWindow.getFocusedWindow().webContents.send('renderItems', items);
+const renderItems = (items) => BrowserWindow.getFocusedWindow().webContents.send('render-items', items);
 
 const backupDataFile = () => fs.copyFile('data.json', 'data.backup.json', () => console.log("data.json backed up."));
 
@@ -52,9 +52,9 @@ app.on('activate', () => {
     }
 });
 
-ipcMain.handle('sendQuery', async (event, query) => searchItems(query));
+ipcMain.handle('send-query', async (event, query) => searchItems(query));
 
-ipcMain.on('openItem', (event, [dirPath, dirType]) => {
+ipcMain.on('open-item', (event, [dirPath, dirType]) => {
     const [command, args] = applicationPaths[dirType];
     spawn(command, [...args, dirPath]);
 });

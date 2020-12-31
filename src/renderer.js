@@ -6,7 +6,7 @@ const itemList = document.querySelector('.container .item-list');
 const searchBox = document.querySelector('body > div > form > div.col-9 > input');
 const searchButton = document.querySelector('body > div > form > div.col-3 > button');
 
-ipcRenderer.on('renderItems', (event, items) => {
+ipcRenderer.on('render-items', (event, items) => {
     renderItems(items);
 });
 
@@ -42,10 +42,10 @@ const renderItems = (items) => {
 
 searchButton.addEventListener('click', (e) => {
     e.preventDefault();
-    ipcRenderer.invoke('sendQuery', searchBox.value).then(items => renderItems(items));
+    ipcRenderer.invoke('send-query', searchBox.value).then(items => renderItems(items));
 });
 
 const openItemWithExternalApp = (dirPath, {type: dirType}) => {
-    ipcRenderer.send('openItem', [dirPath, dirType]);
+    ipcRenderer.send('open-item', [dirPath, dirType]);
 };
 
