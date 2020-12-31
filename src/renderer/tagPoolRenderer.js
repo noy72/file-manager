@@ -1,7 +1,7 @@
 const {ipcRenderer} = require('electron');
 const remote = require('electron').remote;
 const components = require('./components');
-const {writeTags} = require("./database");
+const {writeTags} = require("../database");
 
 const tagList = document.querySelector('.tag-list');
 const submitButton = document.querySelector('.btn-primary');
