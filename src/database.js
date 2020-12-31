@@ -1,3 +1,4 @@
+const fs = require('fs');
 const jsonio = require('./utils/jsonio');
 
 const dataJson = 'data.json';
