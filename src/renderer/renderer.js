@@ -1,6 +1,7 @@
 const {ipcRenderer, remote} = require('electron');
 const {Menu, MenuItem} = remote;
 const components = require('./components');
+const {itemTypes} = require('../model');
 
 const itemList = document.querySelector('.container .item-list');
 const searchBox = document.querySelector('.form-control');
@@ -19,6 +20,8 @@ const renderItems = (items) => {
     }
     itemList.innerHTML = cardListElements;
     for (let index = 0; index < itemEntries.length; index++) {
+        const dirPath = itemEntries[index][0];
+
         itemList.childNodes.item(index)
             .addEventListener('click', () => openItemWithExternalApp(...itemEntries[index]));
         itemList.childNodes.item(index)
@@ -27,8 +30,12 @@ const renderItems = (items) => {
                 const menu = new Menu();
                 menu.append(new MenuItem({
                     label: 'Tags', click() {
-                        const dirPath = itemEntries[index][0];
                         ipcRenderer.send('open-tags-window', dirPath)
+                    }
+                }));
+                menu.append(new MenuItem({
+                    label: 'Open', click() {
+                        ipcRenderer.send('open-item', [dirPath, itemTypes.DIR]);
                     }
                 }));
                 menu.popup(
