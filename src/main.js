@@ -1,8 +1,7 @@
-const {syncDataFile} = require("./controller");
 const spawn = require('child_process').spawn;
 const {app, BrowserWindow, ipcMain} = require('electron');
 
-const {searchItems} = require('./controller');
+const {syncDataFile, searchItems} = require('./controller');
 const {readAllTags, readTags, readApplicationPaths, backupDataFile} = require('./database');
 
 let mainWindow = null;
