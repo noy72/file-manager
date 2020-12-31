@@ -3,8 +3,8 @@ const {Menu, MenuItem} = remote;
 const components = require('./components');
 
 const itemList = document.querySelector('.container .item-list');
-const searchBox = document.querySelector('body > div > form > div.col-9 > input');
-const searchButton = document.querySelector('body > div > form > div.col-3 > button');
+const searchBox = document.querySelector('.form-control');
+const searchButton = document.querySelector('.btn-primary');
 
 ipcRenderer.on('render-items', (event, items) => {
     renderItems(items);
