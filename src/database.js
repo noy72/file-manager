@@ -19,3 +19,5 @@ exports.writeTags = (dirPath, tags) => {
     data["items"][dirPath].tags = tags;
     jsonio.write(dataJson, data);
 };
+
+exports.backupDataFile = () => fs.copyFile(dataJson, 'data.backup.json', () => console.log("data.json backed up."));

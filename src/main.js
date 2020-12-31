@@ -1,10 +1,9 @@
-const fs = require('fs');
+const {syncDataFile} = require("./controller");
 const spawn = require('child_process').spawn;
 const {app, BrowserWindow, ipcMain} = require('electron');
 
-const jsonio = require('./utils/jsonio');
-const {syncDataFileWithItems, searchItems} = require('./controller');
-const {readAllTags, readTags, readApplicationPaths} = require('./database');
+const {searchItems} = require('./controller');
+const {readAllTags, readTags, readApplicationPaths, backupDataFile} = require('./database');
 
 let mainWindow = null;
 let applicationPaths = null;
@@ -34,11 +33,6 @@ function createWindow() {
 }
 
 const renderItems = (items) => BrowserWindow.getFocusedWindow().webContents.send('render-items', items);
-
-const backupDataFile = () => fs.copyFile('data.json', 'data.backup.json', () => console.log("data.json backed up."));
-
-const syncDataFile = () => jsonio.write('data.json', syncDataFileWithItems(jsonio.read('data.json')));
-
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {

@@ -1,5 +1,7 @@
 const fs = require('fs');
 const path = require('path');
+
+const jsonio = require('./utils/jsonio');
 const {ItemInfo} = require('./model');
 const {readAllItems} = require('./database');
 
@@ -14,7 +16,7 @@ exports.syncDataFileWithItems = (data) => {
     return data;
 };
 
-exports.searchItems = (query) => searchItemsWithANDQuery(readAllItems(), '', query.split(' '));
+exports.searchItems = (query) => searchItemsWithANDQuery(readAllItems(), ...query.split(' '));
 
 const searchItemsWithANDQuery = function (items, word, ...words) {
     let result = null;
@@ -40,3 +42,5 @@ const searchItemsByTitle = (items, title) => {
     }
     return result;
 };
+
+exports.syncDataFile = () => jsonio.write('data.json', syncDataFileWithItems(jsonio.read('data.json')));
