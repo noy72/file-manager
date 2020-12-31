@@ -1,12 +1,15 @@
 const {ipcRenderer} = require('electron');
+const remote = require('electron').remote;
 const components = require('./components');
+const {writeTags} = require("./database");
 
 const tagList = document.querySelector('.tag-list');
 const submitButton = document.querySelector('.btn-primary');
 
-submitButton.addEventListener('click', () => f());
+let dirPath = null;
 
-ipcRenderer.on('render-tags', (event, [allTags, itemTags]) => {
+ipcRenderer.on('render-tags', (event, [allTags, itemTags, _dirPath]) => {
+    dirPath = _dirPath;
     renderTags(allTags, itemTags);
 });
 
@@ -15,14 +18,20 @@ const renderTags = (allTags, itemTags) => tagList.innerHTML = Object.entries(all
     .map(([groupName, tags]) => `
         <div>
             <h2>${groupName}</h2>
-            ${tags.map(tag => components.tag(tag in itemTags, tag)).join(' ')}
+            ${tags.map(tag => components.tag(itemTags.includes(tag), tag)).join(' ')}
         </div>
         <hr>
     `).join(' ');
 
-const f = () => {
-    const checkBoxes = document.querySelectorAll('.form-check-input');
-    for (const checkBox of checkBoxes) {
-        console.log(checkBox.value, checkBox.checked)
-    }
+submitButton.addEventListener('click', () => {
+    updateTags();
+    remote.getCurrentWindow().close();
+});
+
+const updateTags = () => {
+    const checkBoxes = Array.from(document.querySelectorAll('.form-check-input'));
+    const checkedTags = checkBoxes
+        .filter(checkBox => checkBox.checked)
+        .map(checkBox => checkBox.value);
+    writeTags(dirPath, checkedTags);
 };

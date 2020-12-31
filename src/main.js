@@ -71,6 +71,6 @@ ipcMain.on('open-tags-window', (event, dirPath) => {
 
     tagPoolWindow.loadFile('src/tagpool.html');
     tagPoolWindow.webContents.once('did-finish-load', () => {
-        tagPoolWindow.send('render-tags', [readAllTags(), readTags(dirPath)])
+        tagPoolWindow.send('render-tags', [readAllTags(), readTags(dirPath), dirPath])
     });
 });
