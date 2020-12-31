@@ -19,9 +19,9 @@ exports.syncDataFileWithItems = (data) => {
 exports.searchItems = (query) => searchItemsWithANDQuery(readAllItems(), ...query.split(' '));
 
 const searchItemsWithANDQuery = function (items, word, ...words) {
-    let result = null;
+    let result;
     if (isTag(word)) {
-        //TODO: add searchItemsByTag() here
+        result = searchItemsByTag(items, word.slice(1, word.length));
     } else {
         result = searchItemsByTitle(items, word);
     }
@@ -37,6 +37,16 @@ const searchItemsByTitle = (items, title) => {
     let result = {};
     for (const [key, value] of Object.entries(items)) {
         if (path.basename(key).includes(title)) {
+            result[key] = value;
+        }
+    }
+    return result;
+};
+
+const searchItemsByTag = (items, tag) => {
+    let result = {};
+    for (const [key, value] of Object.entries(items)) {
+        if (value.tags.includes(tag)) {
             result[key] = value;
         }
     }
