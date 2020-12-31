@@ -66,7 +66,7 @@ it('searchItemsByTitle', () => {
     );
 });
 
-it('__searchItems', () => {
+it('searchItemsWithANDQuery', () => {
     const items = {
         "a b c": 0,
         "b c z": 1,
@@ -74,7 +74,7 @@ it('__searchItems', () => {
         "c b a": 3,
     };
     assert.deepStrictEqual(
-        rewireController.__get__('searchItemsWithANDQuery')(items, '', 'b c a'.split(' ')),
+        rewireController.__get__('searchItemsWithANDQuery')(items, ...'b c a'.split(' ')),
         {
             "a b c": 0,
             "c b a": 3,
