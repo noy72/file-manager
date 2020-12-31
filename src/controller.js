@@ -43,3 +43,6 @@ const searchItemsByTitle = (items, title) => {
     return result;
 };
 
+exports.getTags = (dirPath) => jsonio.read('data.json')["items"][dirPath].tags;
+
+exports.getAllTags = () => jsonio.read('data.json')["tags"];

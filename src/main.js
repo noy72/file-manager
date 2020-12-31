@@ -3,7 +3,7 @@ const spawn = require('child_process').spawn;
 const {app, BrowserWindow, ipcMain} = require('electron');
 
 const jsonio = require('./utils/jsonio');
-const {syncDataFileWithItems, searchItems} = require('./controller');
+const {syncDataFileWithItems, searchItems, getTags, getAllTags} = require('./controller');
 
 let mainWindow = null;
 let applicationPaths = null;
@@ -21,7 +21,8 @@ function createWindow() {
         height: 600,
         webPreferences: {
             nodeIntegration: true,
-            enableRemoteModule: true
+            enableRemoteModule: true,
+            devTools: true
         }
     });
 
@@ -63,11 +64,13 @@ ipcMain.on('open-tags-window', (event, dirPath) => {
         width: 600,
         height: 400,
         webPreferences: {
-            nodeIntegration: false,
-            enableRemoteModule: false
+            nodeIntegration: true,
+            enableRemoteModule: true
         }
     });
 
     tagPoolWindow.loadFile('src/tagpool.html');
-    //mainWindow.webContents.once('did-finish-load', function () { renderItems(searchItems('')); });
+    tagPoolWindow.webContents.once('did-finish-load', () => {
+        tagPoolWindow.send('render-tags', [getAllTags(), getTags(dirPath)])
+    });
 });

@@ -15,3 +15,10 @@ exports.itemCard = (dirPath, itemInfo) => {
     </div>
 </div>`
 };
+
+exports.tag = (checked, name) => {
+    return `<div class="form-check form-check-inline">
+    <input class="form-check-input" type="checkbox" ${checked ? "checked" : ""} id="${name}" value="${name}">
+    <label class="form-check-label" for="${name}">${name}</label>
+</div>`;
+};
