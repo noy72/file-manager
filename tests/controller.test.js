@@ -30,6 +30,7 @@ it('syncDataFileWithItems', () => {
         [`${sampleDirPath}/dir03`]: null,
         [`${sampleDirPath}/dir04`]: new ItemInfo(`${sampleDirPath}/dir04`),
         [`${sampleDirPath}/dir05`]: null,
+        [`${sampleDirPath}/dir06`]: new ItemInfo(`${sampleDirPath}/dir06`),
     };
     const newData = controller.syncDataFileWithItems(data);
     for (const [key, value] of Object.entries(newData["items"])) {
