@@ -1,14 +1,14 @@
-const fs = require('fs');
-const path = require('path');
+import * as fs from "fs";
+import * as path from "path";
+import * as jsonio from "./utils/jsonio";
+import {ItemInfo} from "./model";
+import {readAllItems} from "./database";
 
-const jsonio = require('./utils/jsonio');
-const {ItemInfo} = require('./model');
-const {readAllItems} = require('./database');
 
 const getLocatedAllItemPaths = (locations: string[]) => locations.flatMap(
     location => fs.readdirSync(location).flatMap((dir: string) => path.join(location, dir)));
 
-exports.syncDataFileWithItems = (data: any) => {
+const syncDataFileWithItems = (data: any) => {
     getLocatedAllItemPaths(data["locations"])
         .filter(itemPath => fs.statSync(itemPath).isDirectory())
         .filter(itemPath => !data["items"].hasOwnProperty(itemPath))
@@ -17,7 +17,7 @@ exports.syncDataFileWithItems = (data: any) => {
 };
 
 // @ts-ignore
-exports.searchItems = (query: string) => searchItemsWithANDQuery(readAllItems(), ...query.split(' '));
+const searchItems = (query: string) => searchItemsWithANDQuery(readAllItems(), ...query.split(' '));
 
 const searchItemsWithANDQuery = function (items: any, word: string, ...words: string[]): object {
     let result;
@@ -36,7 +36,7 @@ const searchItemsWithANDQuery = function (items: any, word: string, ...words: st
 const isTag = (str: string) => str[0] === '#';
 
 const searchItemsByTitle = (items: any, title: string) => {
-    let result:any = {};
+    let result: any = {};
     for (const [key, value] of Object.entries(items)) {
         if (path.basename(key).includes(title)) {
             result[key] = value;
@@ -55,4 +55,6 @@ const searchItemsByTag = (items: object, tag: string) => {
     return result;
 };
 
-exports.syncDataFile = () => jsonio.write('data.json', exports.syncDataFileWithItems(jsonio.read('data.json')));
+const syncDataFile = () => jsonio.write('data.json', exports.syncDataFileWithItems(jsonio.read('data.json')));
+
+export {syncDataFileWithItems, searchItems, syncDataFile}

@@ -1,9 +1,7 @@
-const fs = require('fs');
+import * as fs from 'fs';
 
-exports.read = function (path: string) {
-    return JSON.parse(fs.readFileSync(path).toString());
-};
+const read = (path: string) => JSON.parse(fs.readFileSync(path).toString());
 
-exports.write = function (path: string, json: object) {
-    fs.writeFileSync(path, JSON.stringify(json))
-};
+const write = (path: string, json: object) => fs.writeFileSync(path, JSON.stringify(json));
+
+export {read, write};

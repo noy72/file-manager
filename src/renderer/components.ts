@@ -1,7 +1,7 @@
-const path = require('path');
+import * as path from 'path';
 
 //TODO: 分割代入できそう
-exports.itemCard = (dirPath: string, itemInfo: any) => {
+const itemCard = (dirPath: string, itemInfo: any) => {
     //TODO: サムネイルが存在しないときの処理
     //TODO: クリックしたときの処理
     //TODO: 画像サイズの制限
@@ -16,9 +16,11 @@ exports.itemCard = (dirPath: string, itemInfo: any) => {
 </div>`
 };
 
-exports.tag = (checked: boolean, name: string) => {
+const tag = (checked: boolean, name: string) => {
     return `<div class="form-check form-check-inline">
     <input class="form-check-input" type="checkbox" ${checked ? "checked" : ""} id="${name}" value="${name}">
     <label class="form-check-label" for="${name}">${name}</label>
 </div>`;
 };
+
+export {itemCard, tag};

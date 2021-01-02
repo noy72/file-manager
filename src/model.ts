@@ -1,8 +1,8 @@
-const fs = require('fs');
-const path = require('path');
-const file = require('./utils/file');
+import * as fs from 'fs';
+import * as path from 'path';
+import * as file from './utils/file';
 
-exports.ItemInfo = class ItemInfo {
+const ItemInfo = class ItemInfo {
     tags: string[] = [];
     type: number;
     thumbnail: string;
@@ -27,7 +27,9 @@ exports.ItemInfo = class ItemInfo {
     }
 };
 
-exports.itemTypes = {
+const itemTypes = {
     DIR: 0,
     IMAGES: 1,
 };
+
+export {itemTypes, ItemInfo};

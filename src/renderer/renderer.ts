@@ -1,7 +1,7 @@
-const {ipcRenderer, remote} = require('electron');
+import {ipcRenderer, remote} from 'electron';
 const {Menu, MenuItem} = remote;
-const components = require('./components');
-const {itemTypes} = require('../model');
+import * as components from './components';
+import {itemTypes}  from '../model';
 
 const itemList = document.querySelector('.container .item-list');
 const searchBox = document.querySelector('.form-control');

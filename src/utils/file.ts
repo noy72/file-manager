@@ -4,4 +4,6 @@ const imageFileExts = [
     "jpeg",
 ];
 
-exports.isImageFile = (fileName: string) => imageFileExts.some(ext => fileName.includes(ext));
+const isImageFile = (fileName: string) => imageFileExts.some(ext => fileName.includes(ext));
+
+export {isImageFile};

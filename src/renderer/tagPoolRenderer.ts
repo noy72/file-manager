@@ -1,7 +1,7 @@
-const {ipcRenderer} = require('electron');
-const remote = require('electron').remote;
-const components = require('./components');
-const {writeTags} = require("../database");
+import {ipcRenderer, remote} from "electron";
+import * as components from "./components";
+import {writeTags} from "../database";
+
 
 const tagList = document.querySelector('.tag-list');
 const submitButton = document.querySelector('.btn-primary');
