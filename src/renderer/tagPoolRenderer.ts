@@ -6,15 +6,15 @@ const {writeTags} = require("../database");
 const tagList = document.querySelector('.tag-list');
 const submitButton = document.querySelector('.btn-primary');
 
-let dirPath = null;
+let dirPath: string | null = null;
 
-ipcRenderer.on('render-tags', (event, [allTags, itemTags, _dirPath]) => {
+ipcRenderer.on('render-tags', (event: any, [allTags, itemTags, _dirPath]: [any, string[], string]) => {
     dirPath = _dirPath;
     renderTags(allTags, itemTags);
 });
 
 //TODO: reduceを使う
-const renderTags = (allTags, itemTags) => tagList.innerHTML = Object.entries(allTags)
+const renderTags = (allTags: any, itemTags: string[]) => tagList.innerHTML = Object.entries(allTags)
     .map(([groupName, tags]) => `
         <div>
             <h2>${groupName}</h2>

@@ -7,11 +7,11 @@ const itemList = document.querySelector('.container .item-list');
 const searchBox = document.querySelector('.form-control');
 const searchButton = document.querySelector('.btn-primary');
 
-ipcRenderer.on('render-items', (event, items) => {
+ipcRenderer.on('render-items', (event: any, items: any) => {
     renderItems(items);
 });
 
-const renderItems = (items) => {
+const renderItems = (items: any) => {
     const itemEntries = Object.entries(items)
         .sort((a, b) => a[0].localeCompare(b[0]));
     let cardListElements = '';
@@ -49,10 +49,10 @@ const renderItems = (items) => {
 
 searchButton.addEventListener('click', (e) => {
     e.preventDefault();
-    ipcRenderer.invoke('send-query', searchBox.value).then(items => renderItems(items));
+    ipcRenderer.invoke('send-query', searchBox.value).then((items: any) => renderItems(items));
 });
 
-const openItemWithExternalApp = (dirPath, {type: dirType}) => {
+const openItemWithExternalApp = (dirPath: string, {type: dirType}: { type: number }) => {
     ipcRenderer.send('open-item', [dirPath, dirType]);
 };
 

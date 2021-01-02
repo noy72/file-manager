@@ -5,7 +5,7 @@ const dataJson = 'data.json';
 
 const readData = () => jsonio.read(dataJson);
 
-const readValues = (key) => readData()[key];
+const readValues = (key: string) => readData()[key];
 
 exports.readAllItems = () => readValues("items");
 
@@ -13,9 +13,9 @@ exports.readAllTags = () => readValues("tags");
 
 exports.readApplicationPaths = () => readValues('applications');
 
-exports.readTags = (dirPath) => exports.readAllItems()[dirPath].tags;
+exports.readTags = (dirPath: string) => exports.readAllItems()[dirPath].tags;
 
-exports.writeTags = (dirPath, tags) => {
+exports.writeTags = (dirPath: string, tags: string[]) => {
     const data = readData();
     data["items"][dirPath].tags = tags;
     jsonio.write(dataJson, data);

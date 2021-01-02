@@ -5,10 +5,10 @@ const jsonio = require('./utils/jsonio');
 const {ItemInfo} = require('./model');
 const {readAllItems} = require('./database');
 
-const getLocatedAllItemPaths = (locations) => locations
-    .flatMap(location => fs.readdirSync(location).flatMap(dir => path.join(location, dir)));
+const getLocatedAllItemPaths = (locations: string[]) => locations.flatMap(
+    location => fs.readdirSync(location).flatMap((dir: string) => path.join(location, dir)));
 
-exports.syncDataFileWithItems = (data) => {
+exports.syncDataFileWithItems = (data: any) => {
     getLocatedAllItemPaths(data["locations"])
         .filter(itemPath => fs.statSync(itemPath).isDirectory())
         .filter(itemPath => !data["items"].hasOwnProperty(itemPath))
@@ -16,9 +16,10 @@ exports.syncDataFileWithItems = (data) => {
     return data;
 };
 
-exports.searchItems = (query) => searchItemsWithANDQuery(readAllItems(), ...query.split(' '));
+// @ts-ignore
+exports.searchItems = (query: string) => searchItemsWithANDQuery(readAllItems(), ...query.split(' '));
 
-const searchItemsWithANDQuery = function (items, word, ...words) {
+const searchItemsWithANDQuery = function (items: any, word: string, ...words: string[]): object {
     let result;
     if (isTag(word)) {
         result = searchItemsByTag(items, word.slice(1, word.length));
@@ -27,14 +28,15 @@ const searchItemsWithANDQuery = function (items, word, ...words) {
     }
 
     if (words.length === 0) return result;
+    // @ts-ignore
     return searchItemsWithANDQuery(result, ...words);
 };
 
 
-const isTag = (str) => str[0] === '#';
+const isTag = (str: string) => str[0] === '#';
 
-const searchItemsByTitle = (items, title) => {
-    let result = {};
+const searchItemsByTitle = (items: any, title: string) => {
+    let result:any = {};
     for (const [key, value] of Object.entries(items)) {
         if (path.basename(key).includes(title)) {
             result[key] = value;
@@ -43,8 +45,8 @@ const searchItemsByTitle = (items, title) => {
     return result;
 };
 
-const searchItemsByTag = (items, tag) => {
-    let result = {};
+const searchItemsByTag = (items: object, tag: string) => {
+    let result: any = {};
     for (const [key, value] of Object.entries(items)) {
         if (value.tags.includes(tag)) {
             result[key] = value;

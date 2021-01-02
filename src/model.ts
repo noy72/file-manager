@@ -3,21 +3,24 @@ const path = require('path');
 const file = require('./utils/file');
 
 exports.ItemInfo = class ItemInfo {
-    constructor(itemPath) {
-        this.tags = [];
+    tags: string[] = [];
+    type: number;
+    thumbnail: string;
+
+    constructor(itemPath: string) {
         this.type = this.getTypes(itemPath);
         this.thumbnail = this.getImageFileWithFirstNameWhenSorted(itemPath);
     }
 
-    getImageFileWithFirstNameWhenSorted = (itemPath) =>
+    getImageFileWithFirstNameWhenSorted = (itemPath: string) =>
         fs.readdirSync(itemPath)
-            .filter(fileName => file.isImageFile(fileName))
-            .flatMap(dir => path.join(itemPath, dir))
+            .filter((fileName: string) => file.isImageFile(fileName))
+            .flatMap((dir: string) => path.join(itemPath, dir))
             .sort()[0];
 
-    getTypes(itemPath) {
+    getTypes(itemPath: string) {
         const files = fs.readdirSync(itemPath);
-        if (files.every(fileName => file.isImageFile(fileName))) {
+        if (files.every((fileName: string) => file.isImageFile(fileName))) {
             return exports.itemTypes.IMAGES;
         }
         return exports.itemTypes.DIR;

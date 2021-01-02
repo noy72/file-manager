@@ -27,7 +27,7 @@ function createWindow() {
     mainWindow.loadFile('src/static/index.html').then(() => renderItems(searchItems('')));
 }
 
-const renderItems = (items) => BrowserWindow.getFocusedWindow().webContents.send('render-items', items);
+const renderItems = (items: any) => BrowserWindow.getFocusedWindow().webContents.send('render-items', items);
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
@@ -41,14 +41,14 @@ app.on('activate', () => {
     }
 });
 
-ipcMain.handle('send-query', async (event, query) => searchItems(query));
+ipcMain.handle('send-query', async (event: any, query: string) => searchItems(query));
 
-ipcMain.on('open-item', (event, [dirPath, dirType]) => {
+ipcMain.on('open-item', (event: any, [dirPath, dirType]: [string, number]) => {
     const [command, args] = applicationPaths[dirType];
     spawn(command, [...args, dirPath]);
 });
 
-ipcMain.on('open-tags-window', (event, dirPath) => {
+ipcMain.on('open-tags-window', (event: any, dirPath: string) => {
     const tagPoolWindow = new BrowserWindow({
         width: 600,
         height: 400,

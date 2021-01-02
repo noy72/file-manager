@@ -10,3 +10,4 @@ node_modules/
 out/
 *.backup.json
 data.json
+*.js
