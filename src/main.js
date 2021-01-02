@@ -24,10 +24,7 @@ function createWindow() {
         }
     });
 
-    mainWindow.loadFile('src/static/index.html');
-    mainWindow.webContents.once('did-finish-load', function () {
-        renderItems(searchItems(''));
-    });
+    mainWindow.loadFile('src/static/index.html').then(() => renderItems(searchItems('')));
 }
 
 const renderItems = (items) => BrowserWindow.getFocusedWindow().webContents.send('render-items', items);
@@ -61,8 +58,5 @@ ipcMain.on('open-tags-window', (event, dirPath) => {
         }
     });
 
-    tagPoolWindow.loadFile('src/static/tagpool.html');
-    tagPoolWindow.webContents.once('did-finish-load', () => {
-        tagPoolWindow.send('render-tags', [readAllTags(), readTags(dirPath), dirPath])
-    });
+    tagPoolWindow.loadFile('src/static/tagpool.html').then(() => tagPoolWindow.send('render-tags', [readAllTags(), readTags(dirPath), dirPath]));
 });
