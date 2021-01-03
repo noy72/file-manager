@@ -4,7 +4,7 @@
   "main": "src/main.js",
   "scripts": {
     "start": "electron-forge start",
-    "test": "mocha tests",
+    "test": "mocha tests --recursive",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "build": "electron-builder --win --x64"
