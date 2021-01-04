@@ -1,7 +1,9 @@
 import * as fs from 'fs';
 
-const read = (path: string) => JSON.parse(fs.readFileSync(path).toString());
+const read = (path: string): any => JSON.parse(fs.readFileSync(path).toString());
 
-const write = (path: string, json: object) => fs.writeFileSync(path, JSON.stringify(json));
+const write = (path: string, json: object): void => fs.writeFileSync(path, JSON.stringify(json));
 
-export {read, write};
+const writeDataJson = (obj: object): void => write('data.json', obj);
+
+export {read, writeDataJson as write};

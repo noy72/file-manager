@@ -1,9 +1,8 @@
-const deserialize = (obj: object, Cls: any) => {
-    const cls = new Cls();
-    Object.entries(obj).forEach(
-        ([key, value]: [string, object]) => cls[key] = value
+const deserialize = (field: object, emptyObj: any) => {
+    Object.entries(field).forEach(
+        ([key, value]: [string, object]) => emptyObj[key] = value
     );
-    return cls;
+    return emptyObj;
 };
 
 export default deserialize;

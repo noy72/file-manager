@@ -1,27 +1,19 @@
 import {ipcRenderer, remote} from "electron";
 import * as components from "./components";
-import {writeTags} from "../database";
+import {getTagList, updateAttachedTags} from "../database";
+import Item from "../models/Item";
 
+const tagList = <HTMLElement>document.querySelector('.tag-list');
+const submitButton = <HTMLElement>document.querySelector('.btn-primary');
 
-const tagList = document.querySelector('.tag-list');
-const submitButton = document.querySelector('.btn-primary');
+let location = '';
 
-let dirPath: string | null = null;
-
-ipcRenderer.on('render-tags', (event: any, [allTags, itemTags, _dirPath]: [any, string[], string]) => {
-    dirPath = _dirPath;
-    renderTags(allTags, itemTags);
+ipcRenderer.on('render-tags', (event: any, item: Item) => {
+    location = item.location; // TODO: renderしているときに初期化している
+    tagList.innerHTML = "";
+    components.createTagGroupElements(getTagList(), item.tags)
+        .forEach(tagGroupElement => tagList.appendChild(tagGroupElement))
 });
-
-//TODO: reduceを使う
-const renderTags = (allTags: any, itemTags: string[]) => tagList.innerHTML = Object.entries(allTags)
-    .map(([groupName, tags]) => `
-        <div>
-            <h2>${groupName}</h2>
-            ${tags.map(tag => components.tag(itemTags.includes(tag), tag)).join(' ')}
-        </div>
-        <hr>
-    `).join(' ');
 
 submitButton.addEventListener('click', () => {
     updateTags();
@@ -29,9 +21,9 @@ submitButton.addEventListener('click', () => {
 });
 
 const updateTags = () => {
-    const checkBoxes = Array.from(document.querySelectorAll('.form-check-input'));
+    const checkBoxes = <HTMLInputElement[]>Array.from(document.querySelectorAll('.form-check-input'));
     const checkedTags = checkBoxes
         .filter(checkBox => checkBox.checked)
         .map(checkBox => checkBox.value);
-    writeTags(dirPath, checkedTags);
+    updateAttachedTags(location, checkedTags);
 };

@@ -1,58 +1,64 @@
 import {ipcRenderer, remote} from 'electron';
-const {Menu, MenuItem} = remote;
+import {statSync} from "fs";
+import {spawn} from 'child_process';
 import * as components from './components';
-import {itemTypes}  from '../model';
+import {searchItems} from "../controller";
+import {getApplicationList, getItem} from "../database";
+import Item from "../models/Item";
+import Directory from "../models/Directory";
 
-const itemList = document.querySelector('.container .item-list');
-const searchBox = document.querySelector('.form-control');
-const searchButton = document.querySelector('.btn-primary');
+const {Menu, MenuItem} = remote;
 
-ipcRenderer.on('render-items', (event: any, items: any) => {
+const itemList = <HTMLElement>document.querySelector('.container .item-list');
+const searchBox = <HTMLInputElement>document.querySelector('.form-control');
+const searchButton = <HTMLElement>document.querySelector('.btn-primary');
+
+const applicationPaths = getApplicationList();
+
+ipcRenderer.on('render-items', (event: any, items: Item[]) => {
     renderItems(items);
 });
 
-const renderItems = (items: any) => {
-    const itemEntries = Object.entries(items)
-        .sort((a, b) => a[0].localeCompare(b[0]));
-    let cardListElements = '';
-    for (const [dirPath, itemInfo] of itemEntries) {
-        cardListElements += components.itemCard(dirPath, itemInfo)
-    }
-    itemList.innerHTML = cardListElements;
-    for (let index = 0; index < itemEntries.length; index++) {
-        const dirPath = itemEntries[index][0];
-
-        itemList.childNodes.item(index)
-            .addEventListener('click', () => openItemWithExternalApp(...itemEntries[index]));
-        itemList.childNodes.item(index)
-            .addEventListener('contextmenu', (e) => {
-                e.preventDefault();
-                const menu = new Menu();
-                menu.append(new MenuItem({
-                    label: 'Tags', click() {
-                        ipcRenderer.send('open-tags-window', dirPath)
-                    }
-                }));
+const renderItems = (items: Item[]) => {
+    itemList.innerHTML = "";
+    items.forEach(item => {
+        const itemCardElement = components.createItemCardElement(item);
+        itemCardElement.addEventListener('click', () => openItemWithExternalApp(item));
+        itemCardElement.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            const menu = new Menu();
+            menu.append(new MenuItem({
+                label: 'Tags', click() {
+                    // getItem()をすることで，最新の情報を得る．
+                    // 表示されているitemCardは，再表示しないと情報が古いまま
+                    ipcRenderer.send('open-tags-window', getItem(item.location))
+                }
+            }));
+            if (statSync(item.location).isDirectory()) {
+                const directory = <Directory>item;
                 menu.append(new MenuItem({
                     label: 'Open', click() {
-                        ipcRenderer.send('open-item', [dirPath, itemTypes.DIR]);
+                        directory.type = Directory.TYPES.other;
+                        openItemWithExternalApp(directory);
                     }
                 }));
-                menu.popup(
-                    {
-                        window: remote.getCurrentWindow()
-                    }
-                )
-            }, false);
+            }
+            menu.popup({window: remote.getCurrentWindow()});
+        }, false);
+        itemList.appendChild(itemCardElement);
+    });
+};
+
+const openItemWithExternalApp = (item: Item) => {
+    if (statSync(item.location).isDirectory()) {
+        const [command, args] = applicationPaths[(<Directory>item).type];
+        spawn(command, [...args, item.location]);
     }
 };
 
 searchButton.addEventListener('click', (e) => {
     e.preventDefault();
-    ipcRenderer.invoke('send-query', searchBox.value).then((items: any) => renderItems(items));
+    renderItems(searchItems(searchBox.value));
 });
 
-const openItemWithExternalApp = (dirPath: string, {type: dirType}: { type: number }) => {
-    ipcRenderer.send('open-item', [dirPath, dirType]);
-};
 

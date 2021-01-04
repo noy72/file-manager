@@ -1,16 +1,16 @@
-const spawn = require('child_process').spawn;
+import Item from "./models/Item";
+import {addNewItemList, searchItems} from "./controller";
+import {backupDataFile} from "./database";
+
 const {app, BrowserWindow, ipcMain} = require('electron');
 
-const {syncDataFile, searchItems} = require('./controller');
-const {readAllTags, readTags, readApplicationPaths, backupDataFile} = require('./database');
 
-let mainWindow = null;
-const applicationPaths = readApplicationPaths();
+let mainWindow: any = null;
 
 app.whenReady().then(() => {
     createWindow();
     backupDataFile();
-    syncDataFile();
+    addNewItemList();
 });
 
 function createWindow() {
@@ -27,7 +27,7 @@ function createWindow() {
     mainWindow.loadFile('src/static/index.html').then(() => renderItems(searchItems('')));
 }
 
-const renderItems = (items: any) => BrowserWindow.getFocusedWindow().webContents.send('render-items', items);
+const renderItems = (items: Item[]) => mainWindow.webContents.send('render-items', items);
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
@@ -41,14 +41,7 @@ app.on('activate', () => {
     }
 });
 
-ipcMain.handle('send-query', async (event: any, query: string) => searchItems(query));
-
-ipcMain.on('open-item', (event: any, [dirPath, dirType]: [string, number]) => {
-    const [command, args] = applicationPaths[dirType];
-    spawn(command, [...args, dirPath]);
-});
-
-ipcMain.on('open-tags-window', (event: any, dirPath: string) => {
+ipcMain.on('open-tags-window', (event: any, item: Item) => {
     const tagPoolWindow = new BrowserWindow({
         width: 600,
         height: 400,
@@ -58,5 +51,6 @@ ipcMain.on('open-tags-window', (event: any, dirPath: string) => {
         }
     });
 
-    tagPoolWindow.loadFile('src/static/tagpool.html').then(() => tagPoolWindow.send('render-tags', [readAllTags(), readTags(dirPath), dirPath]));
+    tagPoolWindow.loadFile('src/static/tagpool.html').then(() =>
+        tagPoolWindow.send('render-tags', item));
 });

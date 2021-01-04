@@ -1,26 +1,70 @@
 import * as fs from "fs";
-import * as jsonio from "./utils/jsonio";
+import {basename} from "path";
+import {read, write} from "./utils/jsonio";
+import deserialize from "./utils/deserialize";
+import {isImageFile, isVideoFile} from "./utils/file";
+import Item from "./models/Item";
+import Directory from "./models/Directory";
 
 const dataJson = 'data.json';
+const keys = {
+    locations: "locations",
+    items: "items",
+    tags: "tags",
+    applications: "applications"
+} as const;
 
-const readData = () => jsonio.read(dataJson);
+const readDataJson = (): any => read(dataJson);
 
-const readValues = (key: string) => readData()[key];
+const getValues = (key: string): any => readDataJson()[key];
 
-const readAllItems = () => readValues("items");
+const getLocationList = (): string[] => getValues(keys.locations);
 
-const readAllTags = () => readValues("tags");
+const getItemList = (): Item[] =>
+    getValues(keys.items).map((obj: any): Item[] => {
+        const location = basename(obj["location"]);
+        if (isImageFile(location)) {
+            throw new Error("画像ファイルは未対応");
+        } else if (isVideoFile(location)) {
+            throw new Error("動画ファイルは未対応");
+        }
+        return deserialize(obj, new Directory());
+    }).sort();
 
-const readApplicationPaths = () => readValues('applications');
+const getItem = (location: string): Item | undefined => getItemList().find(item => item.location === location);
 
-const readTags = (dirPath: string) => readAllItems()[dirPath].tags;
+const getTagList = (): string[] => getValues(keys.tags);
 
-const writeTags = (dirPath: string, tags: string[]) => {
-    const data = readData();
-    data["items"][dirPath].tags = tags;
-    jsonio.write(dataJson, data);
+const getApplicationList = (): [[string, string[]]] => getValues(keys.applications);
+
+function updateValue(key: string, obj: any): any {
+    let dataJson = readDataJson();
+    dataJson[key] = obj;
+    return dataJson;
+}
+
+const updateItemList = (itemList: Item[]): void => write(updateValue(keys.items, itemList));
+
+const updateAttachedTags = (location: string, tags: string[]): void => {
+    let dataJson = readDataJson();
+    //TODO: リファクタリングする
+    for (let idx = 0; idx < dataJson[keys.items].length; idx++) {
+        if (dataJson[keys.items][idx].location === location) {
+            dataJson[keys.items][idx].tags = tags;
+        }
+    }
+    write(dataJson);
 };
 
-const backupDataFile = () => fs.copyFile(dataJson, 'data.backup.json', () => console.log("data.json backed up."));
+const backupDataFile = (): void => fs.copyFile(dataJson, 'data.backup.json', () => console.log("data.json backed up."));
 
-export {readAllItems, readAllTags, readApplicationPaths, readTags, writeTags, backupDataFile};
+export {
+    getItemList,
+    getItem,
+    getTagList,
+    getApplicationList,
+    getLocationList,
+    updateItemList,
+    updateAttachedTags,
+    backupDataFile
+};

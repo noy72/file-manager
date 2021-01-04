@@ -32,7 +32,7 @@ it('syncDataFileWithItems', () => {
         [`${sampleDirPath}/dir05`]: null,
         [`${sampleDirPath}/dir06`]: new ItemInfo(`${sampleDirPath}/dir06`),
     };
-    const newData = controller.syncDataFileWithItems(data);
+    const newData = controller.getNewItemList(data);
     for (const [key, value] of Object.entries(newData["items"])) {
         if (value == null) {
             assert.strictEqual(value, null);

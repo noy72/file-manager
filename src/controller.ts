@@ -1,25 +1,37 @@
-import * as fs from "fs";
-import * as path from "path";
-import * as jsonio from "./utils/jsonio";
-import {ItemInfo} from "./model";
-import {readAllItems} from "./database";
+import {readdirSync, statSync} from "fs";
+import {join, basename} from "path";
+import {getItemList, getLocationList, updateItemList} from "./database";
+import {isImageFile, isVideoFile} from "./utils/file";
+import Item from "./models/Item";
+import Directory from "./models/Directory";
 
 
-const getLocatedAllItemPaths = (locations: string[]) => locations.flatMap(
-    location => fs.readdirSync(location).flatMap((dir: string) => path.join(location, dir)));
-
-const syncDataFileWithItems = (data: any) => {
-    getLocatedAllItemPaths(data["locations"])
-        .filter(itemPath => fs.statSync(itemPath).isDirectory())
-        .filter(itemPath => !data["items"].hasOwnProperty(itemPath))
-        .forEach(itemPath => data["items"][itemPath] = new ItemInfo(itemPath));
-    return data;
+const getNewItemList = (): Item[] => {
+    const locationList = getItemLocationList();
+    return getLocatedItemPathList()
+        .filter(itemLocation => statSync(itemLocation).isDirectory())
+        .filter(itemLocation => !locationList.includes(itemLocation))
+        .map(itemLocation => {
+            console.log("itemLocation", itemLocation)
+            if (isImageFile(itemLocation)) {
+                throw new Error("画像ファイルは未対応");
+            } else if (isVideoFile(itemLocation)) {
+                throw new Error("動画ファイルは未対応");
+            }
+            return new Directory(itemLocation);
+        });
 };
 
-// @ts-ignore
-const searchItems = (query: string) => searchItemsWithANDQuery(readAllItems(), ...query.split(' '));
+const getLocatedItemPathList = (): string[] => getLocationList().flatMap(
+    location => readdirSync(location).flatMap((dir: string) => join(location, dir)));
 
-const searchItemsWithANDQuery = function (items: any, word: string, ...words: string[]): object {
+const getItemLocationList = (): string[] => getItemList().map(item => item.location);
+
+
+// @ts-ignore
+const searchItems = (query: string): Item[] => searchItemsWithANDQuery(getItemList(), ...query.split(' '));
+
+const searchItemsWithANDQuery = (items: Item[], word: string, ...words: string[]): Item[] => {
     let result;
     if (isTag(word)) {
         result = searchItemsByTag(items, word.slice(1, word.length));
@@ -33,28 +45,14 @@ const searchItemsWithANDQuery = function (items: any, word: string, ...words: st
 };
 
 
-const isTag = (str: string) => str[0] === '#';
+const isTag = (str: string): boolean => str[0] === '#';
 
-const searchItemsByTitle = (items: any, title: string) => {
-    let result: any = {};
-    for (const [key, value] of Object.entries(items)) {
-        if (path.basename(key).includes(title)) {
-            result[key] = value;
-        }
-    }
-    return result;
-};
+const searchItemsByTitle = (items: Item[], title: string): Item[] =>
+    items.filter(({location: location}) => basename(location).includes(title));
 
-const searchItemsByTag = (items: object, tag: string) => {
-    let result: any = {};
-    for (const [key, value] of Object.entries(items)) {
-        if (value.tags.includes(tag)) {
-            result[key] = value;
-        }
-    }
-    return result;
-};
+const searchItemsByTag = (items: Item[], tag: string): Item[] =>
+    items.filter(({tags: tags}) => tags.includes(tag));
 
-const syncDataFile = () => jsonio.write('data.json', exports.syncDataFileWithItems(jsonio.read('data.json')));
+const addNewItemList = (): void => updateItemList([...getItemList(), ...getNewItemList()]);
 
-export {syncDataFileWithItems, searchItems, syncDataFile}
+export {getNewItemList, searchItems, addNewItemList}
