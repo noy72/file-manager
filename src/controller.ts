@@ -12,7 +12,6 @@ const getNewItemList = (): Item[] => {
         .filter(itemLocation => statSync(itemLocation).isDirectory())
         .filter(itemLocation => !locationList.includes(itemLocation))
         .map(itemLocation => {
-            console.log("itemLocation", itemLocation)
             if (isImageFile(itemLocation)) {
                 throw new Error("画像ファイルは未対応");
             } else if (isVideoFile(itemLocation)) {
