@@ -1,9 +1,9 @@
-const assert = require('assert');
-const rewire = require('rewire');
-const {sampleDirPath} = require('./testUtils');
-const controller = require('../src/controller');
-const {ItemInfo} = require('../src/model');
+import * as assert from "assert";
+import * as controller from "../src/controller";
+import { sampleDirPath } from "./testUtils";
+import Directory from "../src/models/Directory";
 
+const rewire = require('rewire');
 const rewireController = rewire('../src/controller');
 
 const data = {
@@ -15,70 +15,14 @@ const data = {
     },
 };
 
-it('getLocatedAllItemPaths', () => {
-    const itemPaths = rewireController.__get__('getLocatedAllItemPaths')(data["locations"]).sort();
-    assert.strictEqual(itemPaths[0], `${sampleDirPath}/.DS_Store`);
-    for (let i = 1; i < itemPaths.length; i++) {
-        assert.strictEqual(itemPaths[i], `${sampleDirPath}/dir0${i}`)
-    }
-});
-
-it('syncDataFileWithItems', () => {
-    const expectItems = {
-        [`${sampleDirPath}/dir01`]: null,
-        [`${sampleDirPath}/dir02`]: new ItemInfo(`${sampleDirPath}/dir02`),
-        [`${sampleDirPath}/dir03`]: null,
-        [`${sampleDirPath}/dir04`]: new ItemInfo(`${sampleDirPath}/dir04`),
-        [`${sampleDirPath}/dir05`]: null,
-        [`${sampleDirPath}/dir06`]: new ItemInfo(`${sampleDirPath}/dir06`),
-    };
-    const newData = controller.getNewItemList(data);
-    for (const [key, value] of Object.entries(newData["items"])) {
-        if (value == null) {
-            assert.strictEqual(value, null);
-        } else {
-            assert.strictEqual(value.thumbnail, expectItems[key].thumbnail)
-        }
-    }
-});
-
-it('searchItemsByTitle', () => {
-    const items = {
-        "a": 0,
-        "abc": 1,
-        "def": 2,
-        "zzazz": 3
-    };
-    assert.deepStrictEqual(
-        rewireController.__get__('searchItemsByTitle')(items, 'a'),
-        {
-            "a": 0,
-            "abc": 1,
-            "zzazz": 3
-        }
-    );
-    assert.deepStrictEqual(
-        rewireController.__get__('searchItemsByTitle')(items, 'df'),
-        {}
-    );
-    assert.deepStrictEqual(
-        rewireController.__get__('searchItemsByTitle')(items, ''),
-        items
-    );
-});
-
-it('searchItemsWithANDQuery', () => {
-    const items = {
-        "a b c": 0,
-        "b c z": 1,
-        "a a": 2,
-        "c b a": 3,
-    };
-    assert.deepStrictEqual(
-        rewireController.__get__('searchItemsWithANDQuery')(items, ...'b c a'.split(' ')),
-        {
-            "a b c": 0,
-            "c b a": 3,
-        }
+it('getNewItemList', () => {
+    assert.strictEqual(
+        controller.getNewItemList().length,
+        0
     )
+});
+
+it('searchItems', () => {
+    assert.ok(controller.searchItems('dir01')[0].location.includes('dir01'));
+    assert.ok(controller.searchItems('#aa')[0].location.includes('dir02'));
 });
