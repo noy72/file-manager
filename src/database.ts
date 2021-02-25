@@ -1,8 +1,8 @@
 import * as fs from "fs";
-import {basename} from "path";
-import {read, write} from "./utils/jsonio";
+import { basename } from "path";
+import { read, write } from "./utils/jsonio";
 import deserialize from "./utils/deserialize";
-import {isImageFile, isVideoFile} from "./utils/file";
+import { isImageFile, isVideoFile } from "./utils/file";
 import Item from "./models/Item";
 import Directory from "./models/Directory";
 
@@ -33,7 +33,7 @@ const getItemList = (): Item[] =>
 
 const getItem = (location: string): Item | undefined => getItemList().find(item => item.location === location);
 
-const getTagList = (): string[] => getValues(keys.tags);
+const getTagList = (): any => getValues(keys.tags);
 
 const getApplicationList = (): [[string, string[]]] => getValues(keys.applications);
 
@@ -44,6 +44,15 @@ function updateValue(key: string, obj: any): any {
 }
 
 const updateItemList = (itemList: Item[]): void => write(updateValue(keys.items, itemList));
+
+const updateTagList = (group: string, tag: string): void => {
+    const tagList = getTagList();
+    if (!Object.keys(tagList).includes(group)) {
+        tagList[group] = [];
+    }
+    tagList[group].push(group);
+    write(updateValue(keys.tags, tagList));
+};
 
 const updateAttachedTags = (location: string, tags: string[]): void => {
     let dataJson = readDataJson();
@@ -65,6 +74,7 @@ export {
     getApplicationList,
     getLocationList,
     updateItemList,
+    updateTagList,
     updateAttachedTags,
     backupDataFile
 };
