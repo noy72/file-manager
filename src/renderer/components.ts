@@ -1,4 +1,5 @@
-import {join, basename} from 'path';
+import { accessSync, constants } from 'fs';
+import { join, basename } from 'path';
 import Item from "../models/Item";
 
 const htmlStringToElement = (htmlStr: string): HTMLElement => {
@@ -12,7 +13,7 @@ const htmlStringToElement = (htmlStr: string): HTMLElement => {
 //TODO: 画像サイズの制限
 const createItemCardElement = (item: Item): HTMLElement => htmlStringToElement(`
 <div class="col">
-    <div class="card">
+    <div class="card ${isExists(item.location) ? "" : "bg-warning"}">
         <img src="${join(item.location, item.thumbnail)}" class="card-img-top">
         <div class="card-body">
             <h5 class="card-title">${basename(item.location)}</h5>
@@ -20,6 +21,15 @@ const createItemCardElement = (item: Item): HTMLElement => htmlStringToElement(`
         </div>
     </div>
 </div>`);
+
+const isExists = (location: string) => {
+    try {
+        accessSync(location);
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
 
 const createTagGroupElements = (allTags: object, attachedTags: string[]): HTMLElement[] =>
     Object.entries(allTags)
@@ -40,4 +50,4 @@ const createTagHtmlString = (checked: boolean, name: string): string => `
 </div>`;
 
 
-export {createItemCardElement, createTagGroupElements};
+export { createItemCardElement, createTagGroupElements };

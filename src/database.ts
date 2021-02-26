@@ -66,6 +66,13 @@ const updateAttachedTags = (location: string, tags: string[]): void => {
     write(dataJson);
 };
 
+const deleteItem = (location: string) => {
+    const itemList = getItemList();
+    const index = itemList.findIndex(item => item.location == location);
+    itemList.splice(index, 1);
+    write(updateValue(keys.items, itemList));
+};
+
 const backupDataFile = (): void => fs.copyFile(dataJson, 'data.backup.json', () => console.log("data.json backed up."));
 
 export {
@@ -77,5 +84,6 @@ export {
     updateItemList,
     updateTagList,
     updateAttachedTags,
+    deleteItem,
     backupDataFile
 };

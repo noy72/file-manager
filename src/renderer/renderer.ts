@@ -1,9 +1,9 @@
 import { ipcRenderer, remote } from 'electron';
-import { statSync } from "fs";
+import { accessSync, statSync } from "fs";
 import { spawn } from 'child_process';
 import * as components from './components';
 import { searchItems } from "../controller";
-import { getApplicationList, getItem } from "../database";
+import { getApplicationList, deleteItem } from "../database";
 import Item from "../models/Item";
 import Directory from "../models/Directory";
 
@@ -32,15 +32,25 @@ const renderItems = (items: Item[]) => {
                     ipcRenderer.send('open-tags-window', item.location)
                 }
             }));
-            if (statSync(item.location).isDirectory()) {
-                const directory = <Directory>item;
-                menu.append(new MenuItem({
-                    label: 'Open', click() {
-                        directory.type = Directory.TYPES.other;
-                        openItemWithExternalApp(directory);
-                    }
-                }));
+            try {
+                if (statSync(item.location).isDirectory()) {
+                    const directory = <Directory>item;
+                    menu.append(new MenuItem({
+                        label: 'Open', click() {
+                            directory.type = Directory.TYPES.other;
+                            openItemWithExternalApp(directory);
+                        }
+                    }));
+                }
+            } catch (error) {
+                // statSyncがエラーを起こしたとき，何もしない．
             }
+            menu.append(new MenuItem({
+                label: 'Delete', click() {
+                    deleteItem(item.location);
+                    renderItems(searchItems(searchBox.value));
+                }
+            }));
             menu.popup({ window: remote.getCurrentWindow() });
         }, false);
         itemList.appendChild(itemCardElement);
