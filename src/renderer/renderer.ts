@@ -1,13 +1,13 @@
-import {ipcRenderer, remote} from 'electron';
-import {statSync} from "fs";
-import {spawn} from 'child_process';
+import { ipcRenderer, remote } from 'electron';
+import { statSync } from "fs";
+import { spawn } from 'child_process';
 import * as components from './components';
-import {searchItems} from "../controller";
-import {getApplicationList, getItem} from "../database";
+import { searchItems } from "../controller";
+import { getApplicationList, getItem } from "../database";
 import Item from "../models/Item";
 import Directory from "../models/Directory";
 
-const {Menu, MenuItem} = remote;
+const { Menu, MenuItem } = remote;
 
 const itemList = <HTMLElement>document.querySelector('.container .item-list');
 const searchBox = <HTMLInputElement>document.querySelector('.form-control');
@@ -29,9 +29,7 @@ const renderItems = (items: Item[]) => {
             const menu = new Menu();
             menu.append(new MenuItem({
                 label: 'Tags', click() {
-                    // getItem()をすることで，最新の情報を得る．
-                    // 表示されているitemCardは，再表示しないと情報が古いまま
-                    ipcRenderer.send('open-tags-window', getItem(item.location))
+                    ipcRenderer.send('open-tags-window', item.location)
                 }
             }));
             if (statSync(item.location).isDirectory()) {
@@ -43,7 +41,7 @@ const renderItems = (items: Item[]) => {
                     }
                 }));
             }
-            menu.popup({window: remote.getCurrentWindow()});
+            menu.popup({ window: remote.getCurrentWindow() });
         }, false);
         itemList.appendChild(itemCardElement);
     });

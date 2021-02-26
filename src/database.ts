@@ -50,7 +50,8 @@ const updateTagList = (group: string, tag: string): void => {
     if (!Object.keys(tagList).includes(group)) {
         tagList[group] = [];
     }
-    tagList[group].push(group);
+    if (tagList[group].includes(tag)) return;
+    tagList[group].push(tag);
     write(updateValue(keys.tags, tagList));
 };
 

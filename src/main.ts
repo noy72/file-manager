@@ -1,8 +1,8 @@
 import Item from "./models/Item";
-import {addNewItemList, searchItems} from "./controller";
-import {backupDataFile} from "./database";
+import { addNewItemList, searchItems } from "./controller";
+import { backupDataFile } from "./database";
 
-const {app, BrowserWindow, ipcMain} = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 
 
 let mainWindow: any = null;
@@ -41,16 +41,16 @@ app.on('activate', () => {
     }
 });
 
-ipcMain.on('open-tags-window', (event: any, item: Item) => {
+ipcMain.on('open-tags-window', (event: any, location: string) => {
     const tagPoolWindow = new BrowserWindow({
         width: 600,
         height: 400,
         webPreferences: {
             nodeIntegration: true,
-            enableRemoteModule: true
+            enableRemoteModule: true,
+            additionalArguments: [location]
         }
     });
 
-    tagPoolWindow.loadFile('src/static/tagpool.html').then(() =>
-        tagPoolWindow.send('render-tags', item));
+    tagPoolWindow.loadFile('src/static/tagpool.html');
 });
