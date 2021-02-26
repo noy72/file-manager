@@ -17,7 +17,9 @@ const createItemCardElement = (item: Item): HTMLElement => htmlStringToElement(`
         <img src="${join(item.location, item.thumbnail)}" class="card-img-top">
         <div class="card-body">
             <h5 class="card-title">${basename(item.location)}</h5>
-            <p class="card-text">タグとか並べる？</p>
+            <span class="card-text">
+                ${(item.tags.map(tag => `<span class="badge bg-secondary">${tag}</span>`)).join(' ')}
+            </span>
         </div>
     </div>
 </div>`);
