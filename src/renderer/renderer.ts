@@ -1,12 +1,11 @@
 import { ipcRenderer, remote } from 'electron';
-import { accessSync, statSync } from "fs";
+import { statSync } from "fs";
 import { spawn } from 'child_process';
 import * as components from './components';
 import { searchItems } from "../controller";
 import { getApplications, deleteItem } from "../database";
 import Item from "../models/Item";
 import Directory from "../models/Directory";
-import { Application } from "../models/data";
 
 const { Menu, MenuItem } = remote;
 
@@ -16,9 +15,18 @@ const searchButton = <HTMLElement>document.querySelector('.btn-primary');
 
 const applications = getApplications();
 
+ipcRenderer.on('re-render', () => render());
+
 remote.getCurrentWindow().on('ready-to-show', () => {
-    renderItems(searchItems(''))
+    render();
 });
+
+searchButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    render();
+});
+
+const render = () => renderItems(searchItems(searchBox.value));
 
 const renderItems = (items: Item[]) => {
     itemList.innerHTML = "";
@@ -49,7 +57,7 @@ const renderItems = (items: Item[]) => {
             menu.append(new MenuItem({
                 label: 'Delete', click() {
                     deleteItem(item.location);
-                    renderItems(searchItems(searchBox.value));
+                    render();
                 }
             }));
             menu.popup({ window: remote.getCurrentWindow() });
@@ -65,9 +73,5 @@ const openItemWithExternalApp = (item: Item) => {
     }
 };
 
-searchButton.addEventListener('click', (e) => {
-    e.preventDefault();
-    renderItems(searchItems(searchBox.value));
-});
 
 

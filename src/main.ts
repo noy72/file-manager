@@ -1,6 +1,5 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
-import Item from "./models/Item";
-import { addNewItemList, searchItems } from "./controller";
+import { addNewItemList } from "./controller";
 import { backupDataFile } from "./database";
 
 
@@ -39,9 +38,10 @@ app.on('activate', () => {
 });
 
 ipcMain.on('open-tags-window', (event: any, location: string) => {
+    const { width, height } = mainWindow.getBounds();
     const tagPoolWindow = new BrowserWindow({
-        width: 600,
-        height: 400,
+        width: width,
+        height: height,
         webPreferences: {
             nodeIntegration: true,
             enableRemoteModule: true,
@@ -55,5 +55,8 @@ ipcMain.on('open-tags-window', (event: any, location: string) => {
     tagPoolWindow.loadFile('src/static/tagpool.html');
     tagPoolWindow.once('ready-to-show', () => {
         tagPoolWindow.show();
+    });
+    tagPoolWindow.on('close', () => {
+        event.sender.send('re-render');
     });
 });
