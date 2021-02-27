@@ -3,9 +3,10 @@ import { accessSync, statSync } from "fs";
 import { spawn } from 'child_process';
 import * as components from './components';
 import { searchItems } from "../controller";
-import { getApplicationList, deleteItem } from "../database";
+import { getApplications, deleteItem } from "../database";
 import Item from "../models/Item";
 import Directory from "../models/Directory";
+import { Application } from "../models/data";
 
 const { Menu, MenuItem } = remote;
 
@@ -13,7 +14,7 @@ const itemList = <HTMLElement>document.querySelector('.container .item-list');
 const searchBox = <HTMLInputElement>document.querySelector('.form-control');
 const searchButton = <HTMLElement>document.querySelector('.btn-primary');
 
-const applicationPaths = getApplicationList();
+const applications = getApplications();
 
 ipcRenderer.on('render-items', (event: any, items: Item[]) => {
     renderItems(items);
@@ -59,8 +60,8 @@ const renderItems = (items: Item[]) => {
 
 const openItemWithExternalApp = (item: Item) => {
     if (statSync(item.location).isDirectory()) {
-        const [command, args] = applicationPaths[(<Directory>item).type];
-        spawn(command, [...args, item.location]);
+        const app = applications[(<Directory>item).type];
+        spawn(app.command, [...app.args, item.location]);
     }
 };
 

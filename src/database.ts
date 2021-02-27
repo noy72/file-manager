@@ -1,86 +1,72 @@
 import * as fs from "fs";
 import { basename } from "path";
 import { read, write } from "./utils/jsonio";
-import deserialize from "./utils/deserialize";
 import { isImageFile, isVideoFile } from "./utils/file";
 import Item from "./models/Item";
 import Directory from "./models/Directory";
+import { Application, Data, Tags } from "./models/data";
 
-const dataJson = 'data.json';
-const keys = {
-    locations: "locations",
-    items: "items",
-    tags: "tags",
-    applications: "applications"
-} as const;
+const getLocations = (): string[] => read().locations;
 
-const readDataJson = (): any => read(dataJson);
-
-const getValues = (key: string): any => readDataJson()[key];
-
-const getLocationList = (): string[] => getValues(keys.locations);
-
-const getItemList = (): Item[] =>
-    getValues(keys.items).map((obj: any): Item[] => {
+const getItems = (): Item[] =>
+    read().items.map((obj: Item): Item => {
         const location = basename(obj["location"]);
         if (isImageFile(location)) {
             throw new Error("画像ファイルは未対応");
         } else if (isVideoFile(location)) {
             throw new Error("動画ファイルは未対応");
         }
-        return deserialize(obj, new Directory());
+        return obj as Directory;
     }).sort();
 
-const getItem = (location: string): Item | undefined => getItemList().find(item => item.location === location);
+const getItem = (location: string): Item | undefined => getItems().find(item => item.location === location);
 
-const getTagList = (): any => getValues(keys.tags);
+const getTags = (): Tags => read().tags;
 
-const getApplicationList = (): [[string, string[]]] => getValues(keys.applications);
+const getApplications = (): Application[] => read().applications;
 
-function updateValue(key: string, obj: any): any {
-    let dataJson = readDataJson();
-    dataJson[key] = obj;
-    return dataJson;
-}
-
-const updateItemList = (itemList: Item[]): void => write(updateValue(keys.items, itemList));
-
-const updateTagList = (group: string, tag: string): void => {
-    const tagList = getTagList();
-    if (!Object.keys(tagList).includes(group)) {
-        tagList[group] = [];
-    }
-    if (tagList[group].includes(tag)) return;
-    tagList[group].push(tag);
-    write(updateValue(keys.tags, tagList));
-};
-
-const updateAttachedTags = (location: string, tags: string[]): void => {
-    let dataJson = readDataJson();
-    //TODO: リファクタリングする
-    for (let idx = 0; idx < dataJson[keys.items].length; idx++) {
-        if (dataJson[keys.items][idx].location === location) {
-            dataJson[keys.items][idx].tags = tags;
-        }
-    }
+const updateData = <K extends keyof Data>(key: K, value: any) => {
+    let dataJson = read();
+    dataJson[key] = value;
     write(dataJson);
 };
 
-const deleteItem = (location: string) => {
-    const itemList = getItemList();
-    const index = itemList.findIndex(item => item.location == location);
-    itemList.splice(index, 1);
-    write(updateValue(keys.items, itemList));
+const updateItemList = (items: Item[]): void => {
+    updateData("items", items);
+}
+
+const updateTagList = (group: string, tag: string): void => {
+    const tags = getTags();
+    if (!Object.keys(tags).includes(group)) {
+        tags[group] = [];
+    }
+    if (tags[group].includes(tag)) return;
+    tags[group].push(tag);
+    updateData("tags", tags);
 };
 
-const backupDataFile = (): void => fs.copyFile(dataJson, 'data.backup.json', () => console.log("data.json backed up."));
+const updateAttachedTags = (location: string, tags: string[]): void => {
+    const items = getItems();
+    const index = items.findIndex(item => item.location === location);
+    items[index].tags = tags;
+    updateData("items", items);
+};
+
+const deleteItem = (location: string) => {
+    const items = getItems();
+    const index = items.findIndex(item => item.location == location);
+    items.splice(index, 1);
+    updateData("items", items);
+};
+
+const backupDataFile = (): void => fs.copyFile('data.json', 'data.backup.json', () => console.log("data.json backed up."));
 
 export {
-    getItemList,
+    getItems,
     getItem,
-    getTagList,
-    getApplicationList,
-    getLocationList,
+    getTags,
+    getApplications,
+    getLocations,
     updateItemList,
     updateTagList,
     updateAttachedTags,

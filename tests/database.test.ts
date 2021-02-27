@@ -1,14 +1,14 @@
 import * as assert from "assert";
-import { getTagList, updateTagList } from "../src/database";
+import { getTags, updateTagList } from "../src/database";
 import { sampleDirPath } from "./testUtils";
 
 it('getTagList', function () {
-    console.log(getTagList());
+    console.log(getTags());
 });
 
 it('updateTagList', () => {
-    console.log(getTagList());
+    console.log(getTags());
     updateTagList('test', 'test_tag');
-    console.log(getTagList());
+    console.log(getTags());
 });
 

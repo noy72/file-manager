@@ -1,7 +1,7 @@
-import {readdirSync, statSync} from "fs";
-import {join, basename} from "path";
-import {getItemList, getLocationList, updateItemList} from "./database";
-import {isImageFile, isVideoFile} from "./utils/file";
+import { readdirSync, statSync } from "fs";
+import { join, basename } from "path";
+import { getItems, getLocations, updateItemList } from "./database";
+import { isImageFile, isVideoFile } from "./utils/file";
 import Item from "./models/Item";
 import Directory from "./models/Directory";
 
@@ -21,14 +21,14 @@ const getNewItemList = (): Item[] => {
         });
 };
 
-const getLocatedItemPathList = (): string[] => getLocationList().flatMap(
+const getLocatedItemPathList = (): string[] => getLocations().flatMap(
     location => readdirSync(location).flatMap((dir: string) => join(location, dir)));
 
-const getItemLocationList = (): string[] => getItemList().map(item => item.location);
+const getItemLocationList = (): string[] => getItems().map(item => item.location);
 
 
 // @ts-ignore
-const searchItems = (query: string): Item[] => searchItemsWithANDQuery(getItemList(), ...query.split(' '));
+const searchItems = (query: string): Item[] => searchItemsWithANDQuery(getItems(), ...query.split(' '));
 
 const searchItemsWithANDQuery = (items: Item[], word: string, ...words: string[]): Item[] => {
     let result;
@@ -47,11 +47,11 @@ const searchItemsWithANDQuery = (items: Item[], word: string, ...words: string[]
 const isTag = (str: string): boolean => str[0] === '#';
 
 const searchItemsByTitle = (items: Item[], title: string): Item[] =>
-    items.filter(({location: location}) => basename(location).includes(title));
+    items.filter(({ location: location }) => basename(location).includes(title));
 
 const searchItemsByTag = (items: Item[], tag: string): Item[] =>
-    items.filter(({tags: tags}) => tags.includes(tag));
+    items.filter(({ tags: tags }) => tags.includes(tag));
 
-const addNewItemList = (): void => updateItemList([...getItemList(), ...getNewItemList()]);
+const addNewItemList = (): void => updateItemList([...getItems(), ...getNewItemList()]);
 
-export {getNewItemList, searchItems, addNewItemList}
+export { getNewItemList, searchItems, addNewItemList }

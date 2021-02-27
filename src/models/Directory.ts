@@ -1,5 +1,5 @@
-import {readdirSync} from "fs";
-import {isImageFile} from "../utils/file";
+import { readdirSync } from "fs";
+import { isImageFile } from "../utils/file";
 import Item from "./Item";
 
 export default class Directory implements Item {

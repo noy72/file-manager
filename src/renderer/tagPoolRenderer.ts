@@ -1,6 +1,6 @@
 import { ipcRenderer, remote } from "electron";
 import * as components from "./components";
-import { getItem, getTagList, updateAttachedTags, updateTagList } from "../database";
+import { getItem, getTags, updateAttachedTags, updateTagList } from "../database";
 import Item from "../models/Item";
 import { exception } from "console";
 import { isTaggedTemplateExpression } from "typescript";
@@ -45,7 +45,7 @@ const renderTagList = () => {
     }
 
     tagList.innerHTML = "";
-    components.createTagGroupElements(getTagList(), item.tags)
+    components.createTagGroupElements(getTags(), item.tags)
         .forEach(tagGroupElement => tagList.appendChild(tagGroupElement));
 };
 
