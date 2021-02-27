@@ -13,7 +13,6 @@ const submitButton = <HTMLElement>document.querySelector('.btn-primary');
 remote.getCurrentWindow().once('ready-to-show', () => renderTagList());
 
 ipcRenderer.on('render-tags', (event: any, _location: string) => {
-    var location = _location;
     renderTagList();
 });
 
