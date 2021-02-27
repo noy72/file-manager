@@ -16,8 +16,8 @@ const searchButton = <HTMLElement>document.querySelector('.btn-primary');
 
 const applications = getApplications();
 
-ipcRenderer.on('render-items', (event: any, items: Item[]) => {
-    renderItems(items);
+remote.getCurrentWindow().on('ready-to-show', () => {
+    renderItems(searchItems(''))
 });
 
 const renderItems = (items: Item[]) => {

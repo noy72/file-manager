@@ -1,11 +1,10 @@
+import { app, BrowserWindow, ipcMain } from 'electron';
 import Item from "./models/Item";
 import { addNewItemList, searchItems } from "./controller";
 import { backupDataFile } from "./database";
 
-const { app, BrowserWindow, ipcMain } = require('electron');
 
-
-let mainWindow: any = null;
+let mainWindow: BrowserWindow | any = null;
 
 app.whenReady().then(() => {
     createWindow();
@@ -24,10 +23,8 @@ function createWindow() {
         }
     });
 
-    mainWindow.loadFile('src/static/index.html').then(() => renderItems(searchItems('')));
+    mainWindow.loadFile('src/static/index.html');
 }
-
-const renderItems = (items: Item[]) => mainWindow.webContents.send('render-items', items);
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
@@ -49,8 +46,14 @@ ipcMain.on('open-tags-window', (event: any, location: string) => {
             nodeIntegration: true,
             enableRemoteModule: true,
             additionalArguments: [location]
-        }
+        },
+        parent: mainWindow,
+        modal: true,
+        show: false
     });
 
     tagPoolWindow.loadFile('src/static/tagpool.html');
+    tagPoolWindow.once('ready-to-show', () => {
+        tagPoolWindow.show();
+    });
 });
