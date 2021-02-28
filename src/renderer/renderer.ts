@@ -15,9 +15,7 @@ const searchButton = <HTMLElement>document.querySelector('.btn-primary');
 
 const applications = getApplications();
 
-ipcRenderer.on('re-render', () => render());
-
-remote.getCurrentWindow().on('ready-to-show', () => {
+remote.getCurrentWindow().on('focus', () => {
     render();
 });
 

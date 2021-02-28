@@ -12,10 +12,6 @@ const submitButton = <HTMLElement>document.querySelector('.btn-primary');
 
 remote.getCurrentWindow().once('ready-to-show', () => renderTagList());
 
-ipcRenderer.on('render-tags', (event: any, _location: string) => {
-    renderTagList();
-});
-
 /**アイテムにタグを設定し，ウィンドウを閉じる */
 submitButton.addEventListener('click', () => {
     updateTags();

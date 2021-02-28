@@ -56,7 +56,4 @@ ipcMain.on('open-tags-window', (event: any, location: string) => {
     tagPoolWindow.once('ready-to-show', () => {
         tagPoolWindow.show();
     });
-    tagPoolWindow.on('close', () => {
-        event.sender.send('re-render');
-    });
 });
