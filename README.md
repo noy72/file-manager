@@ -3,16 +3,10 @@
     "locations": [
         "<path>"
     ],
-    "applications": [
-        {
-            "command": "<command>",
-            "args": [<args>]
-        },
-        {
-            "command": "<command>",
-            "args": [<args>]
-        }
-    ],
+    "applications": {
+        "directory" : ["<command>"],
+        "images" : ["<command>"],
+    },
     "tags": { },
     "items": [ ]
 }

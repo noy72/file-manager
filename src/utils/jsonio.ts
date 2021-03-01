@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import { Data } from '../models/data';
+import { Data } from '../models/Item';
 
 const read = (path: string): any => JSON.parse(fs.readFileSync(path).toString());
 

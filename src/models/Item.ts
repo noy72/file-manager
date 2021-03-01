@@ -1,8 +1,15 @@
-export default interface Item {
+export interface Data {
+    locations: string[];
+    commands: { [index: string]: string[] };
+    tags: { [index: string]: string[] };
+    items: Item[];
+}
+export interface Item {
     location: string;
     tags: string[];
-    type?: number;
     thumbnail: string;
     updatedAt: string;
-}
 
+    open: () => void;
+    isDir: () => boolean;
+}

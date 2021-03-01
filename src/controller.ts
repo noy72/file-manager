@@ -2,8 +2,8 @@ import { readdirSync, statSync } from "fs";
 import { join, basename } from "path";
 import { getItems, getLocations, updateItemList } from "./database";
 import { isImageFile, isVideoFile } from "./utils/file";
-import Item from "./models/Item";
 import Directory from "./models/Directory";
+import { Item } from "./models/Item";
 
 
 const getNewItemList = (): Item[] => {

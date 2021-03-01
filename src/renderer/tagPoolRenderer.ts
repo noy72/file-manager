@@ -1,7 +1,6 @@
 import { ipcRenderer, remote } from "electron";
 import * as components from "./components";
 import { getItem, getTags, updateAttachedTags, updateTagList } from "../database";
-import Item from "../models/Item";
 import { exception } from "console";
 import { isTaggedTemplateExpression } from "typescript";
 

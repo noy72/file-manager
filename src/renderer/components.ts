@@ -1,6 +1,6 @@
 import { accessSync, constants } from 'fs';
 import { join, basename } from 'path';
-import Item from "../models/Item";
+import { Item } from '../models/Item';
 
 const htmlStringToElement = (htmlStr: string): HTMLElement => {
     const template = document.createElement("template");

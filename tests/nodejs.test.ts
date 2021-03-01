@@ -74,3 +74,59 @@ it('interface?', () => {
     const obj2 = { y: 3 };
     //const i2 : I = obj2; // Property 'x' is missing in type '{ y: number; }' but required in type 'I'.ts(2741)
 });
+
+it('static property', () => {
+    interface I {
+        y: number;
+    }
+
+    class A implements I {
+        static x: number = 10;
+        y: number;
+        constructor(value: I) {
+            this.y = value.y;
+        }
+        public get() {
+            return A.x + this.y;
+        }
+    }
+
+    class B extends A {
+        static x: number = 100;
+        public get() {
+            return B.x + this.y;
+        }
+    }
+
+    const a = new A({ y: 1 });
+    const b = new B({ y: 2 });
+    assert.strictEqual(a.get(), 11);
+    assert.strictEqual(b.get(), 102);
+
+    const b2: A = b;
+    assert.strictEqual(b2.get(), 102);
+
+    const a2: A = new A(b);
+    assert.strictEqual(a2.get(), 12);
+});
+
+it('array', () => {
+    const xs = [1, 2, 3];
+    const x = [1];
+
+    const [a, b] = xs;
+    assert.strictEqual(a, 1);
+    assert.strictEqual(b, 2);
+
+    const [c, d] = x;
+    assert.strictEqual(c, 1);
+    assert.strictEqual(d, undefined);
+
+    const [e, ...f] = xs;
+    assert.strictEqual(e, 1);
+    assert.deepStrictEqual(f, [2, 3]);
+
+    const [g, ...h] = x;
+    assert.strictEqual(g, 1);
+    assert.deepStrictEqual(h, []);
+});

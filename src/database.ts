@@ -2,28 +2,27 @@ import * as fs from "fs";
 import { basename } from "path";
 import { read, write } from "./utils/jsonio";
 import { isImageFile, isVideoFile } from "./utils/file";
-import Item from "./models/Item";
 import Directory from "./models/Directory";
-import { Application, Data, Tags } from "./models/data";
+import { Data, Item } from "./models/Item";
 
 const getLocations = (): string[] => read().locations;
 
 const getItems = (): Item[] =>
-    read().items.map((obj: Item): Item => {
-        const location = basename(obj["location"]);
+    read().items.map((item: Item): Item => {
+        const location = basename(item.location);
         if (isImageFile(location)) {
             throw new Error("画像ファイルは未対応");
         } else if (isVideoFile(location)) {
             throw new Error("動画ファイルは未対応");
         }
-        return obj as Directory;
+        return new Directory(item);
     }).sort();
 
 const getItem = (location: string): Item | undefined => getItems().find(item => item.location === location);
 
-const getTags = (): Tags => read().tags;
+const getTags = (): { [index: string]: string[] } => read().tags;
 
-const getApplications = (): Application[] => read().applications;
+const getCommands = (): { [index: string]: string[] } => read().commands;
 
 const updateData = <K extends keyof Data>(key: K, value: any) => {
     let dataJson = read();
@@ -65,7 +64,7 @@ export {
     getItems,
     getItem,
     getTags,
-    getApplications,
+    getCommands,
     getLocations,
     updateItemList,
     updateTagList,
