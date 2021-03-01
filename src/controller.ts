@@ -1,6 +1,6 @@
 import { readdirSync, statSync } from "fs";
 import { join, basename } from "path";
-import { getItems, getLocations, updateItemList } from "./database";
+import { getItems, getLocations, getSpecifiedObject, updateItemList } from "./database";
 import { isImageFile, isVideoFile } from "./utils/file";
 import Directory from "./models/Directory";
 import { Item } from "./models/Item";
@@ -11,14 +11,7 @@ const getNewItemList = (): Item[] => {
     return getLocatedItemPathList()
         .filter(itemLocation => statSync(itemLocation).isDirectory())
         .filter(itemLocation => !locationList.includes(itemLocation))
-        .map(itemLocation => {
-            if (isImageFile(itemLocation)) {
-                throw new Error("画像ファイルは未対応");
-            } else if (isVideoFile(itemLocation)) {
-                throw new Error("動画ファイルは未対応");
-            }
-            return new Directory(itemLocation);
-        });
+        .map(getSpecifiedObject);
 };
 
 const getLocatedItemPathList = (): string[] => getLocations().flatMap(

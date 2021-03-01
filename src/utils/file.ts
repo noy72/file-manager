@@ -19,4 +19,4 @@ const videoFileExts = [
 const isVideoFile = (fileName: string): boolean => videoFileExts.some(ext => fileName.includes(ext));
 
 
-export {isImageFile, isVideoFile};
+export { isImageFile, isVideoFile };

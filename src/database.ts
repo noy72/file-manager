@@ -4,19 +4,28 @@ import { read, write } from "./utils/jsonio";
 import { isImageFile, isVideoFile } from "./utils/file";
 import Directory from "./models/Directory";
 import { Data, Item } from "./models/Item";
+import Images from "./models/Images";
 
 const getLocations = (): string[] => read().locations;
 
 const getItems = (): Item[] =>
-    read().items.map((item: Item): Item => {
-        const location = basename(item.location);
-        if (isImageFile(location)) {
-            throw new Error("画像ファイルは未対応");
-        } else if (isVideoFile(location)) {
-            throw new Error("動画ファイルは未対応");
-        }
-        return new Directory(item);
-    }).sort();
+    read().items.map(getSpecifiedObject).sort();
+
+const getSpecifiedObject = (item: Item | string): Item => {
+    const location = typeof item === "object" ? item.location : item;
+
+    if (isImageFile(location)) {
+        throw new Error("画像ファイルは未対応");
+    } else if (isVideoFile(location)) {
+        throw new Error("動画ファイルは未対応");
+    }
+
+    const files = fs.readdirSync(location);
+    if (files.every((fileName: string) => isImageFile(fileName))) {
+        return new Images(item);
+    }
+    return new Directory(item);
+}
 
 const getItem = (location: string): Item | undefined => getItems().find(item => item.location === location);
 
@@ -61,6 +70,7 @@ const deleteItem = (location: string) => {
 const backupDataFile = (): void => fs.copyFile('data.json', 'data.backup.json', () => console.log("data.json backed up."));
 
 export {
+    getSpecifiedObject,
     getItems,
     getItem,
     getTags,
