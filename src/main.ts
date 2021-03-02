@@ -52,8 +52,5 @@ ipcMain.on('open-tag-modal', (event: any, location: string) => {
         show: false
     });
 
-    tagPoolWindow.loadFile('src/static/tag.html');
-    tagPoolWindow.once('ready-to-show', () => {
-        tagPoolWindow.show();
-    });
+    tagPoolWindow.loadFile('src/static/tag.html').then(() => tagPoolWindow.show());
 });
