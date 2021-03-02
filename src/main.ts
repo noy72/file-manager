@@ -37,7 +37,7 @@ app.on('activate', () => {
     }
 });
 
-ipcMain.on('open-tags-window', (event: any, location: string) => {
+ipcMain.on('open-tag-modal', (event: any, location: string) => {
     const { width, height } = mainWindow.getBounds();
     const tagPoolWindow = new BrowserWindow({
         width: width,
@@ -52,7 +52,7 @@ ipcMain.on('open-tags-window', (event: any, location: string) => {
         show: false
     });
 
-    tagPoolWindow.loadFile('src/static/tagpool.html');
+    tagPoolWindow.loadFile('src/static/tag.html');
     tagPoolWindow.once('ready-to-show', () => {
         tagPoolWindow.show();
     });

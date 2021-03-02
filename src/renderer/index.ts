@@ -32,7 +32,7 @@ const renderItems = (items: Item[]) => {
             const menu = new Menu();
             menu.append(new MenuItem({
                 label: 'Tags', click() {
-                    ipcRenderer.send('open-tags-window', item.location);
+                    ipcRenderer.send('open-tag-modal', item.location);
                 }
             }));
             if (item.isDir()) {
