@@ -1,9 +1,9 @@
 import { spawn } from "child_process";
-import { read } from "../infrastructure/jsonio";
+import { getCommand } from "../infrastructure/config";
 import Directory from "./Directory";
 
 export default class Images extends Directory {
-    static command: string[] = read().commands["images"];
+    static command: string[] = getCommand("images");
 
     public open(): void {
         const [com, ...args] = Images.command;
