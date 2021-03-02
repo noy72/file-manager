@@ -34,10 +34,18 @@ const deleteItem = (location: string) => {
     db.updateItems(items);
 };
 
+const updateAttachedTags = (location: string, tags: string[]): void => {
+    const items = getItems();
+    const index = items.findIndex(item => item.location === location);
+    items[index].tags = tags;
+    db.updateItems(items);
+};
+
 export {
     getItems,
     getItem,
     addItems,
     deleteItem,
+    updateAttachedTags,
     classify
 };

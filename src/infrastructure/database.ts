@@ -52,13 +52,6 @@ const updateTagList = (group: string, tag: string): void => {
     updateData("tags", tags);
 };
 
-const updateAttachedTags = (location: string, tags: string[]): void => {
-    const items = getItems();
-    const index = items.findIndex(item => item.location === location);
-    items[index].tags = tags;
-    updateData("items", items);
-};
-
 const deleteItem = (location: string) => {
     const items = getItems();
     const index = items.findIndex(item => item.location == location);
@@ -77,7 +70,6 @@ export {
     getLocations,
     updateItems,
     updateTagList,
-    updateAttachedTags,
     deleteItem,
     backupDataFile
 };
