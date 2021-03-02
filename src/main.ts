@@ -39,7 +39,7 @@ app.on('activate', () => {
 
 ipcMain.on('open-tag-modal', (event: any, location: string) => {
     const { width, height } = mainWindow.getBounds();
-    const tagPoolWindow = new BrowserWindow({
+    const tagModal = new BrowserWindow({
         width: width,
         height: height,
         webPreferences: {
@@ -52,5 +52,5 @@ ipcMain.on('open-tag-modal', (event: any, location: string) => {
         show: false
     });
 
-    tagPoolWindow.loadFile('src/static/tag.html').then(() => tagPoolWindow.show());
+    tagModal.loadFile('src/static/tag.html').then(() => tagModal.show());
 });
