@@ -2,8 +2,8 @@ import { ipcRenderer, remote } from "electron";
 import * as components from "./components";
 import { exception } from "console";
 import { isTaggedTemplateExpression } from "typescript";
-import { updateTagList, getTags } from "../infrastructure/database";
 import { getItem, updateAttachedTags } from "../repositories/itemRepository";
+import { getTags, updateTags } from "../repositories/tagRepository";
 
 const tagList = <HTMLElement>document.querySelector('.tag-list');
 const tagInputBox = <HTMLInputElement>document.querySelector('.form-control');
@@ -14,7 +14,12 @@ remote.getCurrentWindow().once('ready-to-show', () => renderTagList());
 
 /**アイテムにタグを設定し，ウィンドウを閉じる */
 submitButton.addEventListener('click', () => {
-    updateTags();
+    const checkBoxes = <HTMLInputElement[]>Array.from(document.querySelectorAll('.form-check-input'));
+    const checkedTags = checkBoxes
+        .filter(checkBox => checkBox.checked)
+        .map(checkBox => checkBox.value);
+    updateAttachedTags(getCurrentLocation(), checkedTags);
+
     remote.getCurrentWindow().close();
 });
 
@@ -28,7 +33,7 @@ addButton.addEventListener('click', () => {
 
     const [group, tag] = word.length == 2 ? word : ['Prop', word[0]];
     if (tag.length === 0) return;
-    updateTagList(group, tag);
+    updateTags(group, tag);
     renderTagList();
 });
 
@@ -45,13 +50,6 @@ const renderTagList = () => {
 };
 
 
-const updateTags = () => {
-    const checkBoxes = <HTMLInputElement[]>Array.from(document.querySelectorAll('.form-check-input'));
-    const checkedTags = checkBoxes
-        .filter(checkBox => checkBox.checked)
-        .map(checkBox => checkBox.value);
-    updateAttachedTags(getCurrentLocation(), checkedTags);
-};
 
 /**現在対象にとっているitemのlocationを返す． */
 const getCurrentLocation = () => process.argv[process.argv.length - 1];

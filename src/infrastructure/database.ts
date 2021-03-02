@@ -42,15 +42,10 @@ const updateItems = (items: Item[]): void => {
     updateData("items", items);
 }
 
-const updateTagList = (group: string, tag: string): void => {
-    const tags = getTags();
-    if (!Object.keys(tags).includes(group)) {
-        tags[group] = [];
-    }
-    if (tags[group].includes(tag)) return;
-    tags[group].push(tag);
+const updateTags = (tags: { [index: string]: string[] }): void => {
     updateData("tags", tags);
-};
+}
+
 
 const deleteItem = (location: string) => {
     const items = getItems();
@@ -69,7 +64,7 @@ export {
     getCommands,
     getLocations,
     updateItems,
-    updateTagList,
+    updateTags,
     deleteItem,
     backupDataFile
 };
