@@ -1,7 +1,5 @@
-import { ipcRenderer, remote } from "electron";
+import { remote } from "electron";
 import * as components from "./components";
-import { exception } from "console";
-import { isTaggedTemplateExpression } from "typescript";
 import { getItem, updateAttachedTags } from "../repositories/itemRepository";
 import { getTags, updateTags } from "../repositories/tagRepository";
 
@@ -41,7 +39,7 @@ const renderTagList = () => {
     const location = getCurrentLocation();
     const item = getItem(location);
     if (item === undefined) {
-        throw exception(`"${location}" is invalid path.`);
+        throw new Error(`"${location}" is invalid path.`);
     }
 
     tagList.innerHTML = "";
