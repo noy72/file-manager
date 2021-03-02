@@ -1,8 +1,8 @@
 import { readdirSync } from "fs";
 import { spawn } from 'child_process';
-import { isImageFile } from "../utils/file";
 import { Item } from "./Item";
 import { getCommand } from "../infrastructure/config";
+import { isImageFile } from "../domain/file";
 
 export default class Directory implements Item {
     static command: string[] = getCommand("directory");

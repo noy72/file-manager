@@ -1,9 +1,9 @@
 import { readdirSync } from 'fs';
+import { isImageFile, isVideoFile } from '../domain/file';
 import * as db from '../infrastructure/database';
 import Directory from '../models/Directory';
 import Images from '../models/Images';
 import { Item } from '../models/Item';
-import { isImageFile, isVideoFile } from '../utils/file';
 
 const getItems = () => db.getItems().map(classify);
 
