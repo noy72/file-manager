@@ -1,4 +1,4 @@
-import { accessSync, constants } from 'fs';
+import { accessSync } from 'fs';
 import { join, basename } from 'path';
 import { Item } from '../models/Item';
 
