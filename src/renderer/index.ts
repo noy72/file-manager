@@ -11,7 +11,9 @@ const itemList = <HTMLElement>document.querySelector('.container .item-list');
 const searchBox = <HTMLInputElement>document.querySelector('.form-control');
 const searchButton = <HTMLElement>document.querySelector('.btn-primary');
 
-remote.getCurrentWindow().on('focus', () => {
+ipcRenderer.on('render', () => render());
+
+remote.getCurrentWindow().on('ready-to-show', () => {
     render();
 });
 
