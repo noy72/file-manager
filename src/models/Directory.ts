@@ -2,7 +2,7 @@ import { readdirSync } from "fs";
 import { spawn } from 'child_process';
 import { isImageFile } from "../utils/file";
 import { Item } from "./Item";
-import { read } from "../utils/jsonio";
+import { read } from "../infrastructure/jsonio";
 
 export default class Directory implements Item {
     static command: string[] = read().commands["directory"];

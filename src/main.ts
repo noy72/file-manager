@@ -1,6 +1,6 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import { addNewItemList } from "./controller";
-import { backupDataFile } from "./database";
+import { backupDataFile } from './infrastructure/database';
 
 
 let mainWindow: BrowserWindow | any = null;

@@ -1,5 +1,5 @@
 import { spawn } from "child_process";
-import { read } from "../utils/jsonio";
+import { read } from "../infrastructure/jsonio";
 import Directory from "./Directory";
 
 export default class Images extends Directory {

@@ -1,10 +1,9 @@
 import * as fs from "fs";
-import { basename } from "path";
-import { read, write } from "./utils/jsonio";
-import { isImageFile, isVideoFile } from "./utils/file";
-import Directory from "./models/Directory";
-import { Data, Item } from "./models/Item";
-import Images from "./models/Images";
+import { read, write } from "./jsonio";
+import { isImageFile, isVideoFile } from "../utils/file";
+import Directory from "../models/Directory";
+import { Data, Item } from "../models/Item";
+import Images from "../models/Images";
 
 const getLocations = (): string[] => read().locations;
 

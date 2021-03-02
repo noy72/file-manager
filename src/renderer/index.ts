@@ -1,9 +1,9 @@
 import { ipcRenderer, remote } from 'electron';
 import * as components from './components';
 import { searchItems } from "../controller";
-import { deleteItem } from "../database";
 import { Item } from "../models/Item";
 import Directory from "../models/Directory";
+import { deleteItem } from '../infrastructure/database';
 
 const { Menu, MenuItem } = remote;
 

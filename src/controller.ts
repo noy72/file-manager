@@ -1,8 +1,6 @@
 import { readdirSync, statSync } from "fs";
 import { join, basename } from "path";
-import { getItems, getLocations, getSpecifiedObject, updateItemList } from "./database";
-import { isImageFile, isVideoFile } from "./utils/file";
-import Directory from "./models/Directory";
+import { getSpecifiedObject, getLocations, getItems, updateItemList } from "./infrastructure/database";
 import { Item } from "./models/Item";
 
 

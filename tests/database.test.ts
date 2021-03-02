@@ -1,5 +1,5 @@
 import * as assert from "assert";
-import { getTags, updateTagList } from "../src/database";
+import { getTags, updateTagList } from "../src/infrastructure/database";
 import { sampleDirPath } from "./testUtils";
 
 it('getTagList', function () {
