@@ -2,7 +2,8 @@ import { ipcRenderer, remote } from "electron";
 import * as components from "./components";
 import { exception } from "console";
 import { isTaggedTemplateExpression } from "typescript";
-import { updateTagList, getItem, getTags, updateAttachedTags } from "../infrastructure/database";
+import { updateTagList, getTags, updateAttachedTags } from "../infrastructure/database";
+import { getItem } from "../repositories/itemRepository";
 
 const tagList = <HTMLElement>document.querySelector('.tag-list');
 const tagInputBox = <HTMLInputElement>document.querySelector('.form-control');

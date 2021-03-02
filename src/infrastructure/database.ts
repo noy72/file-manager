@@ -38,7 +38,7 @@ const updateData = <K extends keyof Data>(key: K, value: any) => {
     write(dataJson);
 };
 
-const updateItemList = (items: Item[]): void => {
+const updateItems = (items: Item[]): void => {
     updateData("items", items);
 }
 
@@ -75,7 +75,7 @@ export {
     getTags,
     getCommands,
     getLocations,
-    updateItemList,
+    updateItems,
     updateTagList,
     updateAttachedTags,
     deleteItem,

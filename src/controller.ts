@@ -1,7 +1,8 @@
 import { readdirSync, statSync } from "fs";
 import { join, basename } from "path";
-import { getSpecifiedObject, getLocations, getItems, updateItemList } from "./infrastructure/database";
+import { getSpecifiedObject, getLocations } from "./infrastructure/database";
 import { Item } from "./models/Item";
+import { addItems, getItems } from "./repositories/itemRepository";
 
 
 const getNewItemList = (): Item[] => {
@@ -43,6 +44,6 @@ const searchItemsByTitle = (items: Item[], title: string): Item[] =>
 const searchItemsByTag = (items: Item[], tag: string): Item[] =>
     items.filter(({ tags: tags }) => tags.includes(tag));
 
-const addNewItemList = (): void => updateItemList([...getItems(), ...getNewItemList()]);
+const addNewItemList = (): void => addItems(getNewItemList());
 
 export { getNewItemList, searchItems, addNewItemList }
