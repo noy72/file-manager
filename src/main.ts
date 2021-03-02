@@ -1,5 +1,5 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
-import { addNewItemList } from "./controller";
+import { addNewItems } from './domain/service';
 import { backupDataFile } from './infrastructure/database';
 
 
@@ -8,7 +8,7 @@ let mainWindow: BrowserWindow | any = null;
 app.whenReady().then(() => {
     createWindow();
     backupDataFile();
-    addNewItemList();
+    addNewItems();
 });
 
 function createWindow() {

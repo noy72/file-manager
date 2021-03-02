@@ -1,10 +1,10 @@
 import * as assert from "assert";
-import * as controller from "../src/controller";
+import * as controller from "../src/domain/service";
 import { sampleDirPath } from "./testUtils";
 import Directory from "../src/models/Directory";
 
 const rewire = require('rewire');
-const rewireController = rewire('../src/controller');
+const rewireController = rewire('../src/domain/service');
 
 const data = {
     "locations": [sampleDirPath],
@@ -14,13 +14,6 @@ const data = {
         [`${sampleDirPath}/dir05`]: null,
     },
 };
-
-it('getNewItemList', () => {
-    assert.strictEqual(
-        controller.getNewItemList().length,
-        0
-    )
-});
 
 it('searchItems', () => {
     assert.ok(controller.searchItems('dir01')[0].location.includes('dir01'));

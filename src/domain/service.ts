@@ -1,23 +1,19 @@
-import { readdirSync, statSync } from "fs";
+import { readdirSync } from "fs";
 import { join, basename } from "path";
-import { getSpecifiedObject, getLocations } from "./infrastructure/database";
-import { Item } from "./models/Item";
-import { addItems, getItems } from "./repositories/itemRepository";
+import { Item } from "../models/Item";
+import { addItems, classify, getItems } from "../repositories/itemRepository";
+import { getRootLocations } from "../repositories/locationRepository";
 
+const addNewItems = (): void => {
+    const savedItemPaths = getItems().map(item => item.location);
+    const newItems = getLocatedItemPaths()
+        .filter(path => !savedItemPaths.includes(path))
+        .map(classify);
+    addItems(newItems);
+}
 
-const getNewItemList = (): Item[] => {
-    const locationList = getItemLocationList();
-    return getLocatedItemPathList()
-        .filter(itemLocation => statSync(itemLocation).isDirectory())
-        .filter(itemLocation => !locationList.includes(itemLocation))
-        .map(getSpecifiedObject);
-};
-
-const getLocatedItemPathList = (): string[] => getLocations().flatMap(
+const getLocatedItemPaths = (): string[] => getRootLocations().flatMap(
     location => readdirSync(location).flatMap((dir: string) => join(location, dir)));
-
-const getItemLocationList = (): string[] => getItems().map(item => item.location);
-
 
 // @ts-ignore
 const searchItems = (query: string): Item[] => searchItemsWithANDQuery(getItems(), ...query.split(' '));
@@ -35,7 +31,6 @@ const searchItemsWithANDQuery = (items: Item[], word: string, ...words: string[]
     return searchItemsWithANDQuery(result, ...words);
 };
 
-
 const isTag = (str: string): boolean => str[0] === '#';
 
 const searchItemsByTitle = (items: Item[], title: string): Item[] =>
@@ -44,6 +39,4 @@ const searchItemsByTitle = (items: Item[], title: string): Item[] =>
 const searchItemsByTag = (items: Item[], tag: string): Item[] =>
     items.filter(({ tags: tags }) => tags.includes(tag));
 
-const addNewItemList = (): void => addItems(getNewItemList());
-
-export { getNewItemList, searchItems, addNewItemList }
+export { addNewItems, searchItems };
