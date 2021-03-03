@@ -3,11 +3,13 @@ import { join, basename } from "path";
 import { Item } from "../models/Item";
 import { addItems, classify, getItems } from "../repositories/itemRepository";
 import { getRootLocations } from "../repositories/locationRepository";
+import { isDotFile } from "./file";
 
 const addNewItems = (): void => {
     const savedItemPaths = getItems().map(item => item.location);
     const newItems = getLocatedItemPaths()
         .filter(path => !savedItemPaths.includes(path))
+        .filter(path => !isDotFile(path))
         .map(classify);
     addItems(newItems);
 }

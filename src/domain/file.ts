@@ -1,3 +1,5 @@
+import { basename } from "path";
+
 const imageFileExts = [
     "png",
     "jpg",
@@ -19,5 +21,6 @@ const videoFileExts = [
 
 const isVideoFile = (fileName: string): boolean => videoFileExts.some(ext => fileName.includes(ext));
 
+const isDotFile = (fileName: string): boolean => basename(fileName)[0] === ".";
 
-export { isImageFile, isVideoFile };
+export { isImageFile, isVideoFile, isDotFile };
