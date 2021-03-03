@@ -41,4 +41,12 @@ const searchItemsByTitle = (items: Item[], title: string): Item[] =>
 const searchItemsByTag = (items: Item[], tag: string): Item[] =>
     items.filter(({ tags: tags }) => tags.includes(tag));
 
-export { addNewItems, searchItems };
+const parseTagString = (str: string): string[] => {
+    const word = str.split(':');
+    if (word.length > 2) {
+        throw new Error("コロンが2つ以上含まれています．");
+    }
+    return word.length == 2 ? word : ['Prop', word[0]];
+}
+
+export { addNewItems, searchItems, parseTagString };

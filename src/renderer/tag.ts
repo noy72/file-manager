@@ -2,6 +2,7 @@ import { remote } from "electron";
 import * as components from "./components";
 import { getItem, updateAttachedTags } from "../repositories/itemRepository";
 import { getTags, updateTags } from "../repositories/tagRepository";
+import { parseTagString } from "../domain/service";
 
 const tagList = <HTMLElement>document.querySelector('#tags');
 const tagInputBox = <HTMLInputElement>document.querySelector('#add-tag-box');
@@ -11,7 +12,7 @@ const submitButton = <HTMLElement>document.querySelector('#submit-button');
 remote.getCurrentWindow().once('ready-to-show', () => renderTagList());
 
 /**アイテムにタグを設定し，ウィンドウを閉じる */
-submitButton.addEventListener('click', () => {
+submitButton.addEventListener('click', (e) => {
     const checkBoxes = <HTMLInputElement[]>Array.from(document.querySelectorAll('.tag'));
     const checkedTags = checkBoxes
         .filter(checkBox => checkBox.checked)
@@ -22,17 +23,17 @@ submitButton.addEventListener('click', () => {
 });
 
 /**タグをタグリストに追加する */
-addButton.addEventListener('click', () => {
-    const word = tagInputBox.value.split(':');
-    if (word.length > 2) {
-        console.error('タグにコロンは2つ以上含められません．');
-        return;
+addButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    try {
+        // TODO: エラーを返すのはparseTagStringのみ．普通にinvalidな値を返して検出するのがよい？
+        const [group, tag] = parseTagString(tagInputBox.value)
+        updateTags(group, tag);
+        renderTagList();
+    } catch (e) {
+        console.error(e);
     }
-
-    const [group, tag] = word.length == 2 ? word : ['Prop', word[0]];
-    if (tag.length === 0) return;
-    updateTags(group, tag);
-    renderTagList();
+    tagInputBox.value = "";
 });
 
 const renderTagList = () => {
