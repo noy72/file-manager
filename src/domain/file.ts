@@ -13,7 +13,8 @@ const videoFileExts = [
     "mpeg",
     "mp4",
     "wmv",
-    "webm"
+    "webm",
+    "mov"
 ];
 
 const isVideoFile = (fileName: string): boolean => videoFileExts.some(ext => fileName.includes(ext));
