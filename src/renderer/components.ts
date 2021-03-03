@@ -1,5 +1,5 @@
-import { accessSync } from 'fs';
 import { join, basename } from 'path';
+import { exists } from '../infrastructure/file';
 import { Item } from '../models/Item';
 
 const htmlStringToElement = (htmlStr: string): HTMLElement => {
@@ -13,7 +13,7 @@ const htmlStringToElement = (htmlStr: string): HTMLElement => {
 //TODO: 画像サイズの制限
 const createItemCardElement = (item: Item): HTMLElement => htmlStringToElement(`
 <div class="col">
-    <div class="card ${isExists(item.location) ? "" : "bg-warning"}">
+    <div class="card ${exists(item.location) ? "" : "bg-warning"}">
         <img src="${join(item.location, item.thumbnail)}" class="card-img-top">
         <div class="card-body">
             <h5 class="card-title">${basename(item.location)}</h5>
@@ -23,15 +23,6 @@ const createItemCardElement = (item: Item): HTMLElement => htmlStringToElement(`
         </div>
     </div>
 </div>`);
-
-const isExists = (location: string) => {
-    try {
-        accessSync(location);
-        return true;
-    } catch (error) {
-        return false;
-    }
-}
 
 const createTagGroupElements = (allTags: object, attachedTags: string[]): HTMLElement[] =>
     Object.entries(allTags)
