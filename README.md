@@ -1,3 +1,7 @@
+## 扱えるもの
+- ディレクトリ
+- 動画
+
 ## Data.jsonの形式
 ```
 {
@@ -7,6 +11,7 @@
     "applications": {
         "directory" : ["<command>"],
         "images" : ["<command>"],
+        "video": ["<command>"]
     },
     "tags": { },
     "items": [ ]
@@ -22,3 +27,7 @@
     - 扱うものを現したもの
 - renderer
     - HTMLやブラウザを操作する．
+
+## TODO
+- タグを消せるようにする
+- タグをクリックするとそのタグで検索
