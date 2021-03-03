@@ -12,13 +12,15 @@ const htmlStringToElement = (htmlStr: string): HTMLElement => {
 //TODO: サムネイルが存在しないときの処理
 //TODO: 画像サイズの制限
 const createItemCardElement = (item: Item): HTMLElement => htmlStringToElement(`
-<div class="col">
-    <div class="card ${exists(item.location) ? "" : "bg-warning"}">
-        <img src="${item.thumbnailPath()}" class="card-img-top">
-        <div class="card-body">
-            <h5 class="card-title">${basename(item.location)}</h5>
-            <span class="card-text">
-                ${(item.tags.map(tag => `<span class="badge bg-secondary">${tag}</span>`)).join(' ')}
+<div class="column">
+    <div class="ui fluid link ${exists(item.location) ? "" : "red"} card">
+        <div class="image">
+            <img src="${item.thumbnailPath()}">
+        </div>
+        <div class="content">
+            <div class="header">${basename(item.location)}</div>
+            <div class="ui basic labels description">
+                ${(item.tags.map(tag => `<span class="ui label">${tag}</span>`)).join(' ')}
             </span>
         </div>
     </div>
@@ -32,14 +34,18 @@ const createTagGroupElements = (allTags: object, attachedTags: string[]): HTMLEl
 const createTagGroupElement = (groupName: string, tags: string[], checkedTags: string[]): HTMLElement => htmlStringToElement(`
 <div>
     <h2>${groupName}</h2>
-    ${tags.map(tag => createTagHtmlString(checkedTags.includes(tag), tag)).join(' ')}
+    <div class="ui form">
+        <div class="inline fields">
+            ${tags.map(tag => createTagHtmlString(checkedTags.includes(tag), tag)).join(' ')}
+        </div>
+    </div>
 </div>
 <hr>`);
 
 const createTagHtmlString = (checked: boolean, name: string): string => `
-<div class="form-check form-check-inline">
-    <input class="form-check-input" type="checkbox" ${checked ? "checked" : ""} id="${name}" value="${name}">
-    <label class="form-check-label" for="${name}">${name}</label>
+<div class="ui ${checked ? "checked" : ""} checkbox">
+    <input type="checkbox" ${checked ? "checked" : ""} class="tag" id="${name}" value="${name}">
+    <label for="${name}">${name}</label>
 </div>`;
 
 

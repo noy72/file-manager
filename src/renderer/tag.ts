@@ -3,16 +3,16 @@ import * as components from "./components";
 import { getItem, updateAttachedTags } from "../repositories/itemRepository";
 import { getTags, updateTags } from "../repositories/tagRepository";
 
-const tagList = <HTMLElement>document.querySelector('.tag-list');
-const tagInputBox = <HTMLInputElement>document.querySelector('.form-control');
-const addButton = <HTMLElement>document.querySelector('.add-button');
-const submitButton = <HTMLElement>document.querySelector('.btn-primary');
+const tagList = <HTMLElement>document.querySelector('#tags');
+const tagInputBox = <HTMLInputElement>document.querySelector('#add-tag-box');
+const addButton = <HTMLElement>document.querySelector('#add-tag-button');
+const submitButton = <HTMLElement>document.querySelector('#submit-button');
 
 remote.getCurrentWindow().once('ready-to-show', () => renderTagList());
 
 /**アイテムにタグを設定し，ウィンドウを閉じる */
 submitButton.addEventListener('click', () => {
-    const checkBoxes = <HTMLInputElement[]>Array.from(document.querySelectorAll('.form-check-input'));
+    const checkBoxes = <HTMLInputElement[]>Array.from(document.querySelectorAll('.tag'));
     const checkedTags = checkBoxes
         .filter(checkBox => checkBox.checked)
         .map(checkBox => checkBox.value);

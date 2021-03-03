@@ -1,0 +1,12 @@
+img {
+    height: auto; 
+    width: 100%;
+}
+
+form {
+    margin-block: 1rem;
+}
+
+.ui .checkbox {
+    padding-right: 1.2rem;
+}

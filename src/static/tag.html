@@ -5,21 +5,21 @@
     <meta charset="UTF-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link href="Fomantic-UI-CSS/semantic.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
     <title>Tag pool</title>
 </head>
 
 <body>
-    <div class="container">
-        <form class="row g-2">
-            <div class="col-9">
-                <input class="form-control" type="text" aria-label="tag">
-            </div>
-            <div class="col-3">
-                <button type="submit" class="btn btn-secondary add-button">add</button>
+    <div class="ui container">
+        <form autocomplete="on" id="form">
+            <div class="ui fluid icon input">
+                <input type="text" placeholder="Add #tag" id="add-tag-box">
+                <button class="ui button" id="add-tag-button">Add</button>
             </div>
         </form>
-        <div class="tag-list"></div>
-        <button class="btn btn-primary" type="submit">Submit</button>
+        <div id="tags"></div>
+        <button class="ui primary button" type="submit" id="submit-button">Submit</button>
     </div>
     <script>
         require('../renderer/tag');

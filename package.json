@@ -7,7 +7,8 @@
     "test": "mocha tests --recursive",
     "package": "electron-forge package",
     "make": "electron-forge make",
-    "build": "electron-builder --win --x64"
+    "build": "electron-builder --win --x64",
+    "watch": "tsc --watch"
   },
   "author": "anoy <kuma.tola3@gmail.com>",
   "license": "MIT",

@@ -7,20 +7,21 @@ import { deleteItem } from '../repositories/itemRepository';
 
 const { Menu, MenuItem } = remote;
 
-const itemList = <HTMLElement>document.querySelector('.container .item-list');
-const searchBox = <HTMLInputElement>document.querySelector('.form-control');
-const searchButton = <HTMLElement>document.querySelector('.btn-primary');
+const itemList = <HTMLElement>document.querySelector('#items');
+const searchBox = <HTMLInputElement>document.querySelector('#search-box');
+const searchButton = <HTMLElement>document.querySelector('#search-icon');
+const form = <HTMLInputElement>document.querySelector("#form");
 
 ipcRenderer.on('render', () => render());
 
-remote.getCurrentWindow().on('ready-to-show', () => {
-    render();
-});
+remote.getCurrentWindow().on('ready-to-show', () => render());
 
-searchButton.addEventListener('click', (e) => {
+form.addEventListener('submit', (e) => {
     e.preventDefault();
     render();
 });
+
+searchButton.addEventListener('click', () => render());
 
 const render = () => renderItems(searchItems(searchBox.value));
 
