@@ -10,6 +10,7 @@ export interface Item {
     thumbnail: string;
     updatedAt: string;
 
+    thumbnailPath: () => string;
     open: () => void;
     isDir: () => boolean;
 }

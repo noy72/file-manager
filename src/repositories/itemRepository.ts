@@ -4,6 +4,7 @@ import * as db from '../infrastructure/database';
 import Directory from '../models/Directory';
 import Images from '../models/Images';
 import { Item } from '../models/Item';
+import Video from '../models/Video';
 
 const getItems = () => db.getItems().map(classify);
 
@@ -13,7 +14,7 @@ const classify = (item: Item | string): Item => {
     if (isImageFile(location)) {
         throw new Error("画像ファイルは未対応");
     } else if (isVideoFile(location)) {
-        throw new Error("動画ファイルは未対応");
+        return new Video(item);
     }
 
     const files = readdirSync(location);

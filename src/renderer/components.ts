@@ -14,7 +14,7 @@ const htmlStringToElement = (htmlStr: string): HTMLElement => {
 const createItemCardElement = (item: Item): HTMLElement => htmlStringToElement(`
 <div class="col">
     <div class="card ${exists(item.location) ? "" : "bg-warning"}">
-        <img src="${join(item.location, item.thumbnail)}" class="card-img-top">
+        <img src="${item.thumbnailPath()}" class="card-img-top">
         <div class="card-body">
             <h5 class="card-title">${basename(item.location)}</h5>
             <span class="card-text">

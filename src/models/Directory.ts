@@ -3,6 +3,7 @@ import { spawn } from 'child_process';
 import { Item } from "./Item";
 import { getCommand } from "../infrastructure/config";
 import { isImageFile } from "../domain/file";
+import { join } from "path";
 
 export default class Directory implements Item {
     static command: string[] = getCommand("directory");
@@ -30,6 +31,10 @@ export default class Directory implements Item {
         this.thumbnail = readdirSync(this.location)
             .filter((fileName: string) => isImageFile(fileName))
             .sort()[0];
+    }
+
+    public thumbnailPath(): string {
+        return join(this.location, this.thumbnail);
     }
 
     public open(): void {
