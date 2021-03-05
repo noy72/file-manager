@@ -5,18 +5,6 @@ import { addItems, classify, getItems } from "../repositories/itemRepository";
 import { getRootLocations } from "../repositories/locationRepository";
 import { isDotFile } from "./file";
 
-const addNewItems = (): void => {
-    const savedItemPaths = getItems().map(item => item.location);
-    const newItems = getLocatedItemPaths()
-        .filter(path => !savedItemPaths.includes(path))
-        .filter(path => !isDotFile(path))
-        .map(classify);
-    addItems(newItems);
-}
-
-const getLocatedItemPaths = (): string[] => getRootLocations().flatMap(
-    location => readdirSync(location).flatMap((dir: string) => join(location, dir)));
-
 // @ts-ignore
 const searchItems = (query: string): Item[] => searchItemsWithANDQuery(getItems(), ...query.split(' '));
 
@@ -49,4 +37,4 @@ const parseTagString = (str: string): string[] => {
     return word.length == 2 ? word : ['Prop', word[0]];
 }
 
-export { addNewItems, searchItems, parseTagString };
+export { searchItems, parseTagString };
