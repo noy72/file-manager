@@ -2,7 +2,7 @@ import { remote } from "electron";
 import * as components from "./components";
 import { getItem, updateAttachedTags } from "../repositories/itemRepository";
 import { getTags, updateTags } from "../repositories/tagRepository";
-import { parseTagString } from "../domain/service";
+import { isValidTagString, parseTagString } from "../domain/tagService";
 
 const tagList = <HTMLElement>document.querySelector('#tags');
 const tagInputBox = <HTMLInputElement>document.querySelector('#add-tag-box');
@@ -25,15 +25,12 @@ submitButton.addEventListener('click', (e) => {
 /**タグをタグリストに追加する */
 addButton.addEventListener('click', (e) => {
     e.preventDefault();
-    try {
-        // TODO: エラーを返すのはparseTagStringのみ．普通にinvalidな値を返して検出するのがよい？
-        const [group, tag] = parseTagString(tagInputBox.value)
+    if (isValidTagString(tagInputBox.value)) {
+        const [group, tag] = parseTagString(tagInputBox.value);
         updateTags(group, tag);
         renderTagList();
-    } catch (e) {
-        console.error(e);
+        tagInputBox.value = "";
     }
-    tagInputBox.value = "";
 });
 
 const renderTagList = () => {
