@@ -1,6 +1,5 @@
 import { basename } from "path";
-import { Item } from "../models/Item";
-import { getItems } from "../repositories/itemRepository";
+import { Item } from "../../models/Item";
 
 //@ts-ignore
 const searchItems = (query: string): Item[] => searchItemsWithANDQuery(getItems(), ...query.split(' '));

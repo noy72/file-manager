@@ -2,7 +2,7 @@ import { remote } from "electron";
 import * as components from "./components";
 import { getItem, updateAttachedTags } from "../repositories/itemRepository";
 import { getTags, updateTags } from "../repositories/tagRepository";
-import { isValidTagString, parseTagString } from "../domain/tagService";
+import { isValidTagString, parseTagString } from "../domain/service/tag";
 
 const tagList = <HTMLElement>document.querySelector('#tags');
 const tagInputBox = <HTMLInputElement>document.querySelector('#add-tag-box');
