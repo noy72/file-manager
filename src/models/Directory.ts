@@ -26,15 +26,18 @@ export default class Directory implements Item {
         }
     }
 
-    /**ディレクトリ内の画像のうち，最も名前の小さいものをサムネイルに設定する */
+    /**ディレクトリ内の画像のうち，最も名前の小さいものをサムネイルに設定する．
+     * 画像が存在しない場合，デフォルトの画像を設定する.
+     */
     private setThumbnail(): void {
-        this.thumbnail = readdirSync(this.location)
+        const images = readdirSync(this.location)
             .filter((fileName: string) => isImageFile(fileName))
-            .sort()[0];
+            .sort();
+        this.thumbnail = images.length ? join(this.location, images[0]) : "images/no_image.jpeg";
     }
 
     public thumbnailPath(): string {
-        return join(this.location, this.thumbnail);
+        return this.thumbnail;
     }
 
     public open(): void {
