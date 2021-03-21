@@ -7,6 +7,7 @@ import Images from '../models/Images';
 import { Item } from '../models/Item';
 import Video from '../models/Video';
 import { join } from 'path';
+import { exists } from '../infrastructure/file';
 
 const getItems = () => db.getItems().map(classify);
 
@@ -19,10 +20,13 @@ const classify = (item: Item | string): Item => {
         return new Video(item);
     }
 
-    const files = readdirSync(location);
-    if (files.every((fileName: string) => isImageFile(fileName))) {
-        return new Images(item);
+    if (exists(location)) {
+        const files = readdirSync(location);
+        if (files.every((fileName: string) => isImageFile(fileName))) {
+            return new Images(item);
+        }
     }
+
     return new Directory(item);
 }
 
