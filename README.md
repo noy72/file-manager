@@ -8,7 +8,7 @@
     "locations": [
         "<path>"
     ],
-    "applications": {
+    "commands": {
         "directory" : ["<command>"],
         "images" : ["<command>"],
         "video": ["<command>"]
