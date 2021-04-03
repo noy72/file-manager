@@ -9,8 +9,6 @@ const htmlStringToElement = (htmlStr: string): HTMLElement => {
     return template.content.firstElementChild;
 };
 
-//TODO: サムネイルが存在しないときの処理
-//TODO: 画像サイズの制限
 const createItemCardElement = (item: Item): HTMLElement => htmlStringToElement(`
 <div class="column">
     <div class="ui fluid link ${exists(item.location) ? "" : "red"} card">
