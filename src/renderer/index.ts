@@ -56,4 +56,17 @@ const renderItems = (items: Item[]) => {
         }, false);
         itemList.appendChild(itemCardElement);
     });
+
+    addFunctionToLabel()
+};
+
+const addFunctionToLabel = () => {
+    const labels = <HTMLInputElement[]>Array.from(document.querySelectorAll('.label'));
+    for (const label of labels) {
+        label.addEventListener('click', (e) => {
+            e.stopPropagation();
+            searchBox.value = `#"${label.innerText}"`
+            render()
+        });
+    }
 };

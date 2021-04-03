@@ -10,3 +10,7 @@ form {
 .ui .checkbox {
     padding-right: 1.2rem;
 }
+
+.label:hover{
+    background-color: #E2FDE2 !important;
+}
