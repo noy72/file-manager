@@ -22,7 +22,7 @@ const classify = (item: Item | string): Item => {
 
     if (exists(location)) {
         const files = readdirSync(location);
-        if (files.every((fileName: string) => isImageFile(fileName))) {
+        if (files.filter(fileName => !isDotFile(fileName)).every((fileName: string) => isImageFile(fileName))) {
             return new Images(item);
         }
     }
