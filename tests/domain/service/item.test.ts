@@ -26,19 +26,16 @@ const stubItem = proxyquire("../../../src/domain/service/item", {
     }
 });
 
-it("searchItemsByString", () => {
+it("perfectMatchingByTitle", () => {
     {
-        const result: Item[] = stubItem.searchItems("a");
+        const result: Item[] = stubItem.searchItems('"a"');
         assert.deepStrictEqual(
             result.map(item => item.location),
-            [
-                "/a/bb/ccc/1-a",
-                "/a/bb/2-a"
-            ]
+            []
         );
     }
     {
-        const result: Item[] = stubItem.searchItems("b");
+        const result: Item[] = stubItem.searchItems('"3-b"');
         assert.deepStrictEqual(
             result.map(item => item.location),
             [
@@ -48,9 +45,44 @@ it("searchItemsByString", () => {
     }
 });
 
-it("searchItemsByTags", () => {
+it("partialMatchingByTitle", () => {
     {
-        const result: Item[] = stubItem.searchItems("#x");
+        const result: Item[] = stubItem.searchItems('a');
+        assert.deepStrictEqual(
+            result.map(item => item.location),
+            [
+                "/a/bb/ccc/1-a",
+                "/a/bb/2-a"
+            ]
+        );
+    }
+    {
+        const result: Item[] = stubItem.searchItems('3-b');
+        assert.deepStrictEqual(
+            result.map(item => item.location),
+            [
+                "/a/bb/3-b"
+            ]
+        );
+    }
+    {
+        const result: Item[] = stubItem.searchItems('-');
+        assert.deepStrictEqual(
+            result.map(item => item.location),
+            [
+                "/a/bb/ccc/1-a",
+                "/a/bb/2-a",
+                "/a/bb/3-b",
+                "/a/4-c",
+                "/a/5-c"
+            ]
+        );
+    }
+});
+
+it("perfectMatchingByTag", () => {
+    {
+        const result: Item[] = stubItem.searchItems('#"x"');
         assert.deepStrictEqual(
             result.map(item => item.location),
             [
@@ -61,7 +93,7 @@ it("searchItemsByTags", () => {
         );
     }
     {
-        const result: Item[] = stubItem.searchItems("#x #y");
+        const result: Item[] = stubItem.searchItems('#"x" #"y"');
         assert.deepStrictEqual(
             result.map(item => item.location),
             [
@@ -70,7 +102,40 @@ it("searchItemsByTags", () => {
         );
     }
     {
-        const result: Item[] = stubItem.searchItems("#xx");
+        const result: Item[] = stubItem.searchItems('#"xx"');
+        assert.deepStrictEqual(
+            result.map(item => item.location),
+            [
+                "/a/5-c"
+            ]
+        );
+    }
+});
+
+it("partialMatchingByTag", () => {
+    {
+        const result: Item[] = stubItem.searchItems('#x');
+        assert.deepStrictEqual(
+            result.map(item => item.location),
+            [
+                "/a/bb/ccc/1-a",
+                "/a/bb/2-a",
+                "/a/bb/3-b",
+                "/a/5-c"
+            ]
+        );
+    }
+    {
+        const result: Item[] = stubItem.searchItems('#x #y');
+        assert.deepStrictEqual(
+            result.map(item => item.location),
+            [
+                "/a/bb/3-b",
+            ]
+        );
+    }
+    {
+        const result: Item[] = stubItem.searchItems('#xx');
         assert.deepStrictEqual(
             result.map(item => item.location),
             [
