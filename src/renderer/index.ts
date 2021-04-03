@@ -10,6 +10,7 @@ const { Menu, MenuItem } = remote;
 const itemList = <HTMLElement>document.querySelector('#items');
 const searchBox = <HTMLInputElement>document.querySelector('#search-box');
 const searchButton = <HTMLElement>document.querySelector('#search-icon');
+const timesButton = <HTMLElement>document.querySelector('#times-icon');
 const form = <HTMLInputElement>document.querySelector("#form");
 
 ipcRenderer.on('render', () => render());
@@ -18,6 +19,11 @@ remote.getCurrentWindow().on('ready-to-show', () => render());
 
 form.addEventListener('submit', (e) => {
     e.preventDefault();
+    render();
+});
+
+timesButton.addEventListener('click', () => {
+    searchBox.value = "";
     render();
 });
 
