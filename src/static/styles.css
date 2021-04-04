@@ -14,3 +14,7 @@ form {
 .label:hover{
     background-color: #E2FDE2 !important;
 }
+
+.ui.form .fields {
+    display: block !important;
+}
