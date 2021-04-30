@@ -11,6 +11,7 @@ out/
 *.backup.json
 data.json
 *.js
+*.js.map
 
 ffmpeg
 ffmpeg.exe
