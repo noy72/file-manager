@@ -1,6 +1,6 @@
 import { accessSync } from "fs";
 
-const exists = (location: string) => {
+const exists = (location: string): boolean => {
     try {
         accessSync(location);
         return true;
