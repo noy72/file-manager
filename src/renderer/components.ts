@@ -1,6 +1,6 @@
 import { join, basename } from 'path';
-import { exists } from '../infrastructure/file';
-import { Item } from '../models/Item';
+import { exists } from '../main/infrastructure/file';
+import { Item } from '../main/models/Item';
 
 const htmlStringToElement = (htmlStr: string): HTMLElement => {
     const template = document.createElement("template");

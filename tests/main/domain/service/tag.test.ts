@@ -1,5 +1,5 @@
 import assert from "assert";
-import { isValidTagString, parseTagString } from "../../../src/domain/service/tag";
+import { isValidTagString, parseTagString } from "../../../../src/main/domain/service/tag";
 
 it("parseTagString", () => {
     assert.deepStrictEqual(

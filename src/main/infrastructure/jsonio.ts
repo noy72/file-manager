@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+import { copyFileSync } from 'fs';
 import { Data } from '../models/Item';
 
 const read = (path: string): any => JSON.parse(fs.readFileSync(path).toString());
@@ -9,4 +10,6 @@ const readDataJson = (): Data => read('data.json');
 
 const writeDataJson = (obj: object): void => write('data.json', obj);
 
-export { readDataJson as read, writeDataJson as write };
+const rollback = (): void => copyFileSync('data.backup.json', 'data.json');
+
+export { readDataJson as read, writeDataJson as write, rollback };

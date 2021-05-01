@@ -1,6 +1,6 @@
 import assert from "assert";
 import proxyquire from "proxyquire";
-import { Item } from "../../../src/models/Item";
+import { Item } from "../../../../src/main/models/Item";
 
 const createItem = (location: string, tags: string[]): Item => ({
     location: location,
@@ -20,7 +20,7 @@ const items = [
     ["/a/5-c", "xx"]
 ].map(x => createItem(x[0], x.slice(1)));
 
-const stubItem = proxyquire("../../../src/domain/service/item", {
+const stubItem = proxyquire("../../../../src/main/domain/service/item", {
     "../../repositories/itemRepository": {
         getItems: () => items
     }

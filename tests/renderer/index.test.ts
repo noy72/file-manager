@@ -1,8 +1,8 @@
 import { Application } from 'spectron';
 import * as assert from 'assert';
 import path from 'path';
-import { getItem } from '../../src/repositories/itemRepository';
-import { exists } from '../../src/infrastructure/file';
+import { getItem } from '../../src/main/repositories/itemRepository';
+import { exists } from '../../src/main/infrastructure/file';
 import { ElementArray, Element } from 'webdriverio';
 import { unlinkSync } from 'fs';
 import { applicationConfig, getInnerText, getInnerTexts } from './utils';
@@ -67,18 +67,18 @@ describe('Index page', function () {
     });
 
     it('display tag', async function () {
-        const tag = await getInnerText(app.client,'.ui .label');
+        const tag = await getInnerText(app.client, '.ui .label');
         assert.strictEqual(tag, '1');
     });
 
     it('search by title', async function () {
         await search('dir02');
-        assert.strictEqual(await getInnerText(app.client,'.header'), 'dir02');
+        assert.strictEqual(await getInnerText(app.client, '.header'), 'dir02');
     });
 
     it('search by tag', async function () {
         await search('#1');
-        assert.strictEqual(await getInnerText(app.client,'.header'), 'dir01');
+        assert.strictEqual(await getInnerText(app.client, '.header'), 'dir01');
     });
 
     it('add red border if item.location is invalid', async function () {

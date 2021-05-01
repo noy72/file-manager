@@ -1,7 +1,7 @@
 import { readdirSync } from 'fs';
 import { isDotFile, isImageFile, isVideoFile } from '../domain/service/file';
 import * as db from '../infrastructure/database';
-import { getRootLocations } from "../repositories/locationRepository";
+import { getRootLocations } from "./locationRepository";
 import Directory from '../models/Directory';
 import Images from '../models/Images';
 import { Item } from '../models/Item';

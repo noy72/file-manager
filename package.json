@@ -1,7 +1,7 @@
 {
   "name": "explower",
   "version": "0.0.7",
-  "main": "src/main.js",
+  "main": "src/main/main.js",
   "scripts": {
     "start": "electron-forge start",
     "test": "mocha tests --recursive",

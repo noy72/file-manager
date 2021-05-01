@@ -1,5 +1,5 @@
 import * as assert from "assert";
-import { isDotFile, isImageFile, isVideoFile } from "../../../src/domain/service/file";
+import { isDotFile, isImageFile, isVideoFile } from "../../../../src/main/domain/service/file";
 
 it('isImageFile', () => {
     for (const fileName of ["", ".mp3", "png.mp3", "a.png.mov", ".png", "png", "./"]) {
