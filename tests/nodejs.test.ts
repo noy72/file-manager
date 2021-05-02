@@ -120,3 +120,28 @@ it('array', () => {
     assert.strictEqual(g, 1);
     assert.deepStrictEqual(h, []);
 });
+
+it('object function', () => {
+    const a = {
+        f() {
+            console.log("return 1");
+            return 1;
+        }
+    }
+    const b = {
+        f: () => {
+            console.log("return 1");
+            return 1;
+
+        }
+    }
+    console.log(a.f)
+    console.log(b.f)
+    assert.strictEqual(a.f(), b.f())
+
+    const c = [
+        { f() {return 1 } },
+        { f: () => 1}
+    ]
+
+});
