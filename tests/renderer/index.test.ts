@@ -45,7 +45,8 @@ describe('Index page', function () {
     });
 
     beforeEach(async function () {
-        await search(''); // 検索結果をリセットする
+        const resetButton = await app.client.$('#times-icon');
+        await resetButton.click();
     });
 
     after(function () {
