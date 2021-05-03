@@ -53,5 +53,4 @@ ipcMain.on('open-tag-modal', (event: any, location: string) => {
     });
 
     tagModal.loadFile('src/static/tag.html').then(() => tagModal.show());
-    tagModal.on('close', () => event.sender.send('render'));
 });
