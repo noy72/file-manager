@@ -1,4 +1,3 @@
-
 import { Application } from 'spectron';
 import * as assert from 'assert';
 import { Element } from 'webdriverio';
@@ -16,6 +15,7 @@ describe('Tag page', function () {
         await app.start();
 
         await app.client.waitUntilWindowLoaded();
+        //@ts-ignore
         app.electron.ipcRenderer.send('open-tag-modal', '/Users/anoy/work/WebstormProjects/explower/tests/sample_dir/dir01');
         await wait(async () => {
             const count = await app.client.getWindowCount();
