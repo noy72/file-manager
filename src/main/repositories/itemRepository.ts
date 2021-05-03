@@ -52,6 +52,13 @@ const deleteItem = (location: string) => {
     db.updateItems(items);
 };
 
+const updateItem = (item: Item): void => {
+    const items = getItems();
+    const index = items.findIndex(item => item.location === item.location);
+    items[index] = item;
+    db.updateItems(items);
+};
+
 const updateAttachedTags = (location: string, tags: string[]): void => {
     const items = getItems();
     const index = items.findIndex(item => item.location === location);
@@ -64,6 +71,7 @@ export {
     getItems,
     getNewItems,
     getItem,
+    updateItem,
     addItems,
     deleteItem,
     updateAttachedTags,
