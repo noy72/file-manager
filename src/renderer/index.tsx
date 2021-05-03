@@ -1,5 +1,5 @@
 import { ipcRenderer, remote } from 'electron';
-import React, { MouseEvent, ChangeEvent, FormEvent } from 'react';
+import React, { MouseEvent, FormEvent, RefObject, createRef } from 'react';
 import ReactDOM from 'react-dom';
 import { Item } from "../main/models/Item";
 import Directory from "../main/models/Directory";
@@ -11,19 +11,19 @@ const { Menu, MenuItem } = remote;
 
 type State = {
     items: Item[],
-    inputText: string
 }
 
 class Content extends React.Component<{}, State> {
+    searchBoxRef: RefObject<HTMLInputElement>;
+
     constructor(props: {}) {
         super(props);
         this.state = {
             items: searchItems(''),
-            inputText: ''
         };
+        this.searchBoxRef = createRef();
 
         this.searchByInputText = this.searchByInputText.bind(this);
-        this.updateInputText = this.updateInputText.bind(this);
         this.resetState = this.resetState.bind(this);
     }
 
@@ -39,7 +39,7 @@ class Content extends React.Component<{}, State> {
         return <>
             <form autoComplete="on" onSubmit={this.searchByInputText}>
                 <div className="ui fluid icon input">
-                    <input id="search-box" type="text" value={this.state.inputText} onChange={this.updateInputText} placeholder="title #tag" />
+                    <input ref={this.searchBoxRef} id="search-box" type="text" placeholder="title #tag" />
                     <i id="times-icon" className="times link icon" onClick={this.resetState} style={{ marginRight: "2rem" }}></i>
                     <i id="search-icon" className="search link icon" onClick={this.searchByInputText}></i>
                 </div>
@@ -51,21 +51,14 @@ class Content extends React.Component<{}, State> {
     searchByInputText(e: MouseEvent<HTMLElement> | FormEvent<HTMLFormElement> | undefined = undefined) {
         if (e != undefined) e.preventDefault();
         this.setState({
-            items: searchItems(this.state.inputText)
-        });
-    }
-
-    updateInputText(e: ChangeEvent<HTMLInputElement>) {
-        this.setState({
-            inputText: e.target.value
+            items: searchItems(this.searchBoxRef.current!.value)
         });
     }
 
     resetState() {
-        console.log("reset")
+        this.searchBoxRef.current!.value = '';
         this.setState({
             items: searchItems(''),
-            inputText: ''
         });
     }
 
@@ -102,9 +95,9 @@ class Content extends React.Component<{}, State> {
         const searchByTag = (tag: string) => (e: MouseEvent<HTMLSpanElement>) => {
             e.stopPropagation();
             const inputText = `#"${tag}"`;
+            this.searchBoxRef.current!.value = inputText;
             this.setState({
                 items: searchItems(inputText),
-                inputText: inputText
             });
         }
 
