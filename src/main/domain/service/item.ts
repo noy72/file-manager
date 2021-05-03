@@ -1,10 +1,17 @@
 import { basename } from "path";
-import { isTemplateSpan } from "typescript";
 import { Item } from "../../models/Item";
 import { getItems } from "../../repositories/itemRepository";
 
+type ItemOrder = 'createdAt_desc' | 'createdAt_asc' | 'title_asc';
+const itemCompareFunctions: { [key in ItemOrder]: (i1: Item, i2: Item) => number } = {
+    'createdAt_desc': (i1: Item, i2: Item) => i1.updatedAt == i2.updatedAt ? 0 : (i1.updatedAt < i2.updatedAt ? 1 : -1),
+    'createdAt_asc': (i1: Item, i2: Item) => i1.updatedAt == i2.updatedAt ? 0 : (i1.updatedAt < i2.updatedAt ? -1 : 1),
+    'title_asc': (i1: Item, i2: Item) => basename(i1.location) === basename(i2.location) ? 0 : (basename(i1.location) < basename(i2.location) ? -1 : 1)
+};
+
 //@ts-ignore
-const searchItems = (query: string): Item[] => searchItemsWithANDQuery(getItems(), ...query.split(' '));
+const searchItems = (query: string, order: ItemOrder = 'title_asc'): Item[] => searchItemsWithANDQuery(getItems(), ...query.split(' '))
+    .sort(itemCompareFunctions[order]);
 
 const searchItemsWithANDQuery = (items: Item[], word: string, ...words: string[]): Item[] => {
     let result;
@@ -40,4 +47,4 @@ const perfectMatchingByTag = (items: Item[], tag: string): Item[] =>
 const partialMatchingByTag = (items: Item[], query: string): Item[] =>
     items.filter(({ tags: tags }) => tags.some(tag => tag.includes(query)));
 
-export { searchItems };
+export { searchItems, ItemOrder };
