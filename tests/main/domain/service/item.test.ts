@@ -1,16 +1,8 @@
 import assert from "assert";
 import proxyquire from "proxyquire";
 import { Item } from "../../../../src/main/models/Item";
+import { createItem } from "../../utils";
 
-const createItem = (location: string, tags: string[]): Item => ({
-    location: location,
-    tags: tags,
-    updatedAt: location.length.toString(),
-    thumbnail: "",
-    isDir: () => false,
-    thumbnailPath: () => "",
-    open: () => "",
-});
 
 const items = [
     ["/a/bb/ccc/1-a", "x"],
