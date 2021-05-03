@@ -1,5 +1,5 @@
 import { ipcRenderer, remote } from 'electron';
-import React, { useState, MouseEvent, ChangeEventHandler, ChangeEvent, FormEvent } from 'react';
+import React, { MouseEvent, ChangeEvent, FormEvent } from 'react';
 import ReactDOM from 'react-dom';
 import { Item } from "../main/models/Item";
 import Directory from "../main/models/Directory";
@@ -8,74 +8,6 @@ import { searchItems } from '../main/domain/service/item';
 import ItemCards from './components/ItemCards';
 
 const { Menu, MenuItem } = remote;
-
-/*
-const itemList = <HTMLElement>document.querySelector('#items');
-const searchBox = <HTMLInputElement>document.querySelector('#search-box');
-const searchButton = <HTMLElement>document.querySelector('#search-icon');
-const timesButton = <HTMLElement>document.querySelector('#times-icon');
-const form = <HTMLInputElement>document.querySelector("#form");
-
-ipcRenderer.on('render', () => render());
-
-remote.getCurrentWindow().on('ready-to-show', () => render());
-
-form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    render();
-});
-
-timesButton.addEventListener('click', () => {
-    searchBox.value = "";
-    render();
-});
-
-searchButton.addEventListener('click', () => render());
-
-const render = () => renderItems(searchItems(searchBox.value));
-
-const renderItems = (items: Item[]) => {
-    itemList.innerHTML = "";
-    items.forEach(item => {
-        const itemCardElement = components.createItemCardElement(item);
-        itemCardElement.addEventListener('click', () => item.open());
-        itemCardElement.addEventListener('contextmenu', (e) => {
-            e.preventDefault();
-            const menu = new Menu();
-            menu.append(new MenuItem({
-                label: 'Tags', click() {
-                    ipcRenderer.send('open-tag-modal', item.location);
-                }
-            }));
-            if (item.isDir()) {
-                const directory = new Directory(item);
-                menu.append(new MenuItem({
-                    label: 'Open', click() {
-                        directory.open();
-                    }
-                }));
-            }
-            menu.append(new MenuItem({
-                label: 'Delete', click() {
-                    deleteItem(item.location);
-                    render();
-                }
-            }));
-            menu.popup({ window: remote.getCurrentWindow() });
-        }, false);
-        itemList.appendChild(itemCardElement);
-    });
-
-    addFunctionToLabel()
-};
-
-const addFunctionToLabel = () => {
-    const labels = <HTMLInputElement[]>Array.from(document.querySelectorAll('.label'));
-    for (const label of labels) {
-        label.addEventListener('click', );
-    }
-};
-*/
 
 type State = {
     items: Item[],
