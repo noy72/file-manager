@@ -96,7 +96,7 @@ describe('Index page', function () {
         const titles = await getInnerTexts(app.client, '.header');
         assert.deepStrictEqual(
             new Set(titles),
-            new Set(['dir01', 'dir06'])
+            new Set(['dir01', 'sample.mov'])
         );
     });
 });

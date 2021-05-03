@@ -43,7 +43,9 @@
         },
         {
             "location": "/Users/anoy/work/WebstormProjects/explower/tests/sample_dir/sample.mov",
-            "tags": [],
+            "tags": [
+                "1"
+            ],
             "thumbnail": "/Users/anoy/work/WebstormProjects/explower/tests/sample_dir/.thumbnails/sample.mov.jpg",
             "thumbnailTime": "00:00:00",
             "updatedAt": "Sun Mar 21 2021 17:03:17 GMT+0900 (Japan Standard Time)"
@@ -52,7 +54,7 @@
             "location": "/Users/anoy/work/WebstormProjects/explower/tests/sample_dir/dir02",
             "tags": [],
             "thumbnail": "/Users/anoy/work/WebstormProjects/explower/tests/sample_dir/dir02/grey.png",
-            "updatedAt": "Thu Apr 29 2021 05:08:30 GMT+0900 (Japan Standard Time)"
+            "updatedAt": "Thu Apr 29 2000 05:08:30 GMT+0900 (Japan Standard Time)"
         },
         {
             "location": "/Users/anoy/work/WebstormProjects/explower/tests/sample_dir/dir03",
@@ -70,13 +72,11 @@
             "location": "/Users/anoy/work/WebstormProjects/explower/tests/sample_dir/dir05",
             "tags": [],
             "thumbnail": "/Users/anoy/work/WebstormProjects/explower/tests/sample_dir/dir05/code02.png",
-            "updatedAt": "Thu Apr 29 2021 05:08:30 GMT+0900 (Japan Standard Time)"
+            "updatedAt": "Thu Apr 29 2100 05:08:30 GMT+0900 (Japan Standard Time)"
         },
         {
             "location": "/Users/anoy/work/WebstormProjects/explower/tests/sample_dir/dir06",
-            "tags": [
-                "1"
-            ],
+            "tags": [],
             "thumbnail": "/Users/anoy/work/WebstormProjects/explower/tests/sample_dir/dir06/grey.png",
             "updatedAt": "Thu Apr 29 2021 05:08:30 GMT+0900 (Japan Standard Time)"
         }

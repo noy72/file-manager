@@ -5,7 +5,7 @@ import { Item } from "../../../../src/main/models/Item";
 const createItem = (location: string, tags: string[]): Item => ({
     location: location,
     tags: tags,
-    updatedAt: "",
+    updatedAt: location.length.toString(),
     thumbnail: "",
     isDir: () => false,
     thumbnailPath: () => "",
@@ -140,6 +140,54 @@ it("partialMatchingByTag", () => {
             result.map(item => item.location),
             [
                 "/a/5-c"
+            ]
+        );
+    }
+});
+
+it("Ascending sort by updatedAt", () => {
+    {
+        const result: Item[] = stubItem.searchItems('', 'createdAt_asc');
+        assert.deepStrictEqual(
+            result.map(item => item.location),
+            [
+                "/a/bb/ccc/1-a",
+                "/a/4-c",
+                "/a/5-c",
+                "/a/bb/2-a",
+                "/a/bb/3-b",
+            ]
+        );
+    }
+});
+
+it("Descending sort by updatedAt", () => {
+    {
+        const result: Item[] = stubItem.searchItems('', 'createdAt_desc');
+        assert.deepStrictEqual(
+            result.map(item => item.location),
+            [
+                "/a/bb/2-a",
+                "/a/bb/3-b",
+                "/a/4-c",
+                "/a/5-c",
+                "/a/bb/ccc/1-a",
+            ]
+        );
+    }
+});
+
+it("Ascending sort by name", () => {
+    {
+        const result: Item[] = stubItem.searchItems('', 'title_asc');
+        assert.deepStrictEqual(
+            result.map(item => item.location),
+            [
+                "/a/bb/ccc/1-a",
+                "/a/bb/2-a",
+                "/a/bb/3-b",
+                "/a/4-c",
+                "/a/5-c",
             ]
         );
     }
