@@ -18,19 +18,19 @@ const selectorOptions: [ItemOrder, string][] = [
 
 type State = {
     items: Item[],
-    order: ItemOrder
 };
 
 class Content extends React.Component<{}, State> {
     searchBoxRef: RefObject<HTMLInputElement>;
+    selectorRef: RefObject<HTMLSelectElement>;
 
     constructor(props: {}) {
         super(props);
         this.state = {
             items: searchItems('', "createdAt_desc"),
-            order: "createdAt_desc"
         };
         this.searchBoxRef = createRef();
+        this.selectorRef = createRef();
 
         this.searchByInputText = this.searchByInputText.bind(this);
         this.resetState = this.resetState.bind(this);
@@ -54,22 +54,26 @@ class Content extends React.Component<{}, State> {
                     <i id="search-icon" className="search link icon" onClick={this.searchByInputText}></i>
                 </div>
             </form>
-            <Selector options={selectorOptions} onChange={this.selectorOnChange} />
+            <Selector options={selectorOptions} onChange={this.selectorOnChange} ref={this.selectorRef} style={{ marginBottom: "1.5rem" }} />
             <ItemCards items={this.state.items} handlers={this.getHandlers()} />
         </>
+    }
+
+    getItemOrder(): ItemOrder {
+        return this.selectorRef.current!.value as ItemOrder;
     }
 
     searchByInputText(e: MouseEvent<HTMLElement> | FormEvent<HTMLFormElement> | undefined = undefined) {
         if (e != undefined) e.preventDefault();
         this.setState({
-            items: searchItems(this.searchBoxRef.current!.value, this.state.order)
+            items: searchItems(this.searchBoxRef.current!.value, this.getItemOrder())
         });
     }
 
     resetState() {
         this.searchBoxRef.current!.value = '';
         this.setState({
-            items: searchItems('', this.state.order),
+            items: searchItems('', this.getItemOrder()),
         });
     }
 
@@ -108,7 +112,7 @@ class Content extends React.Component<{}, State> {
             const inputText = `#"${tag}"`;
             this.searchBoxRef.current!.value = inputText;
             this.setState({
-                items: searchItems(inputText, this.state.order),
+                items: searchItems(inputText, this.getItemOrder()),
             });
         }
 
@@ -120,7 +124,6 @@ class Content extends React.Component<{}, State> {
         this.setState({
             items: searchItems(this.searchBoxRef.current!.value, order)
         });
-        this.state.items.forEach(item => console.log(item.location))
     }
 }
 
