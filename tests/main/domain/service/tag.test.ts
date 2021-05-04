@@ -3,20 +3,20 @@ import { isValidTagString, parseTagString } from "../../../../src/main/domain/se
 
 it("parseTagString", () => {
     assert.deepStrictEqual(
-        parseTagString("`1234567890-=qwertyuiop[]asdfghjkl;'zxcvbnm,./~!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:ZXCVBNM<>?"),
+        parseTagString("`1234567890-=qwertyuiop[]asdfghjkl;'zxcvbnm,./~!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:ZXCVBNM<>?", ""),
         ["`1234567890-=qwertyuiop[]asdfghjkl;'zxcvbnm,./~!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL", "ZXCVBNM<>?"]
     );
     assert.deepStrictEqual(
-        parseTagString("a:b"),
+        parseTagString("a:b", ""),
         ["a", "b"]
     );
     assert.deepStrictEqual(
-        parseTagString("aa"),
-        ["Prop", "aa"]
+        parseTagString("aa", "sample"),
+        ["sample", "aa"]
     );
     assert.deepStrictEqual(
-        parseTagString(""),
-        ["Prop", ""]
+        parseTagString("", ""),
+        ["", ""]
     );
 });
 
