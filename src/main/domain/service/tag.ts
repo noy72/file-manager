@@ -1,6 +1,6 @@
-const parseTagString = (str: string): string[] => {
+const parseTagString = (str: string, prefix: string): string[] => {
     const word = str.split(':');
-    return word.length == 2 ? word : ['Prop', word[0]];
+    return word.length == 2 ? word : [prefix, word[0]];
 }
 
 const isValidTagString = (str: string): boolean => {

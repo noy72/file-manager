@@ -5,7 +5,7 @@ import { isValidTagString, parseTagString } from "../main/domain/service/tag";
 import React, { ChangeEvent, FormEvent, MouseEvent, RefObject, useRef } from "react";
 import ReactDOM from "react-dom";
 import TagGroup from "./components/TagGroup";
-
+import Selector from "./components/Selector";
 
 /**現在対象にとっているitemのlocationを返す． */
 const getCurrentLocation = () => process.argv[process.argv.length - 1];
@@ -26,6 +26,7 @@ type State = {
 
 class Content extends React.Component<{}, State> {
     tagInputBoxRef: RefObject<HTMLInputElement>;
+    selectorRef: RefObject<HTMLSelectElement>;
 
     constructor(props: {}) {
         super(props);
@@ -34,6 +35,7 @@ class Content extends React.Component<{}, State> {
             checkedTags: getCheckedTags()
         };
         this.tagInputBoxRef = React.createRef();
+        this.selectorRef = React.createRef();
 
         this.addNewTag = this.addNewTag.bind(this);
         this.closeCurrentWindow = this.closeCurrentWindow.bind(this);
@@ -47,7 +49,7 @@ class Content extends React.Component<{}, State> {
         const inputNode = this.tagInputBoxRef.current!;
         if (!isValidTagString(inputNode.value)) return;
 
-        const [group, tag] = parseTagString(inputNode.value);
+        const [group, tag] = parseTagString(inputNode.value, this.selectorRef.current!.value);
         updateTags(group, tag);
         inputNode.value = '';
         this.setState({
@@ -63,6 +65,7 @@ class Content extends React.Component<{}, State> {
 
     render() {
         return <>
+            <Selector options={Object.keys(this.state.classifiedTags).map(key => [key, key])} ref={this.selectorRef} style={{ marginTop: "1rem" }} />
             <form autoComplete="on" id="form">
                 <div className="ui fluid icon input">
                     <input ref={this.tagInputBoxRef} type="text" placeholder="Add #tag" id="add-tag-box" required />
