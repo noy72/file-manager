@@ -3,4 +3,7 @@
         "**/[!webpack]*.js": true,
         "**/*.js.map": true
     },
+    "cSpell.words": [
+        "rootpath"
+    ],
 }
