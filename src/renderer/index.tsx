@@ -7,6 +7,7 @@ import { deleteItem } from '../main/repositories/itemRepository';
 import { ItemOrder, searchItems } from '../main/domain/service/item';
 import ItemCards from './components/ItemCards';
 import Selector from './components/Selector';
+import { flash } from '../main/infrastructure/lowdb';
 
 const { Menu, MenuItem } = remote;
 
@@ -65,6 +66,7 @@ class Content extends React.Component<{}, State> {
 
     searchByInputText(e: MouseEvent<HTMLElement> | FormEvent<HTMLFormElement> | undefined = undefined) {
         if (e != undefined) e.preventDefault();
+        flash();
         this.setState({
             items: searchItems(this.searchBoxRef.current!.value, this.getItemOrder())
         });

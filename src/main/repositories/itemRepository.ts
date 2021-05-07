@@ -1,6 +1,6 @@
 import { readdirSync } from 'fs';
 import { isDotFile, isImageFile, isVideoFile } from '../domain/service/file';
-import * as db from '../infrastructure/database';
+import * as db from '../infrastructure/lowdb';
 import { getRootLocations } from "./locationRepository";
 import Directory from '../models/Directory';
 import Images from '../models/Images';
@@ -43,28 +43,13 @@ const getLocatedItemPaths = (): string[] => getRootLocations().flatMap(
 
 const getItem = (location: string): Item | undefined => getItems().find(item => item.location === location);
 
-const addItems = (items: Item[]): void => db.updateItems([...db.getItems(), ...items]);
+const addItems = (items: Item[]): void => items.forEach(item => db.addItem(item));
 
-const deleteItem = (location: string) => {
-    const items = getItems();
-    const index = items.findIndex(item => item.location == location);
-    items.splice(index, 1);
-    db.updateItems(items);
-};
+const deleteItem = (location: string) => db.removeItem(location);
 
-const updateItem = (item: Item): void => {
-    const items = getItems();
-    const index = items.findIndex(item => item.location === item.location);
-    items[index] = item;
-    db.updateItems(items);
-};
+const updateItem = (item: Item) => db.updateItem(item);
 
-const updateAttachedTags = (location: string, tags: string[]): void => {
-    const items = getItems();
-    const index = items.findIndex(item => item.location === location);
-    items[index].tags = tags;
-    db.updateItems(items);
-};
+const updateAttachedTags = (location: string, tags: string[]) => db.updateAttachedTags(location, tags);
 
 
 export {
