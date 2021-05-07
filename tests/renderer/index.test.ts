@@ -6,10 +6,12 @@ import { exists } from '../../src/main/infrastructure/file';
 import { ElementArray, Element } from 'webdriverio';
 import { unlinkSync } from 'fs';
 import { applicationConfig, getInnerText, getInnerTexts } from './utils';
+import { resetDataJson } from '../utils';
 
 
 describe('Application', function () {
     this.timeout(10000);
+    resetDataJson();
 
     before(function () {
         this.app = new Application(applicationConfig);

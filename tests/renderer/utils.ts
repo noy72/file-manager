@@ -1,10 +1,11 @@
 import path from 'path';
 import { Element, BrowserObject } from 'webdriverio';
+import rootpath from '../../rootpath';
 
 const applicationConfig = {
-    path: path.join(__dirname, '../../out/explower-darwin-x64/explower.app/Contents/MacOS/explower'),
-    args: [path.join(__dirname, '../../src')],
-    cwd: __dirname, // ワーキングディレクトリを変更することで，読み込むdata.jsonをテスト用のものに変えている．
+    path: rootpath('out/explower-darwin-x64/explower.app/Contents/MacOS/explower'),
+    args: ['IS_TEST'],
+    cwd: rootpath('./tests/data')
 };
 
 async function getInnerTexts(element: Element | BrowserObject, selector: string): Promise<string[]> {
@@ -33,4 +34,4 @@ async function wait(func: () => Promise<boolean>): Promise<void> {
 
 
 
-export { applicationConfig, getInnerText, getInnerTexts,wait };
+export { applicationConfig, getInnerText, getInnerTexts, wait };
