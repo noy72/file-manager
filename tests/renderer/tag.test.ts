@@ -2,10 +2,8 @@ import { Application } from 'spectron';
 import * as assert from 'assert';
 import { Element } from 'webdriverio';
 import { applicationConfig, getInnerText, getInnerTexts, wait } from './utils';
-import { copyFileSync } from 'fs';
 import path from 'path';
 import { resetDataJson, sampleDirPath } from '../utils';
-import { flash, getItem } from '../../src/main/infrastructure/lowdb';
 
 describe('Tag page', function () {
     this.timeout(10000);
@@ -42,7 +40,7 @@ describe('Tag page', function () {
 
     it('attach the tag', async function () {
         const tag = await getTag('タグ');
-        await tag.click()
+        await tag.click();
         const submitButton = await app.client.$('#submit-button');
         await submitButton.click();
 
@@ -59,7 +57,7 @@ describe('Tag page', function () {
         assert.deepStrictEqual(
             new Set(await getInnerTexts(dir01, '.label')),
             new Set(['1', 'タグ'])
-        )
+        );
     });
 
 
@@ -71,6 +69,6 @@ describe('Tag page', function () {
         assert.deepStrictEqual(
             new Set(await getInnerTexts(app.client, 'label')),
             new Set(['1', 'a', 'sample_tag', 'タグ']),
-        )
-    })
+        );
+    });
 });

@@ -1,7 +1,6 @@
 //import lodashId from 'lodash-id';
 import low from 'lowdb';
 import FileSync from 'lowdb/adapters/FileSync';
-import path from 'path';
 import rootpath from '../../../rootpath';
 import { Data, Item } from '../models/Item';
 
@@ -12,7 +11,7 @@ let db: low.LowdbSync<Data>;
 // 変更する後に FileSync を更新することで変更を反映する．
 // renderer で nodejs のコードを実装するのがそもそも良くない．
 // TODO: main と renderer の実装を切り離す
-const flash = () => {
+const flash = (): void => {
     adapter = new FileSync<Data>(
         (process.env.IS_TEST || process.argv.includes('IS_TEST')) ?
             rootpath('tests/data/data.json') :
@@ -22,6 +21,7 @@ const flash = () => {
 };
 flash();
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const get = (key: string): any => db.get(key).value();
 const getLocations = (): string[] => get('locations');
 const getItems = (): Item[] => get('items');
@@ -30,11 +30,11 @@ const getCommand = (key: string): string[] => get('commands')[key];
 
 const getItem = (location: string): Item => db.get('items').find({ location: location }).value();
 
-const addItem = (item: Item) => db.get('items').push(item).write();
+const addItem = (item: Item): ArrayLike<Item> => db.get('items').push(item).write();
 
-const removeItem = (location: string) => db.get('items').remove({ location: location }).write();
-const updateItem = (item: Item) => db.get('items').find({ location: item.location }).assign(item).write();
-const updateAttachedTags = (location: string, tags: string[]) => db.get('items').find({ location: location }).assign({ tags: tags }).write();
+const removeItem = (location: string): ArrayLike<Item> => db.get('items').remove({ location: location }).write();
+const updateItem = (item: Item): Item => db.get('items').find({ location: item.location }).assign(item).write();
+const updateAttachedTags = (location: string, tags: string[]): Item => db.get('items').find({ location: location }).assign({ tags: tags }).write();
 
 
 export {

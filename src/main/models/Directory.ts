@@ -8,10 +8,10 @@ import { join } from "path";
 export default class Directory implements Item {
     static command: string[] = getCommand("directory");
 
-    location: string = '';
+    location = '';
     tags: string[] = [];
-    thumbnail: string = '';
-    updatedAt: string = '';
+    thumbnail = '';
+    updatedAt = '';
 
     constructor(value: string | Item) {
         if (typeof value === "string") {

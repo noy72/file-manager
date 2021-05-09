@@ -21,11 +21,11 @@ type State = {
     items: Item[],
 };
 
-class Content extends React.Component<{}, State> {
+class Content extends React.Component<Record<string, unknown>, State> {
     searchBoxRef: RefObject<HTMLInputElement>;
     selectorRef: RefObject<HTMLSelectElement>;
 
-    constructor(props: {}) {
+    constructor(props: Record<string, unknown>) {
         super(props);
         this.state = {
             items: searchItems('', "createdAt_desc"),
@@ -57,7 +57,7 @@ class Content extends React.Component<{}, State> {
             </form>
             <Selector options={selectorOptions} onChange={this.selectorOnChange} ref={this.selectorRef} style={{ marginBottom: "1.5rem" }} />
             <ItemCards items={this.state.items} handlers={this.getHandlers()} />
-        </>
+        </>;
     }
 
     getItemOrder(): ItemOrder {
@@ -116,7 +116,7 @@ class Content extends React.Component<{}, State> {
             this.setState({
                 items: searchItems(inputText, this.getItemOrder()),
             });
-        }
+        };
 
         return { openItem, addContextMenu, searchByTag };
     }

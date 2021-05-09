@@ -1,8 +1,5 @@
 
-import low from 'lowdb';
-import FileSync from 'lowdb/adapters/FileSync';
 import * as assert from 'assert';
-import { copyFileSync } from "fs";
 import path from "path";
 import * as db from '../../../src/main/infrastructure/lowdb';
 import { createItem } from '../utils';

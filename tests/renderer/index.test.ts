@@ -3,7 +3,7 @@ import * as assert from 'assert';
 import path from 'path';
 import { getItem } from '../../src/main/repositories/itemRepository';
 import { exists } from '../../src/main/infrastructure/file';
-import { ElementArray, Element } from 'webdriverio';
+import { ElementArray } from 'webdriverio';
 import { unlinkSync } from 'fs';
 import { applicationConfig, getInnerText, getInnerTexts } from './utils';
 import { resetDataJson } from '../utils';
@@ -94,7 +94,6 @@ describe('Index page', function () {
         const tag = await app.client.$('.label');
         await tag.click();
 
-        const cards = await app.client.$$('.card');
         const titles = await getInnerTexts(app.client, '.header');
         assert.deepStrictEqual(
             new Set(titles),

@@ -1,6 +1,6 @@
 import * as db from "../infrastructure/database";
 
-const getTags = () => {
+const getTags = (): {[name: string]: string[]} => {
     const tagGroups = db.getTags();
     const sortedTagGroups: { [name: string]: string[] } = {};
     Object.entries(tagGroups).forEach(([name, tags]) => {

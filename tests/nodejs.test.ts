@@ -6,8 +6,8 @@ it('instanceof', () => {
     }
 
     class Cls implements Inter {
-        x: number = 1;
-        y: number = 2;
+        x = 1;
+        y = 2;
     }
 
     const cls: Cls = new Cls();
@@ -61,7 +61,7 @@ it('interface?', () => {
     assert.strictEqual(i.x, 4);
     assert.strictEqual(i.y, undefined);
 
-    const obj2 = { y: 3 };
+    //const obj2 = { y: 3 };
     //const i2 : I = obj2; // Property 'x' is missing in type '{ y: number; }' but required in type 'I'.ts(2741)
 });
 
@@ -71,7 +71,7 @@ it('static property', () => {
     }
 
     class A implements I {
-        static x: number = 10;
+        static x = 10;
         y: number;
         constructor(value: I) {
             this.y = value.y;
@@ -82,7 +82,7 @@ it('static property', () => {
     }
 
     class B extends A {
-        static x: number = 100;
+        static x = 100;
         public get() {
             return B.x + this.y;
         }
@@ -127,21 +127,22 @@ it('object function', () => {
             console.log("return 1");
             return 1;
         }
-    }
+    };
     const b = {
         f: () => {
             console.log("return 1");
             return 1;
 
         }
-    }
-    console.log(a.f)
-    console.log(b.f)
-    assert.strictEqual(a.f(), b.f())
+    };
+    console.log(a.f);
+    console.log(b.f);
+    assert.strictEqual(a.f(), b.f());
 
     const c = [
-        { f() {return 1 } },
-        { f: () => 1}
-    ]
-
+        { f() { return 1; } },
+        { f: () => 1 }
+    ];
+    console.log(c[0]);
+    console.log(c[1]);
 });

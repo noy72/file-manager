@@ -3,17 +3,16 @@ import { basename, dirname, join } from 'path';
 import { Item } from "./Item";
 import { getCommand } from "../infrastructure/config";
 import { exists } from "../infrastructure/file";
-import { mkdir, mkdirSync } from 'fs';
-import { isTemplateExpression } from 'typescript';
+import { mkdirSync } from 'fs';
 
 export default class Video implements Item {
     static command: string[] = getCommand("video");
 
-    location: string = '';
+    location = '';
     tags: string[] = [];
-    thumbnail: string = '';
-    thumbnailTime: string = '00:00:00';
-    updatedAt: string = '';
+    thumbnail = '';
+    thumbnailTime = '00:00:00';
+    updatedAt = '';
 
     constructor(value: string | Item) {
         if (typeof value === "string") {

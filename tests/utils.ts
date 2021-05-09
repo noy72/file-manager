@@ -3,7 +3,7 @@ import rootpath from "../rootpath";
 
 export const sampleDirPath = rootpath('/tests/sample_dir');
 
-export const resetDataJson = () => {
+export const resetDataJson = (): void => {
     const data = {
         "locations": [rootpath("tests/sample_dir")],
         "commands": {
@@ -59,6 +59,6 @@ export const resetDataJson = () => {
             "updatedAt": "Thu Apr 29 2021 05:08:30 GMT+0900 (Japan Standard Time)"
         }
         ]
-    }
+    };
     writeFileSync(rootpath('tests/data/data.json'), JSON.stringify(data));
 };

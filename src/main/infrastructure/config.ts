@@ -1,4 +1,3 @@
-import { exception } from "console";
 import { read } from "./jsonio";
 
 const getCommands = (): { [index: string]: string[] } => read().commands;

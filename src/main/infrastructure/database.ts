@@ -10,8 +10,9 @@ const getTags = (): { [index: string]: string[] } => read().tags;
 
 const getCommands = (): { [index: string]: string[] } => read().commands;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const updateData = <K extends keyof Data>(key: K, value: any) => {
-    let dataJson = read();
+    const dataJson = read();
     dataJson[key] = value;
     write(dataJson);
 };

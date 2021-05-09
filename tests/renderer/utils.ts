@@ -1,4 +1,3 @@
-import path from 'path';
 import { Element, BrowserObject } from 'webdriverio';
 import rootpath from '../../rootpath';
 

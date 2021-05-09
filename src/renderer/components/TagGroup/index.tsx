@@ -1,8 +1,18 @@
 import React, { ChangeEvent } from "react";
 
-type ClassifiedTags = { [index: string]: string[] };
 type Handler = (e: ChangeEvent<HTMLInputElement>) => void;
-export default ({ classifiedTags, checkedTags, handler }: { classifiedTags: ClassifiedTags, checkedTags: string[], handler: Handler }) => (
+
+type Props = {
+    classifiedTags: { [index: string]: string[] },
+    checkedTags: string[],
+    handler: Handler
+};
+
+const TagGroup = ({
+    classifiedTags,
+    checkedTags,
+    handler
+}: Props): JSX.Element => (
     <div id="tags">
         {Object.entries(classifiedTags)
             .map(([groupName, tags]) => (<>
@@ -11,7 +21,7 @@ export default ({ classifiedTags, checkedTags, handler }: { classifiedTags: Clas
                     <div className="ui form">
                         <div className="inline fields">
                             {tags.map(tag =>
-                                <TagCheckBox checked={checkedTags.includes(tag)} name={tag} handler={handler} />
+                                <TagCheckBox key={tag} checked={checkedTags.includes(tag)} name={tag} handler={handler} />
                             )}
                         </div>
                     </div>
@@ -27,3 +37,5 @@ const TagCheckBox = ({ checked, name, handler }: { checked: boolean, name: strin
         <label htmlFor={name}>{name}</label>
     </div>
 );
+
+export default TagGroup;

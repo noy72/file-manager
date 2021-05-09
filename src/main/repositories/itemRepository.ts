@@ -9,7 +9,7 @@ import Video from '../models/Video';
 import { join } from 'path';
 import { exists } from '../infrastructure/file';
 
-const getItems = () => db.getItems().map(classify);
+const getItems = (): Item[] => db.getItems().map(classify);
 
 const classify = (item: Item | string): Item => {
     const location = typeof item === "object" ? item.location : item;
@@ -45,11 +45,11 @@ const getItem = (location: string): Item | undefined => getItems().find(item => 
 
 const addItems = (items: Item[]): void => items.forEach(item => db.addItem(item));
 
-const deleteItem = (location: string) => db.removeItem(location);
+const deleteItem = (location: string): ArrayLike<Item> => db.removeItem(location);
 
-const updateItem = (item: Item) => db.updateItem(item);
+const updateItem = (item: Item): Item => db.updateItem(item);
 
-const updateAttachedTags = (location: string, tags: string[]) => db.updateAttachedTags(location, tags);
+const updateAttachedTags = (location: string, tags: string[]): Item => db.updateAttachedTags(location, tags);
 
 
 export {

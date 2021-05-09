@@ -9,9 +9,9 @@ type Handlers = {
     searchByTag: (tag: string) => (e: MouseEvent<HTMLSpanElement>) => void,  // 各タグをクリックしたときに呼ぶ関数
 }
 
-export default ({ items, handlers }: { items: Item[], handlers: Handlers }) => (
+const ItemCards = ({ items, handlers }: { items: Item[], handlers: Handlers }): React.ReactElement => (
     <div className="ui four column grid">
-        {items.map(item => <ItemCard item={item} handlers={handlers} />)}
+        {items.map(item => <ItemCard key={item.location} item={item} handlers={handlers} />)}
     </div>
 );
 
@@ -34,7 +34,9 @@ const ItemCard = ({ item, handlers }: { item: Item, handlers: Handlers }) => (
 const Tags = ({ tags, handler }: { tags: string[], handler: Handlers["searchByTag"] }) => (
     <div className="ui basic labels description">
         {tags.map(tag =>
-            <span className="ui label" onClick={handler(tag)}>{tag}</span>
+            <span className="ui label" key={tag} onClick={handler(tag)}>{tag}</span>
         )}
     </div>
 );
+
+export default ItemCards;

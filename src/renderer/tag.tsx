@@ -2,7 +2,7 @@ import { remote } from "electron";
 import { getItem, updateAttachedTags } from "../main/repositories/itemRepository";
 import { getTags, updateTags } from "../main/repositories/tagRepository";
 import { isValidTagString, parseTagString } from "../main/domain/service/tag";
-import React, { ChangeEvent, FormEvent, MouseEvent, RefObject, useRef } from "react";
+import React, { ChangeEvent, MouseEvent, RefObject } from "react";
 import ReactDOM from "react-dom";
 import TagGroup from "./components/TagGroup";
 import Selector from "./components/Selector";
@@ -16,19 +16,19 @@ const getCheckedTags = (): string[] => {
     if (item === undefined) {
         throw new Error(`"${location}" is invalid path.`);
     }
-    return item.tags
-}
+    return item.tags;
+};
 
 type State = {
     classifiedTags: { [index: string]: string[] },
     checkedTags: string[]
 };
 
-class Content extends React.Component<{}, State> {
+class Content extends React.Component<Record<string, unknown>, State> {
     tagInputBoxRef: RefObject<HTMLInputElement>;
     selectorRef: RefObject<HTMLSelectElement>;
 
-    constructor(props: {}) {
+    constructor(props: Record<string, unknown>) {
         super(props);
         this.state = {
             classifiedTags: getTags(),
@@ -85,7 +85,7 @@ class Content extends React.Component<{}, State> {
         if (e.target.checked) {
             checkedTags.push(tag);
         } else {
-            checkedTags.splice(checkedTags.indexOf(tag), 1)
+            checkedTags.splice(checkedTags.indexOf(tag), 1);
         }
         this.setState({
             checkedTags: checkedTags

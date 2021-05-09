@@ -3,7 +3,7 @@ import { backupDataFile } from './infrastructure/database';
 import { addItems, getNewItems } from './repositories/itemRepository';
 
 
-let mainWindow: BrowserWindow | any = null;
+let mainWindow: BrowserWindow | null = null;
 
 app.whenReady().then(() => {
     createWindow();
@@ -37,8 +37,8 @@ app.on('activate', () => {
     }
 });
 
-ipcMain.on('open-tag-modal', (event: any, location: string) => {
-    const { width, height } = mainWindow.getBounds();
+ipcMain.on('open-tag-modal', (event: Electron.IpcMainEvent, location: string) => {
+    const { width, height } = mainWindow!.getBounds();
     const tagModal = new BrowserWindow({
         width: width,
         height: height,
@@ -47,7 +47,7 @@ ipcMain.on('open-tag-modal', (event: any, location: string) => {
             enableRemoteModule: true,
             additionalArguments: [location]
         },
-        parent: mainWindow,
+        parent: mainWindow!,
         modal: true,
         show: false
     });
