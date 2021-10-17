@@ -4,8 +4,8 @@ import { getItems } from "../../repositories/itemRepository";
 
 type ItemOrder = 'createdAt_desc' | 'createdAt_asc' | 'title_asc';
 const itemCompareFunctions: { [key in ItemOrder]: (i1: Item, i2: Item) => number } = {
-    'createdAt_desc': (i1: Item, i2: Item) => i1.updatedAt == i2.updatedAt ? 0 : (i1.updatedAt < i2.updatedAt ? 1 : -1),
-    'createdAt_asc': (i1: Item, i2: Item) => i1.updatedAt == i2.updatedAt ? 0 : (i1.updatedAt < i2.updatedAt ? -1 : 1),
+    'createdAt_desc': (i1: Item, i2: Item) => new Date(i1.updatedAt) == new Date(i2.updatedAt) ? 0 : (new Date(i1.updatedAt) < new Date(i2.updatedAt) ? 1 : -1),
+    'createdAt_asc': (i1: Item, i2: Item) => new Date(i1.updatedAt) == new Date(i2.updatedAt) ? 0 : (new Date(i1.updatedAt) < new Date(i2.updatedAt) ? -1 : 1),
     'title_asc': (i1: Item, i2: Item) => basename(i1.location) === basename(i2.location) ? 0 : (basename(i1.location) < basename(i2.location) ? -1 : 1)
 };
 
