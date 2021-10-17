@@ -9,6 +9,8 @@ const itemCompareFunctions: { [key in ItemOrder]: (i1: Item, i2: Item) => number
     'title_asc': (i1: Item, i2: Item) => basename(i1.location) === basename(i2.location) ? 0 : (basename(i1.location) < basename(i2.location) ? -1 : 1)
 };
 
+const MAX_ITEMS = 50;  // Maximum number of items that can be displayed on a page
+
 /**
  * Split query by spaces to list of word(string).
  * Strings that contain spaces and are enclosed in double quotes will not be split by spaces.
@@ -18,7 +20,7 @@ const splitQueryString = (query: string): string[] => {
     const splitedWithSpace = query.split(' ');
     const words = [];
     for (let i = 0; i < splitedWithSpace.length; i++) {
-        const word = splitedWithSpace[i]
+        const word = splitedWithSpace[i];
         if (i == 0) {
             words.push(word);
             continue;
@@ -33,9 +35,22 @@ const splitQueryString = (query: string): string[] => {
     return words;
 };
 
-//@ts-ignore
-const searchItems = (query: string, order: ItemOrder = 'title_asc'): Item[] => searchItemsWithANDQuery(getItems(), ...splitQueryString(query))
-    .sort(itemCompareFunctions[order]);
+let memo: [string, Item[]] = [":)", []];  // Save the result of searched before.
+
+const itemLength = (query: string): number => {
+    if (memo[0] === query) return memo[1].length;
+    //@ts-ignore
+    return searchItemsWithANDQuery(getItems(), ...splitQueryString(query)).length;
+};
+
+const searchItems = (query: string, order: ItemOrder = 'title_asc', page = 0): Item[] => {
+    if (memo[0] === query) return memo[1].slice(MAX_ITEMS * page, MAX_ITEMS * (page + 1));
+    //@ts-ignore
+    const items = searchItemsWithANDQuery(getItems(), ...splitQueryString(query))
+        .sort(itemCompareFunctions[order]);
+    memo = [query, items];
+    return items.slice(MAX_ITEMS * page, MAX_ITEMS * (page + 1));
+};
 
 const searchItemsWithANDQuery = (items: Item[], word: string, ...words: string[]): Item[] => {
     let result;
@@ -71,4 +86,4 @@ const perfectMatchingByTag = (items: Item[], tag: string): Item[] =>
 const partialMatchingByTag = (items: Item[], query: string): Item[] =>
     items.filter(({ tags: tags }) => tags.some(tag => tag.includes(query)));
 
-export { searchItems, ItemOrder, splitQueryString };
+export { ItemOrder, MAX_ITEMS, itemLength, searchItems, splitQueryString };

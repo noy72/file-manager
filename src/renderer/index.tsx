@@ -4,9 +4,10 @@ import ReactDOM from 'react-dom';
 import { Item } from "../main/models/Item";
 import Directory from "../main/models/Directory";
 import { deleteItem } from '../main/repositories/itemRepository';
-import { ItemOrder, searchItems } from '../main/domain/service/item';
+import { itemLength, ItemOrder, MAX_ITEMS, searchItems } from '../main/domain/service/item';
 import ItemCards from './components/ItemCards';
 import Selector from './components/Selector';
+import Pagication from './components/Pagination';
 import { flash } from '../main/infrastructure/lowdb';
 
 const { Menu, MenuItem } = remote;
@@ -19,6 +20,8 @@ const selectorOptions: [ItemOrder, string][] = [
 
 type State = {
     items: Item[],
+    itemLength: number,
+    currentPage: number
 };
 
 class Content extends React.Component<Record<string, unknown>, State> {
@@ -29,6 +32,8 @@ class Content extends React.Component<Record<string, unknown>, State> {
         super(props);
         this.state = {
             items: searchItems('', "createdAt_desc"),
+            itemLength: itemLength(''),
+            currentPage: 0,
         };
         this.searchBoxRef = createRef();
         this.selectorRef = createRef();
@@ -36,6 +41,7 @@ class Content extends React.Component<Record<string, unknown>, State> {
         this.searchByInputText = this.searchByInputText.bind(this);
         this.resetState = this.resetState.bind(this);
         this.selectorOnChange = this.selectorOnChange.bind(this);
+        this.createOnClickPagination = this.createOnClickPagination.bind(this);
     }
 
     componentDidMount() {
@@ -56,7 +62,9 @@ class Content extends React.Component<Record<string, unknown>, State> {
                 </div>
             </form>
             <Selector options={selectorOptions} onChange={this.selectorOnChange} ref={this.selectorRef} style={{ marginBottom: "1.5rem" }} />
+            <Pagication current={this.state.currentPage} pageSize={Math.ceil(this.state.itemLength / MAX_ITEMS)} createOnClick={this.createOnClickPagination} />
             <ItemCards items={this.state.items} handlers={this.getHandlers()} />
+            <Pagication current={this.state.currentPage} pageSize={Math.ceil(this.state.itemLength / MAX_ITEMS)} createOnClick={this.createOnClickPagination} />
         </>;
     }
 
@@ -68,7 +76,9 @@ class Content extends React.Component<Record<string, unknown>, State> {
         if (e != undefined) e.preventDefault();
         flash();
         this.setState({
-            items: searchItems(this.searchBoxRef.current!.value, this.getItemOrder())
+            items: searchItems(this.searchBoxRef.current!.value, this.getItemOrder()),
+            itemLength: itemLength(this.searchBoxRef.current!.value),
+            currentPage: 0
         });
     }
 
@@ -76,6 +86,8 @@ class Content extends React.Component<Record<string, unknown>, State> {
         this.searchBoxRef.current!.value = '';
         this.setState({
             items: searchItems('', this.getItemOrder()),
+            itemLength: itemLength(''),
+            currentPage: 0
         });
     }
 
@@ -115,16 +127,35 @@ class Content extends React.Component<Record<string, unknown>, State> {
             this.searchBoxRef.current!.value = inputText;
             this.setState({
                 items: searchItems(inputText, this.getItemOrder()),
+                itemLength: itemLength(inputText),
+                currentPage: 0
             });
         };
 
         return { openItem, addContextMenu, searchByTag };
     }
 
+    createOnClickPagination(pageNumber: number): (e: MouseEvent<HTMLAnchorElement>) => void {
+        return (e) => {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+            });
+            this.setState({
+
+                items: searchItems(this.searchBoxRef.current!.value, this.getItemOrder(), pageNumber),
+                itemLength: itemLength(this.searchBoxRef.current!.value),
+                currentPage: pageNumber
+            });
+        };
+    }
+
     selectorOnChange(e: ChangeEvent<HTMLSelectElement>) {
         const order = e.target.value as ItemOrder;
         this.setState({
-            items: searchItems(this.searchBoxRef.current!.value, order)
+            items: searchItems(this.searchBoxRef.current!.value, order),
+            itemLength: itemLength(this.searchBoxRef.current!.value),
+            currentPage: 0
         });
     }
 }
