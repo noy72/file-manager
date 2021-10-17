@@ -9,8 +9,32 @@ const itemCompareFunctions: { [key in ItemOrder]: (i1: Item, i2: Item) => number
     'title_asc': (i1: Item, i2: Item) => basename(i1.location) === basename(i2.location) ? 0 : (basename(i1.location) < basename(i2.location) ? -1 : 1)
 };
 
+/**
+ * Split query by spaces to list of word(string).
+ * Strings that contain spaces and are enclosed in double quotes will not be split by spaces.
+ * @param query 
+ */
+const splitQueryString = (query: string): string[] => {
+    const splitedWithSpace = query.split(' ');
+    const words = [];
+    for (let i = 0; i < splitedWithSpace.length; i++) {
+        const word = splitedWithSpace[i]
+        if (i == 0) {
+            words.push(word);
+            continue;
+        }
+
+        if (word[word.length - 1] === "\"") {
+            words[words.length - 1] += ` ${word}`;
+        } else {
+            words.push(word);
+        }
+    }
+    return words;
+};
+
 //@ts-ignore
-const searchItems = (query: string, order: ItemOrder = 'title_asc'): Item[] => searchItemsWithANDQuery(getItems(), ...query.split(' '))
+const searchItems = (query: string, order: ItemOrder = 'title_asc'): Item[] => searchItemsWithANDQuery(getItems(), ...splitQueryString(query))
     .sort(itemCompareFunctions[order]);
 
 const searchItemsWithANDQuery = (items: Item[], word: string, ...words: string[]): Item[] => {
@@ -47,4 +71,4 @@ const perfectMatchingByTag = (items: Item[], tag: string): Item[] =>
 const partialMatchingByTag = (items: Item[], query: string): Item[] =>
     items.filter(({ tags: tags }) => tags.some(tag => tag.includes(query)));
 
-export { searchItems, ItemOrder };
+export { searchItems, ItemOrder, splitQueryString };

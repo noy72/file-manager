@@ -1,5 +1,6 @@
 import assert from "assert";
 import proxyquire from "proxyquire";
+import { splitQueryString } from "../../../../src/main/domain/service/item";
 import { Item } from "../../../../src/main/models/Item";
 import { createItem } from "../../utils";
 
@@ -183,4 +184,12 @@ it("Ascending sort by name", () => {
             ]
         );
     }
+});
+
+it("Split query", () => {
+    const query = 'a #a "b b" #"b b"';
+    assert.deepStrictEqual(
+        splitQueryString(query),
+        ['a', '#a', '"b b"', '#"b b"']
+    );
 });
