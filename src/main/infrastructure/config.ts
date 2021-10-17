@@ -8,6 +8,6 @@ const getCommand = (key: string): string[] => {
         return commands[key];
     }
     throw new Error(`${key} は commands に存在しません．`);
-}
+};
 
 export { getCommand };

@@ -28,7 +28,7 @@ const classify = (item: Item | string): Item => {
     }
 
     return new Directory(item);
-}
+};
 
 const getNewItems = (): Item[] => {
     const savedItemPaths = getItems().map(item => item.location);
@@ -36,7 +36,7 @@ const getNewItems = (): Item[] => {
         .filter(path => !savedItemPaths.includes(path))
         .filter(path => !isDotFile(path))
         .map(classify);
-}
+};
 
 const getLocatedItemPaths = (): string[] => getRootLocations().flatMap(
     location => readdirSync(location).flatMap((dir: string) => join(location, dir)));

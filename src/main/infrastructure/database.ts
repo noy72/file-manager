@@ -19,11 +19,11 @@ const updateData = <K extends keyof Data>(key: K, value: any) => {
 
 const updateItems = (items: Item[]): void => {
     updateData("items", items);
-}
+};
 
 const updateTags = (tags: { [index: string]: string[] }): void => {
     updateData("tags", tags);
-}
+};
 
 const backupDataFile = (): void => fs.copyFile('data.json', 'data.backup.json', () => console.log("data.json backed up."));
 

@@ -7,6 +7,6 @@ const exists = (location: string): boolean => {
     } catch (error) {
         return false;
     }
-}
+};
 
 export { exists };
