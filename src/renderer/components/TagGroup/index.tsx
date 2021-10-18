@@ -20,7 +20,7 @@ const TagGroup = ({
                     <h2>{groupName}</h2>
                     <div className="ui form">
                         <div className="inline fields">
-                            {tags.map(tag =>
+                            {tags.sort().map(tag =>
                                 <TagCheckBox key={tag} checked={checkedTags.includes(tag)} name={tag} handler={handler} />
                             )}
                         </div>
