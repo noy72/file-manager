@@ -11,24 +11,22 @@ type Handlers = {
 }
 
 const ItemCards = ({ items, handlers }: { items: Item[], handlers: Handlers }): React.ReactElement => (
-    <div className="ui four column grid">
+    <Card.Group itemsPerRow={4}>
         {items.map(item => <ItemCard key={item.location} item={item} handlers={handlers} />)}
-    </div>
+    </Card.Group>
 );
 
 const ItemCard = ({ item, handlers }: { item: Item, handlers: Handlers }) => (
-    <div className="column">
-        <Card
-            image={item.thumbnailPath()}
-            header={basename(item.location)}
-            description={Tags(item.tags, handlers.searchByTag)}
-            fluid={true}
-            link={true}
-            color={exists(item.location) ? 'black' : 'red'}
-            onClick={handlers.openItem(item)}
-            onContextMenu={handlers.addContextMenu(item)}
-        />
-    </div>
+    <Card
+        image={item.thumbnailPath()}
+        header={basename(item.location)}
+        description={Tags(item.tags, handlers.searchByTag)}
+        fluid={true}
+        link={true}
+        color={exists(item.location) ? 'black' : 'red'}
+        onClick={handlers.openItem(item)}
+        onContextMenu={handlers.addContextMenu(item)}
+    />
 );
 
 const Tags = (tags: string[], handler: Handlers["searchByTag"]) => (
