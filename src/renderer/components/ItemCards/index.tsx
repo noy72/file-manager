@@ -1,6 +1,7 @@
 import { basename } from "path";
 import React, { MouseEvent } from "react";
 import { exists } from "../../../main/infrastructure/file";
+import { Card, Icon, Image } from 'semantic-ui-react'
 import { Item } from "../../../main/models/Item";
 
 type Handlers = {
@@ -16,22 +17,21 @@ const ItemCards = ({ items, handlers }: { items: Item[], handlers: Handlers }): 
 );
 
 const ItemCard = ({ item, handlers }: { item: Item, handlers: Handlers }) => (
-    <div className="column"
-        onClick={handlers.openItem(item)}
-        onContextMenu={handlers.addContextMenu(item)}>
-        <div className={["ui", "fluid", "link", exists(item.location) ? '' : 'red', "card"].join(" ")}>
-            <div className="image">
-                <img src={item.thumbnailPath()} />
-            </div>
-            <div className="content">
-                <div className="header">{basename(item.location)}</div>
-                <Tags tags={item.tags} handler={handlers.searchByTag} />
-            </div>
-        </div>
+    <div className="column">
+        <Card
+            image={item.thumbnailPath()}
+            header={basename(item.location)}
+            description={Tags(item.tags, handlers.searchByTag)}
+            fluid={true}
+            link={true}
+            color={exists(item.location) ? 'black' : 'red'}
+            onClick={handlers.openItem(item)}
+            onContextMenu={handlers.addContextMenu(item)}
+        />
     </div>
 );
 
-const Tags = ({ tags, handler }: { tags: string[], handler: Handlers["searchByTag"] }) => (
+const Tags = (tags: string[], handler: Handlers["searchByTag"]) => (
     <div className="ui basic labels description">
         {tags.map(tag =>
             <span className="ui label" key={tag} onClick={handler(tag)}>{tag}</span>
