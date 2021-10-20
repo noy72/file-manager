@@ -1,7 +1,7 @@
 import { basename } from "path";
 import React, { MouseEvent } from "react";
 import { exists } from "../../../main/infrastructure/file";
-import { Card, Icon, Image } from 'semantic-ui-react'
+import { Card, Icon, Image, Label } from 'semantic-ui-react'
 import { Item } from "../../../main/models/Item";
 
 type Handlers = {
@@ -32,9 +32,9 @@ const ItemCard = ({ item, handlers }: { item: Item, handlers: Handlers }) => (
 );
 
 const Tags = (tags: string[], handler: Handlers["searchByTag"]) => (
-    <div className="ui basic labels description">
+    <div className="description">
         {tags.map(tag =>
-            <span className="ui label" key={tag} onClick={handler(tag)}>{tag}</span>
+            <Label basic key={tag} onClick={handler(tag)}>{tag}</Label>
         )}
     </div>
 );
