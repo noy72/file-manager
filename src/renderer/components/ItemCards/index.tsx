@@ -1,7 +1,7 @@
 import { basename } from "path";
 import React, { MouseEvent } from "react";
 import { exists } from "../../../main/infrastructure/file";
-import { Card, Icon, Image, Label } from 'semantic-ui-react'
+import { Card, Label } from 'semantic-ui-react';
 import { Item } from "../../../main/models/Item";
 
 type Handlers = {
@@ -23,7 +23,7 @@ const ItemCard = ({ item, handlers }: { item: Item, handlers: Handlers }) => (
         description={Tags(item.tags, handlers.searchByTag)}
         fluid={true}
         link={true}
-        color={exists(item.location) ? 'black' : 'red'}
+        color={exists(item.location) ? 'grey' : 'red'}
         onClick={handlers.openItem(item)}
         onContextMenu={handlers.addContextMenu(item)}
     />
