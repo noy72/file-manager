@@ -38,13 +38,13 @@ const splitQueryString = (query: string): string[] => {
 let memo: [string, Item[]] = [":)", []];  // Save the result of searched before.
 
 const itemLength = (query: string): number => {
-    if (memo[0] === query) return memo[1].length;
+    //if (memo[0] === query) return memo[1].length;
     //@ts-ignore
     return searchItemsWithANDQuery(getItems(), ...splitQueryString(query)).length;
 };
 
 const searchItems = (query: string, order: ItemOrder = 'title_asc', page = 0): Item[] => {
-    if (memo[0] === query) return memo[1].slice(MAX_ITEMS * page, MAX_ITEMS * (page + 1));
+    //if (memo[0] === query) return memo[1].slice(MAX_ITEMS * page, MAX_ITEMS * (page + 1));
     //@ts-ignore
     const items = searchItemsWithANDQuery(getItems(), ...splitQueryString(query))
         .sort(itemCompareFunctions[order]);

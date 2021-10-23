@@ -12,7 +12,7 @@ const pagication = ({ current, pageSize, onClick }: Props): React.ReactElement =
         activePage={current + 1}
         totalPages={pageSize}
         onPageChange={(_: SyntheticEvent, data: PaginationProps) => {
-            if (typeof data.activePage === 'number') onClick(data.activePage - 1)
+            if (typeof data.activePage === 'number') onClick(data.activePage - 1);
             else throw Error('Invalid PaginationProps.activePage type');
         }}
     />

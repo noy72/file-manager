@@ -45,7 +45,11 @@ class Content extends React.Component<Record<string, unknown>, State> {
     }
 
     componentDidMount() {
-        ipcRenderer.on('render', () => this.searchByInputText());
+        ipcRenderer.on('render', () => {
+            this.setState({
+                items: searchItems(this.searchBoxRef.current!.value, this.getItemOrder(), this.state.currentPage),
+            });
+        });
     }
 
     componentWillUnmount() {
