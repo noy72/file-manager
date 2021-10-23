@@ -1,6 +1,7 @@
-import React, { ChangeEvent } from "react";
+import React from "react";
+import { Accordion, AccordionTitleProps, Checkbox, CheckboxProps, Grid, Icon } from "semantic-ui-react";
 
-type Handler = (e: ChangeEvent<HTMLInputElement>) => void;
+type Handler = (_: React.FormEvent<HTMLInputElement>, data: CheckboxProps) => void;
 
 type Props = {
     classifiedTags: { [index: string]: string[] },
@@ -12,30 +13,60 @@ const TagGroup = ({
     classifiedTags,
     checkedTags,
     handler
-}: Props): JSX.Element => (
-    <div id="tags">
-        {Object.entries(classifiedTags)
-            .map(([groupName, tags]) => (<>
-                <div>
-                    <h2>{groupName}</h2>
-                    <div className="ui form">
-                        <div className="inline fields">
-                            {tags.sort().map(tag =>
-                                <TagCheckBox key={tag} checked={checkedTags.includes(tag)} name={tag} handler={handler} />
-                            )}
-                        </div>
-                    </div>
-                </div>
-                <hr />
-            </>))}
-    </div>
-);
+}: Props): JSX.Element => {
+    const [activeindices, setindices] = React.useState<string[]>([]);
+
+    const onClick = (_: React.MouseEvent, data: AccordionTitleProps) => {
+        const { index } = data;
+        if (typeof index !== 'string') return;
+
+        if (activeindices.includes(index)) {
+            setindices(activeindices.filter(idx => idx !== index));
+        } else {
+            setindices([...activeindices, index]);
+        }
+    };
+
+    return (
+        <Accordion>
+            {
+                Object.entries(classifiedTags).map(([groupName, tags]) => (<>
+                    <Accordion.Title
+                        index={groupName}
+                        onClick={onClick}
+                        active={activeindices.includes(groupName)}
+                        key={groupName}
+                    >
+                        <Icon name='dropdown' /> {groupName}
+                    </Accordion.Title>
+                    <Accordion.Content
+                        key={groupName}
+                        active={activeindices.includes(groupName)}
+                    >
+                        <Grid columns={5} className={"compact"}>
+                            {
+                                tags.sort().map(tag => (
+                                    <Grid.Column key={tag}>
+                                        <TagCheckBox key={tag} checked={checkedTags.includes(tag)} name={tag} handler={handler} />
+                                    </Grid.Column>
+                                ))
+                            }
+                        </Grid>
+                    </Accordion.Content>
+                </>))
+            }
+        </Accordion>
+    );
+};
 
 const TagCheckBox = ({ checked, name, handler }: { checked: boolean, name: string, handler: Handler }) => (
-    <div className={["ui", checked ? "checked" : "", "checkbox"].join(" ")} >
-        <input onChange={handler} type="checkbox" defaultChecked={checked} className="tag" id={name} value={name} />
-        <label htmlFor={name}>{name}</label>
-    </div>
+    <Checkbox
+        defaultChecked={checked}
+        label={name}
+        onChange={handler}
+        id={name}
+        value={name}
+    />
 );
 
 export default TagGroup;

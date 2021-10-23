@@ -6,6 +6,7 @@ import React, { ChangeEvent, MouseEvent, RefObject } from "react";
 import ReactDOM from "react-dom";
 import TagGroup from "./components/TagGroup";
 import Selector from "./components/Selector";
+import { CheckboxProps } from "semantic-ui-react";
 
 /**現在対象にとっているitemのlocationを返す． */
 const getCurrentLocation = () => process.argv[process.argv.length - 1];
@@ -79,10 +80,11 @@ class Content extends React.Component<Record<string, unknown>, State> {
         </>;
     }
 
-    tagCheckBoxChangeHandler(e: ChangeEvent<HTMLInputElement>) {
+    tagCheckBoxChangeHandler(_: React.FormEvent<HTMLInputElement>, data: CheckboxProps) {
         const checkedTags = this.state.checkedTags;
-        const tag = e.target.value;
-        if (e.target.checked) {
+        const tag = data.label?.toString();
+        if (tag === undefined) return;
+        if (data.checked) {
             checkedTags.push(tag);
         } else {
             checkedTags.splice(checkedTags.indexOf(tag), 1);
