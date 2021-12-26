@@ -1,57 +1,22 @@
 {
-  "name": "explower",
-  "version": "0.0.9",
-  "main": "src/main/main.js",
+  "name": "my-new-app",
+  "productName": "my-new-app",
+  "version": "1.0.0",
+  "description": "My Electron application description",
+  "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
-    "test-all": "IS_TEST=true mocha tests --recursive",
-    "test": "IS_TEST=true mocha",
     "package": "electron-forge package",
     "make": "electron-forge make",
-    "build": "electron-builder --win --x64",
-    "watch": "tsc --watch",
-    "lint-main": "eslint src/main",
-    "lint-ren": "eslint src/renderer",
-    "lint-test": "eslint tests"
+    "publish": "electron-forge publish",
+    "lint": "eslint --ext .ts,.tsx ."
   },
-  "author": "anoy <kuma.tola3@gmail.com>",
+  "keywords": [],
+  "author": {
+    "name": "noy72",
+    "email": "kuma.tola3@gmail.com"
+  },
   "license": "MIT",
-  "devDependencies": {
-    "@electron-forge/cli": "^6.0.0-beta.54",
-    "@electron-forge/maker-deb": "^6.0.0-beta.54",
-    "@electron-forge/maker-rpm": "^6.0.0-beta.54",
-    "@electron-forge/maker-squirrel": "^6.0.0-beta.54",
-    "@electron-forge/maker-zip": "^6.0.0-beta.54",
-    "@types/mocha": "^8.2.2",
-    "@types/node": "^14.14.19",
-    "@types/proxyquire": "^1.3.28",
-    "@types/react": "^17.0.4",
-    "@types/react-dom": "^17.0.3",
-    "@types/selenium-webdriver": "^4.0.12",
-    "@types/sinon": "^9.0.10",
-    "@typescript-eslint/eslint-plugin": "^4.22.1",
-    "@typescript-eslint/parser": "^4.22.1",
-    "electron": "^11.4.3",
-    "electron-builder": "^22.9.1",
-    "eslint": "^7.25.0",
-    "mocha": "^8.3.2",
-    "proxyquire": "^2.1.3",
-    "rewire": "^5.0.0",
-    "selenium-webdriver": "^4.0.0-beta.3",
-    "sinon": "^9.2.4",
-    "spectron": "^13.0.0"
-  },
-  "dependencies": {
-    "@types/lowdb": "^1.0.9",
-    "electron-squirrel-startup": "^1.0.0",
-    "eslint-plugin-react": "^7.23.2",
-    "lodash-id": "^0.14.0",
-    "lowdb": "^1.0.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "semantic-ui-react": "^2.0.4",
-    "typescript": "^4.2.2"
-  },
   "config": {
     "forge": {
       "packagerConfig": {},
@@ -59,7 +24,7 @@
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "explower"
+            "name": "my_new_app"
           }
         },
         {
@@ -76,7 +41,48 @@
           "name": "@electron-forge/maker-rpm",
           "config": {}
         }
+      ],
+      "plugins": [
+        [
+          "@electron-forge/plugin-webpack",
+          {
+            "mainConfig": "./webpack.main.config.js",
+            "renderer": {
+              "config": "./webpack.renderer.config.js",
+              "entryPoints": [
+                {
+                  "html": "./src/index.html",
+                  "js": "./src/renderer.ts",
+                  "name": "main_window"
+                }
+              ]
+            }
+          }
+        ]
       ]
     }
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^6.0.0-beta.61",
+    "@electron-forge/maker-deb": "^6.0.0-beta.61",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.61",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.61",
+    "@electron-forge/maker-zip": "^6.0.0-beta.61",
+    "@electron-forge/plugin-webpack": "6.0.0-beta.61",
+    "@typescript-eslint/eslint-plugin": "^4.0.1",
+    "@typescript-eslint/parser": "^4.0.1",
+    "@vercel/webpack-asset-relocator-loader": "1.7.0",
+    "css-loader": "^6.0.0",
+    "electron": "16.0.5",
+    "eslint": "^7.6.0",
+    "eslint-plugin-import": "^2.20.0",
+    "fork-ts-checker-webpack-plugin": "^6.0.1",
+    "node-loader": "^2.0.0",
+    "style-loader": "^3.0.0",
+    "ts-loader": "^9.2.2",
+    "typescript": "^4.0.2"
+  },
+  "dependencies": {
+    "electron-squirrel-startup": "^1.0.0"
   }
 }
