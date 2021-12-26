@@ -96,7 +96,11 @@ class Content extends React.Component<Record<string, unknown>, State> {
     }
 
     getHandlers() {
-        const openItem = (item: Item) => () => item.open();
+        const openItem = (item: Item) => (e: React.MouseEvent<HTMLSpanElement, globalThis.MouseEvent>): void => {
+            const className = (e.target as Element).className;
+            if (className.includes("expand-button") || className.includes("icon")) return;
+            item.open();
+        }
         const addContextMenu = (item: Item) => (e: MouseEvent<HTMLDivElement>) => {
             e.preventDefault();
             const menuItemObjects = [{

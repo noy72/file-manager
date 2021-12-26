@@ -1,6 +1,6 @@
 {
   "name": "explower",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "main": "src/main/main.js",
   "scripts": {
     "start": "electron-forge start",
@@ -45,7 +45,6 @@
     "@types/lowdb": "^1.0.9",
     "electron-squirrel-startup": "^1.0.0",
     "eslint-plugin-react": "^7.23.2",
-    "fomantic-ui-css": "^2.8.8",
     "lodash-id": "^0.14.0",
     "lowdb": "^1.0.0",
     "react": "^17.0.2",

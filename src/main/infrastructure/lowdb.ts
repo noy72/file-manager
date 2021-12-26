@@ -1,7 +1,6 @@
 //import lodashId from 'lodash-id';
 import low from 'lowdb';
 import FileSync from 'lowdb/adapters/FileSync';
-import rootpath from '../../../rootpath';
 import { Data, Item } from '../models/Item';
 
 let adapter: low.AdapterSync<Data>;
@@ -13,9 +12,7 @@ let db: low.LowdbSync<Data>;
 // TODO: main と renderer の実装を切り離す
 const flash = (): void => {
     adapter = new FileSync<Data>(
-        (process.env.IS_TEST || process.argv.includes('IS_TEST')) ?
-            rootpath('tests/data/data.json') :
-            'data.json'
+        'data.json'
     );
     db = low(adapter);
 };
