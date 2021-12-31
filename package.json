@@ -3,13 +3,15 @@
   "productName": "my-new-app",
   "version": "1.0.0",
   "description": "My Electron application description",
+  "type": "module",
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "lint": "eslint --ext .ts,.tsx ."
+    "lint": "eslint --ext .ts,.tsx src",
+    "jest": "cross-env NODE_OPTIONS=--experimental-vm-modules jest"
   },
   "keywords": [],
   "author": {
@@ -72,9 +74,10 @@
     "@electron-forge/maker-zip": "^6.0.0-beta.61",
     "@electron-forge/plugin-webpack": "6.0.0-beta.61",
     "@types/jest": "^27.0.3",
+    "@types/lowdb": "^1.0.11",
     "@types/react": "^17.0.38",
     "@types/react-dom": "^17.0.11",
-    "@types/sql.js": "^1.4.3",
+    "@types/uuid": "^8.3.3",
     "@typescript-eslint/eslint-plugin": "^4.0.1",
     "@typescript-eslint/parser": "^4.0.1",
     "@vercel/webpack-asset-relocator-loader": "1.7.0",
@@ -83,6 +86,7 @@
     "css-loader": "^6.0.0",
     "electron": "16.0.5",
     "eslint": "^7.6.0",
+    "eslint-import-resolver-typescript": "^2.5.0",
     "eslint-plugin-import": "^2.20.0",
     "fork-ts-checker-webpack-plugin": "^6.0.1",
     "jest": "^27.4.5",
@@ -94,7 +98,10 @@
   },
   "dependencies": {
     "electron-squirrel-startup": "^1.0.0",
+    "lodash": "^4.17.21",
+    "lowdb": "^3.0.0",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "uuid": "^8.3.2"
   }
 }
