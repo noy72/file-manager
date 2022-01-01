@@ -22,7 +22,7 @@ const getItems = (query: string, order: string) => {
 
 };
 
-export const splitQuery = (query: string) => {
+export const splitQuery = (query: string): SearchQuery[] => {
     const searchQuery: SearchQuery[] = [];
     let closed = false;
     let tmp: SearchQuery = {
@@ -59,7 +59,7 @@ export const splitQuery = (query: string) => {
     return searchQuery;
 };
 
-export const filterItems = (items: Item[], searchQuery: SearchQuery[]) => {
+export const filterItems = (items: Item[], searchQuery: SearchQuery[]): Item[] => {
     let filteredItems = items;
     searchQuery.forEach(query => {
         if (query.isTag) {
