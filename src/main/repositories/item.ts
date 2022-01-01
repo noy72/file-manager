@@ -17,7 +17,7 @@ type SearchQuery = {
     isTag: boolean
 };
 
-const getItems = (query: string, order: string) => {
+const getItems = (query: string, order: keyof Item, desc: boolean) => {
     const searchQuery = splitQuery(query.trim());
 
 };
@@ -77,3 +77,11 @@ export const filterItems = (items: Item[], searchQuery: SearchQuery[]): Item[] =
     });
     return filteredItems;
 };
+
+export const sortItems = (items: Item[], key: keyof Item, desc: boolean): Item[] =>
+    items.sort((a: Item, b: Item) => {
+        const aVal = key === 'location' ? basename(a[key]) : a[key];
+        const bVal = key === 'location' ? basename(b[key]) : b[key];
+        if (aVal === bVal) return 0;
+        return (aVal < bVal ? -1 : 1) * (desc ? -1 : 1);
+    });

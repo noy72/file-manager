@@ -1,4 +1,4 @@
-import { filterItems, splitQuery } from '../../../src/main/repositories/item';
+import { filterItems, sortItems, splitQuery } from '../../../src/main/repositories/item';
 import { createItem } from '../../utils';
 
 test('splitQuery', () => {
@@ -63,5 +63,25 @@ describe('filterItems', () => {
         ];
         expect(filterItems(items, splitQuery("a b")).length).toBe(3);
         expect(filterItems(items, splitQuery("\"a b\"")).length).toBe(1);
+    });
+});
+
+describe('sortItems', () => {
+    const items = [
+        createItem({ location: "1", createdAt: new Date("2022-01-03") }),
+        createItem({ location: "2", createdAt: new Date("2022-01-02") }),
+        createItem({ location: "3", createdAt: new Date("2022-01-01") }),
+    ];
+
+    test('order by location asc', () => {
+        expect(sortItems(items, 'location', false)[0].location).toBe("1");
+    });
+
+    test('order by location desc', () => {
+        expect(sortItems(items, 'location', true)[0].location).toBe("3");
+    });
+
+    test('order by createdAt asc', () => {
+        expect(sortItems(items, 'createdAt', false)[0].location).toBe("3");
     });
 });
