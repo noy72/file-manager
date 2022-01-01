@@ -1,5 +1,6 @@
-import { filterItems, sortItems, splitQuery } from '../../../src/main/repositories/item';
-import { createItem } from '../../utils';
+import { getItems, updateData } from '../../../src/main/infrastructure/lowdb';
+import { filterItems, findItemByQuery, sortItems, splitQuery } from '../../../src/main/repositories/item';
+import { createData, createItem } from '../../utils';
 
 test('splitQuery', () => {
     const words = splitQuery('abc "a b c" #xyz #"x y z"');
@@ -84,4 +85,19 @@ describe('sortItems', () => {
     test('order by createdAt asc', () => {
         expect(sortItems(items, 'createdAt', false)[0].location).toBe("3");
     });
+});
+
+test('findItemByQuery', () => {
+    const data = createData();
+    data.items = [
+        createItem({ location: "ab", tags: ["ab"], createdAt: new Date("2022-01-01") }),
+        createItem({ location: "abcd", tags: ["abc"], createdAt: new Date("2022-01-02") }),
+        createItem({ location: "abcd", tags: ["ab"], createdAt: new Date("2022-01-03") }),
+        createItem({ location: "abd", tags: ["abc"], createdAt: new Date("2022-01-04") }),
+    ];
+
+    updateData(data);
+    const items = findItemByQuery("ab d #\"abc\"", 'createdAt', true);
+    expect(items.length).toBe(2);
+    expect(items[0].createdAt).toEqual(new Date("2022-01-04"));
 });

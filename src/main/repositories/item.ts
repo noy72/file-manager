@@ -8,6 +8,7 @@
 タグの一覧を取得する
 */
 
+import { getItems } from "../infrastructure/lowdb";
 import { basename } from "path";
 import { Item } from "../../types";
 
@@ -17,9 +18,11 @@ type SearchQuery = {
     isTag: boolean
 };
 
-const getItems = (query: string, order: keyof Item, desc: boolean) => {
-    const searchQuery = splitQuery(query.trim());
-
+export const findItemByQuery = (query: string, key: keyof Item, desc: boolean) => {
+    const searchQueries = splitQuery(query.trim());
+    const items = getItems();
+    const filteredItems = filterItems(items, searchQueries);
+    return sortItems(filteredItems, key, desc);
 };
 
 export const splitQuery = (query: string): SearchQuery[] => {
