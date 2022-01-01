@@ -6,7 +6,12 @@ export type Data = {
 };
 
 export type Locations = string[];
-export type Commands = { [index: string]: string[] };
+export type Commands = {
+    image: string[],
+    images: string[],
+    video: string[],
+    other: string[],
+};
 export type Tags = { [index: string]: string[] };
 export type Item = {
     location: string;  // Primary Key
@@ -17,4 +22,4 @@ export type Item = {
     type: ContentType;
 };
 
-export type ContentType = 'image' | 'images' | 'other' | 'video';
+export type ContentType = keyof Commands;

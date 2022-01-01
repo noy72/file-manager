@@ -7,8 +7,10 @@ export const createData = (): Data => ({
         "/path/2",
     ],
     commands: {
-        "com1": ["a", "b", "c"],
-        "com2": ["1", "2"],
+        "image": ["a", "b", "c"],
+        "images": ["1", "2"],
+        "video": [],
+        "other": [],
     },
     tags: {
         "group1": ["aa"],

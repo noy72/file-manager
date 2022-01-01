@@ -27,7 +27,7 @@ describe('read', () => {
     });
 
     test('getCommands', () => {
-        expect(getCommands()["com1"]).toEqual(["a", "b", "c"]);
+        expect(getCommands()["image"]).toEqual(["a", "b", "c"]);
     });
 });
 
