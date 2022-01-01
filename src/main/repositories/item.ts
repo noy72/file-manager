@@ -75,4 +75,5 @@ export const filterItems = (items: Item[], searchQuery: SearchQuery[]) => {
             );
         }
     });
+    return filteredItems;
 };
