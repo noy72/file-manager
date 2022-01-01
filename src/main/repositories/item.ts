@@ -1,13 +1,3 @@
-/*
-クエリストリングからアイテムを検索する
-並び替え
-特定のアイテムを取得する
-アイテムを特定のソフトウェアで開く
-アイテムを削除する
-アイテムのタグを付け替える
-タグの一覧を取得する
-*/
-
 import { getItems } from "../infrastructure/lowdb";
 import { basename } from "path";
 import { Item } from "../../types";
