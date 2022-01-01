@@ -1,28 +1,11 @@
 import { addItem, getCommands, getItems, getLocations, getTags, removeItem, updateData, updateItem, updateItemTags } from ' ../../../src/main/infrastructure/lowdb';
-import { Data } from '../../../src/types';
-import { createItem } from '../../utils';
+import { createData, createItem } from '../../utils';
 
 
-
-const getData = (): Data => ({
-    locations: [
-        "/path/1",
-        "/path/2",
-    ],
-    commands: {
-        "com1": ["a", "b", "c"],
-        "com2": ["1", "2"],
-    },
-    tags: {
-        "group1": ["aa"],
-        "group2": ["xx"]
-    },
-    items: []
-});
 
 describe('read', () => {
     beforeAll(() => {
-        updateData(getData());
+        updateData(createData());
         ["/path/1/a", "/path/1/b"].forEach(location =>
             addItem(createItem({ location })));
     });
@@ -50,7 +33,7 @@ describe('read', () => {
 
 describe('items', () => {
     beforeEach(() => {
-        updateData(getData());
+        updateData(createData());
     });
 
     test('addItem', () => {
@@ -95,4 +78,3 @@ describe('items', () => {
         expect(getItems()[0].tags).toEqual(tags2);
     });
 });
-
