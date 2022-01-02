@@ -1,5 +1,6 @@
-import { Data, Item } from "../src/types";
+import path from 'path';
 import uuid from 'uuid';
+import { Data, Item } from "../src/types";
 
 export const createData = (): Data => ({
     locations: [
@@ -10,6 +11,7 @@ export const createData = (): Data => ({
         "image": ["a", "b", "c"],
         "images": ["1", "2"],
         "video": [],
+        "videos": [],
         "other": [],
     },
     tags: {
@@ -29,3 +31,5 @@ export const createItem = (item: any = {}): Item => ({
     type: 'other',
     ...item,
 });
+
+export const assetsPath = path.resolve('.', 'tests', 'assets');

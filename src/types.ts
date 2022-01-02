@@ -10,6 +10,7 @@ export type Commands = {
     image: string[],
     images: string[],
     video: string[],
+    videos: string[],
     other: string[],
 };
 export type Tags = { [index: string]: string[] };
