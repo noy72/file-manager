@@ -64,8 +64,8 @@
         }
     },
     "devDependencies": {
-        "@babel/core": "^7.16.5",
-        "@babel/preset-react": "^7.16.5",
+        "@babel/core": "^7.16.7",
+        "@babel/preset-react": "^7.16.7",
         "@electron-forge/cli": "^6.0.0-beta.61",
         "@electron-forge/maker-deb": "^6.0.0-beta.61",
         "@electron-forge/maker-rpm": "^6.0.0-beta.61",
