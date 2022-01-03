@@ -22,14 +22,17 @@ export const createData = (): Data => ({
 });
 
 
-export const createItem = (item: any = {}): Item => ({
-    location: uuid.v4(),
-    tags: [],
-    thumbnail: "/path/to/thumbnail",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    type: 'other',
-    ...item,
-});
+export const createItem = (item: any = {}): Item => {
+    const location = uuid.v4();
+    return {
+        location,
+        tags: [],
+        thumbnail: `${location}/thumbnail`,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        type: 'other',
+        ...item,
+    }
+};
 
 export const assetsPath = path.resolve('.', 'tests', 'assets');
