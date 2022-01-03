@@ -1,5 +1,6 @@
 /** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
-module.exports = {
+
+const common = {
     preset: "ts-jest/presets/js-with-ts-esm",
     globals: {
         'ts-jest': {
@@ -10,5 +11,21 @@ module.exports = {
     moduleNameMapper: {
         '^(\\.{1,2}/.*)\\.js$': '$1',
     },
-    testEnvironment: 'node',
+}
+
+module.exports = {
+    projects: [
+        {
+            displayName: 'node',
+            testEnvironment: 'node',
+            testMatch: ["<rootDir>/tests/main/**/*.test.ts"],
+            ...common
+        },
+        {
+            displayName: 'jsdom',
+            testEnvironment: 'jsdom',
+            testMatch: ["<rootDir>/tests/renderer/**/*.test.tsx"],
+            ...common
+        },
+    ],
 };
