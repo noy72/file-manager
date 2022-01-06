@@ -1,7 +1,9 @@
 import path from "path";
-import { statSync } from "fs";
+import { accessSync, statSync } from "fs";
 import { ContentType } from "../../types";
 import { recursiveReaddir } from "../infrastructure/fileSystem";
+import { ItemWithExistance } from "../../types";
+import { getItems } from "../infrastructure/lowdb";
 
 const extTypes = {
     image: ['.gif', '.jpg', '.jpeg', '.png', '.webp'],
@@ -29,3 +31,16 @@ export const specifyContentType = (location: string): ContentType => {
 
     return 'other';
 }
+
+export const getItemsWithExistance = (): ItemWithExistance[] => getItems().map(item => {
+    let exist = true;
+    try {
+        accessSync(item.location);
+    } catch {
+        exist = false;
+    }
+    return {
+        ...item,
+        exist
+    };
+});
