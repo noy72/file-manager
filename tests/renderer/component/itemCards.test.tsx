@@ -4,7 +4,7 @@ import jest from "jest-mock";
 import { fireEvent, render } from "@testing-library/react";
 import { createItem, assetsPath } from "../../utils";
 import ItemCards from "../../../src/renderer/component/itemCards";
-import { ItemWithExistance } from "../../../src/renderer/types";
+import { ItemWithExistance } from "../../../src/types";
 
 
 const items: ItemWithExistance[] = [{

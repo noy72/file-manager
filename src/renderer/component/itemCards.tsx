@@ -1,7 +1,7 @@
 import React, { MouseEvent } from "react";
 import { basename } from "path";
 import { Card } from "semantic-ui-react";
-import { ItemWithExistance } from "../types";
+import { ItemWithExistance } from "../../types";
 
 type Event = (e: MouseEvent<HTMLElement>) => void;
 

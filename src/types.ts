@@ -22,5 +22,8 @@ export type Item = {
     updatedAt: Date;
     type: ContentType;
 };
+export type ItemWithExistance = Item & {
+    exist: boolean
+};
 
 export type ContentType = keyof Commands;
