@@ -38,6 +38,12 @@ const addItem = (item: Item): void => {
     db.write();
 };
 
+const addItems = (newItems: Item[]): void => {
+    const items = getChain().get('items').push(...newItems).value();
+    db.data.items = items;
+    db.write();
+};
+
 const removeItem = (location: string): void => {
     getChain().get('items').remove({ location }).value();
     db.write();
@@ -65,6 +71,7 @@ export {
     getTags,
     getCommands,
     addItem,
+    addItems,
     removeItem,
     updateData,
     updateItem,

@@ -1,4 +1,4 @@
-import { addItem, getCommands, getItems, getLocations, getTags, removeItem, updateData, updateItem, updateItemTags } from ' ../../../src/main/infrastructure/lowdb';
+import { addItem, addItems, getCommands, getItems, getLocations, getTags, removeItem, updateData, updateItem, updateItemTags } from ' ../../../src/main/infrastructure/lowdb';
 import { createData, createItem } from '../../utils';
 
 
@@ -39,6 +39,11 @@ describe('items', () => {
     test('addItem', () => {
         addItem(createItem());
         addItem(createItem());
+        expect(getItems().length).toBe(2);
+    });
+
+    test('addItems', () => {
+        addItems([createItem(), createItem()]);
         expect(getItems().length).toBe(2);
     });
 
