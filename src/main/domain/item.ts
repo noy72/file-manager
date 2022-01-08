@@ -1,10 +1,10 @@
 import path from "path";
-import { accessSync, statSync, readdirSync } from "fs";
-import { ContentType, Item, ItemWithExistance } from "../../types";
-import { recursiveReaddir } from "../infrastructure/fileSystem";
+import { statSync, readdirSync } from "fs";
+import { ContentType, Item, ItemForRenderer } from "../../types";
+import { getEncodedImage, recursiveReaddir, exist } from "../infrastructure/fileSystem";
 import { addItems, getItems, getLocations } from "../infrastructure/lowdb";
 
-const extTypes = {
+export const extTypes = {
     image: ['.gif', '.jpg', '.jpeg', '.png', '.webp'],
     video: ['.avi', '.mp4', '.mov', '.wmv'],
 };
@@ -31,16 +31,14 @@ export const specifyContentType = (location: string): ContentType => {
     return 'other';
 }
 
-export const getItemsWithExistance = (): ItemWithExistance[] => getItems().map(item => {
-    let exist = true;
-    try {
-        accessSync(item.location);
-    } catch {
-        exist = false;
-    }
+export const getItemsForRenderer = (): ItemForRenderer[] => getItems().map(item => {
+    const existThumbnail = exist(item.thumbnail);
     return {
         ...item,
-        exist
+        exist: exist(item.location),
+        name: path.basename(item.location),
+        encodedThumbnail: existThumbnail ? getEncodedImage(item.thumbnail) : 'TODO',
+        thumbnailExt: existThumbnail ? path.extname(item.thumbnail) : "TODO",
     };
 });
 
@@ -76,7 +74,7 @@ const getThumbnail = (location: string) => {
             file => extTypes.image.includes(path.extname(file))
         );
         if (images.length === 0) return 'TODO';
-        return images.sort()[0];
+        return path.join(location, images.sort()[0]);
     }
     return 'TODO';
 };
