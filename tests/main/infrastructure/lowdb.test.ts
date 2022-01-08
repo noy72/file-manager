@@ -5,7 +5,11 @@ import { createData, createItem } from '../../utils';
 
 describe('read', () => {
     beforeAll(() => {
-        updateData(createData());
+        const data = createData();
+        data.locations = ['/path/1', '/path/2'];
+        data.tags = { 'group1': ["aa"] };
+        data.commands.image = ["a", "b", "c"];
+        updateData(data);
         ["/path/1/a", "/path/1/b"].forEach(location =>
             addItem(createItem({ location })));
     });

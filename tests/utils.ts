@@ -2,23 +2,19 @@ import path from 'path';
 import uuid from 'uuid';
 import { Data, Item } from "../src/types";
 
-export const createData = (): Data => ({
-    locations: [
-        "/path/1",
-        "/path/2",
-    ],
+
+export const createData = (data: any = {}): Data => ({
+    locations: [],
     commands: {
-        "image": ["a", "b", "c"],
-        "images": ["1", "2"],
+        "image": [],
+        "images": [],
         "video": [],
         "videos": [],
         "other": [],
     },
-    tags: {
-        "group1": ["aa"],
-        "group2": ["xx"]
-    },
-    items: []
+    tags: {},
+    items: [],
+    ...data,
 });
 
 
