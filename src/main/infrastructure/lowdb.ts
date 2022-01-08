@@ -1,6 +1,6 @@
 import lodash from 'lodash';
 import { MemorySync, LowSync, JSONFileSync } from 'lowdb';
-import { accessSync, writeFileSync, readdirSync } from 'fs';
+import { accessSync, writeFileSync } from 'fs';
 import path from 'path';
 import { Commands, Data, Item, Locations, Tags } from '../../types';
 

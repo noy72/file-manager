@@ -1,7 +1,5 @@
-import { ipcRenderer } from 'electron';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { RENDER_ITEMS } from '../../constant';
 import ItemCards from '../component/itemCards';
 import { ItemForRenderer } from '../../types';
 
@@ -23,14 +21,11 @@ class Content extends React.Component<Record<string, unknown>, State> {
         });
     }
 
-    componentWillUnmount() {
-    }
-
     render() {
         return <>
             <ItemCards
                 items={this.state.items}
-                onContextMenu={e => {
+                onContextMenu={_e => {
                     throw new Error('Function not implemented.');
                 }}
             />

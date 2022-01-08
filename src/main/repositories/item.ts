@@ -8,7 +8,7 @@ type SearchQuery = {
     isTag: boolean
 };
 
-export const findItemByQuery = (query: string, key: keyof Item, desc: boolean) => {
+export const findItemByQuery = (query: string, key: keyof Item, desc: boolean): Item[] => {
     const searchQueries = splitQuery(query.trim());
     const items = getItems();
     const filteredItems = filterItems(items, searchQueries);

@@ -1,4 +1,4 @@
-import { contextBridge, ipcRenderer, ipcMain } from 'electron';
+import { contextBridge, ipcRenderer } from 'electron';
 import { GET_ITEMS } from '../constant';
 import { ItemForRenderer } from '../types';
 

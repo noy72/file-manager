@@ -1,4 +1,4 @@
-import { ItemWithExistance } from "src/types";
+import { ItemWithExistance } from "../types";
 
 declare global {
     interface Window {

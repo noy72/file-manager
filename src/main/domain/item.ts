@@ -42,7 +42,7 @@ export const getItemsForRenderer = (): ItemForRenderer[] => getItems().map(item 
     };
 });
 
-export const syncItemsFromLocations = () => {
+export const syncItemsFromLocations = (): void => {
     const existItemLocations = new Set(getItems().map(item => item.location));
 
     const newItems = getLocations().flatMap(parentLoc => {
