@@ -53,8 +53,11 @@
                             "entryPoints": [
                                 {
                                     "html": "./src/static/index.html",
-                                    "js": "./src/renderer/renderer.tsx",
-                                    "name": "main_window"
+                                    "js": "./src/renderer/page/renderer.tsx",
+                                    "name": "main_window",
+                                    "preload": {
+                                        "js": "./src/renderer/preload.ts"
+                                    }
                                 }
                             ]
                         }
