@@ -1,6 +1,6 @@
 import path from 'path';
-import { getItemsWithExistance, specifyContentType } from '../../../src/main/domain/item';
-import { updateData } from '../../../src/main/infrastructure/lowdb';
+import { getItemsWithExistance, specifyContentType, syncItemsFromLocations } from '../../../src/main/domain/item';
+import { getItems, updateData } from '../../../src/main/infrastructure/lowdb';
 import { assetsPath, createData, createItem } from '../../utils';
 
 const loc = (name: string) => path.join(assetsPath, "sample_dir", name);
@@ -14,16 +14,35 @@ test('specifyContentType', () => {
     expect(specifyContentType(loc('text.txt'))).toBe('other');
 });
 
-test('getItemsWithExistance', () => {
-    const invalidLocation = "/exist/false";
-    const data = createData();
-    data.items = [
-        createItem({ location: invalidLocation }),
-        createItem({ location: loc('dir01') }),
-    ];
-    updateData(data);
+describe('items', () => {
+    beforeEach(() => {
+        updateData(createData());
+    });
 
-    const items = getItemsWithExistance();
-    expect(items.find(item => item.location === loc('dir01')).exist).toBeTruthy();
-    expect(items.find(item => item.location === invalidLocation).exist).toBeFalsy();
+    test('getItemsWithExistance', () => {
+        const invalidLocation = "/exist/false";
+        const data = createData();
+        data.items = [
+            createItem({ location: invalidLocation }),
+            createItem({ location: loc('dir01') }),
+        ];
+        updateData(data);
+
+        const items = getItemsWithExistance();
+        expect(items.find(item => item.location === loc('dir01')).exist).toBeTruthy();
+        expect(items.find(item => item.location === invalidLocation).exist).toBeFalsy();
+    });
+
+    test('syncItemsFormLocations', () => {
+        expect(getItems().length).toBe(0);
+        syncItemsFromLocations();
+        expect(getItems().length).toBe(0);
+
+        const data = createData();
+        data.locations = [path.join(assetsPath, 'sample_dir')];
+        updateData(data);
+        syncItemsFromLocations();
+        expect(getItems().length).toBe(6);
+    });
+
 });

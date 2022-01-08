@@ -1,9 +1,8 @@
 import path from "path";
-import { accessSync, statSync } from "fs";
-import { ContentType } from "../../types";
+import { accessSync, statSync, readdirSync } from "fs";
+import { ContentType, Item, ItemWithExistance } from "../../types";
 import { recursiveReaddir } from "../infrastructure/fileSystem";
-import { ItemWithExistance } from "../../types";
-import { getItems } from "../infrastructure/lowdb";
+import { addItems, getItems, getLocations } from "../infrastructure/lowdb";
 
 const extTypes = {
     image: ['.gif', '.jpg', '.jpeg', '.png', '.webp'],
@@ -44,3 +43,40 @@ export const getItemsWithExistance = (): ItemWithExistance[] => getItems().map(i
         exist
     };
 });
+
+export const syncItemsFromLocations = () => {
+    const existItemLocations = new Set(getItems().map(item => item.location));
+
+    const newItems = getLocations().flatMap(parentLoc => {
+        const names = readdirSync(parentLoc);
+        const childLocs = names.map(name => path.join(parentLoc, name));
+        return childLocs
+            .filter(childLoc => !existItemLocations.has(childLoc))
+            .map(newChildLoc => createItem(newChildLoc));
+    });
+    addItems(newItems);
+};
+
+const createItem = (location: string): Item => {
+    const now = new Date();
+    return {
+        location,
+        thumbnail: getThumbnail(location),
+        tags: [],
+        createdAt: now,
+        updatedAt: now,
+        type: specifyContentType(location),
+    };
+};
+
+const getThumbnail = (location: string) => {
+    if (statSync(location).isDirectory()) {
+        const files = readdirSync(location);
+        const images = files.filter(
+            file => extTypes.image.includes(path.extname(file))
+        );
+        if (images.length === 0) return 'TODO';
+        return images.sort()[0];
+    }
+    return 'TODO';
+};
