@@ -1,5 +1,5 @@
 import path from 'path';
-import { getEncodedImage, recursiveReaddir } from '../../../src/main/infrastructure/fileSystem';
+import { exist, getEncodedImage, recursiveReaddir } from '../../../src/main/infrastructure/fileSystem';
 import { assetsPath } from '../../utils';
 
 const loc = (name: string) => path.join(assetsPath, "sample_dir", name);
@@ -20,3 +20,9 @@ test('getEncodedImage', () => {
     const location = path.join(assetsPath, 'sample_dir', 'dir01', 'img01.png');
     expect(getEncodedImage(location)).toBe('');
 });
+
+test('exist', () => {
+    const valid = path.join(assetsPath, 'sample_dir', 'dir01', 'img01.png');
+    expect(exist(valid)).toBeTruthy();
+    expect(exist('invalid/path')).toBeFalsy();
+})
