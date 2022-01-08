@@ -1,12 +1,11 @@
 import React, { MouseEvent } from "react";
-import { basename } from "path";
 import { Card } from "semantic-ui-react";
-import { ItemWithExistance } from "../../types";
+import { ItemForRenderer } from "../../types";
 
 type Event = (e: MouseEvent<HTMLElement>) => void;
 
 const ItemCards = (
-    { items, onContextMenu }: { items: ItemWithExistance[], onContextMenu: Event }
+    { items, onContextMenu }: { items: ItemForRenderer[], onContextMenu: Event }
 ): JSX.Element => (
     <Card.Group itemsPerRow={4} data-testid={"cards"}>
         {items.map((item, index) =>
@@ -20,12 +19,12 @@ const ItemCards = (
 );
 
 const ItemCard = (
-    { index, item, onContextMenu }: { index: number, item: ItemWithExistance, onContextMenu: Event }
+    { index, item, onContextMenu }: { index: number, item: ItemForRenderer, onContextMenu: Event }
 ): JSX.Element => (
     <Card
         data-testid={`card=${index}`}
-        image={item.thumbnail}
-        header={basename(item.location)}
+        image={`data:image/${item.thumbnailExt.slice(1)};base64,${item.encodedThumbnail}`}
+        header={item.name}
         fluid={true}
         link={true}
         href={encodeURI(item.location)}
