@@ -1,5 +1,5 @@
 import path from 'path';
-import { getItemsWithExistance, specifyContentType, syncItemsFromLocations } from '../../../src/main/domain/item';
+import { getItemsForRenderer, specifyContentType, syncItemsFromLocations } from '../../../src/main/domain/item';
 import { getItems, updateData } from '../../../src/main/infrastructure/lowdb';
 import { assetsPath, createData, createItem } from '../../utils';
 
@@ -28,7 +28,7 @@ describe('items', () => {
         ];
         updateData(data);
 
-        const items = getItemsWithExistance();
+        const items = getItemsForRenderer();
         expect(items.find(item => item.location === loc('dir01')).exist).toBeTruthy();
         expect(items.find(item => item.location === invalidLocation).exist).toBeFalsy();
     });

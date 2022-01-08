@@ -22,8 +22,11 @@ export type Item = {
     updatedAt: Date;
     type: ContentType;
 };
-export type ItemWithExistance = Item & {
+export type ItemForRenderer = Item & {
     exist: boolean
+    name: string
+    encodedThumbnail: string
+    thumbnailExt: string
 };
 
 export type ContentType = keyof Commands;

@@ -2,21 +2,16 @@ import { basename } from "path";
 import React from "react";
 import jest from "jest-mock";
 import { fireEvent, render } from "@testing-library/react";
-import { createItem, assetsPath } from "../../utils";
+import { createItemForRenderer } from "../../utils";
 import ItemCards from "../../../src/renderer/component/itemCards";
-import { ItemWithExistance } from "../../../src/types";
+import { ItemForRenderer } from "../../../src/types";
 
 
-const items: ItemWithExistance[] = [{
-    exist: true,
-    ...createItem()
-}, {
-    exist: true,
-    ...createItem()
-}, {
-    exist: false,
-    ...createItem()
-}];
+const items: ItemForRenderer[] = [
+    createItemForRenderer({ exist: true }),
+    createItemForRenderer({ exist: true }),
+    createItemForRenderer(),
+];
 
 
 describe('ItemCards', () => {

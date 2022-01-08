@@ -1,6 +1,6 @@
 import path from 'path';
 import uuid from 'uuid';
-import { Data, Item } from "../src/types";
+import { Data, Item, ItemForRenderer } from "../src/types";
 
 
 export const createData = (data: any = {}): Data => ({
@@ -29,6 +29,17 @@ export const createItem = (item: any = {}): Item => {
         type: 'other',
         ...item,
     }
+};
+
+export const createItemForRenderer = (item: any = {}): ItemForRenderer => {
+    return {
+        exist: false,
+        name: '',
+        thumbnailExt: '',
+        encodedThumbnail: '',
+        ...createItem(),
+        ...item,
+    };
 };
 
 export const assetsPath = path.resolve('.', 'tests', 'assets');
