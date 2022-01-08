@@ -1,17 +1,47 @@
 import lodash from 'lodash';
 import { MemorySync, LowSync, JSONFileSync } from 'lowdb';
+import { accessSync, writeFileSync, readdirSync } from 'fs';
 import path from 'path';
 import { Commands, Data, Item, Locations, Tags } from '../../types';
 
 const getDataFilePath = () => {
-    if (process.platform === 'win32') {
+    const pathString = getPathString();
+    try {
+        accessSync(path.join(pathString));
+    } catch {
+        createEmptyDataFile(pathString);
+    }
+    return pathString;
+};
+
+const getPathString = () => {
+    if (process.env.NODE_ENV === 'development') {
+        return path.resolve('data.json');
+    } else if (process.platform === 'win32') {
         return path.join(
             process.env.APPDATA,
             'explower',
             'data.json',
         )
+    } else {
+        throw new Error("data.json の保存先が設定されていません。");
     }
-    throw new Error("data.json の保存先が設定されていません。");
+};
+
+const createEmptyDataFile = (pathString: string) => {
+    const data: Data = {
+        locations: [],
+        tags: {},
+        items: [],
+        commands: {
+            image: [],
+            images: [],
+            video: [],
+            videos: [],
+            other: [],
+        },
+    };
+    writeFileSync(pathString, JSON.stringify(data));
 };
 
 const adapter = process.env.NODE_ENV === 'test' ?
