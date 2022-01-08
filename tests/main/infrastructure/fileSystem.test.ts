@@ -18,7 +18,7 @@ test('recursiveReaddir', () => {
 
 test('getEncodedImage', () => {
     const location = path.join(assetsPath, 'sample_dir', 'dir01', 'img01.png');
-    expect(getEncodedImage(location)).toBe('');
+    expect(getEncodedImage(location).length).toBe(3344);
 });
 
 test('exist', () => {
