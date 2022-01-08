@@ -1,5 +1,5 @@
 import path from "path";
-import { readdirSync, statSync } from "fs";
+import { readdirSync, readFileSync, statSync } from "fs";
 
 export const recursiveReaddir = (location: string): string[] => {
     const fileOrDir = readdirSync(location);
@@ -14,3 +14,8 @@ export const recursiveReaddir = (location: string): string[] => {
     });
     return files;
 }
+
+export const getEncodedImage = (location: string): string => {
+    const file = readFileSync(location);
+    return file.toString('base64');
+};

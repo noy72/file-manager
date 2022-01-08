@@ -1,5 +1,5 @@
 import path from 'path';
-import { recursiveReaddir } from '../../../src/main/infrastructure/fileSystem';
+import { getEncodedImage, recursiveReaddir } from '../../../src/main/infrastructure/fileSystem';
 import { assetsPath } from '../../utils';
 
 const loc = (name: string) => path.join(assetsPath, "sample_dir", name);
@@ -14,4 +14,9 @@ test('recursiveReaddir', () => {
         'img04.gif',
         'tmg01.webp'
     ]);
+});
+
+test('getEncodedImage', () => {
+    const location = path.join(assetsPath, 'sample_dir', 'dir01', 'img01.png');
+    expect(getEncodedImage(location)).toBe('');
 });
