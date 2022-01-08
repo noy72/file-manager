@@ -1,10 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import ItemCards from '../component/itemCards';
-import { ItemForRenderer } from '../../types';
+import React from "react";
+import ReactDOM from "react-dom";
+import ItemCards from "../component/itemCards";
+import { ItemForRenderer } from "../../types";
 
 type State = {
-    items: ItemForRenderer[],
+    items: ItemForRenderer[];
 };
 
 class Content extends React.Component<Record<string, unknown>, State> {
@@ -17,19 +17,21 @@ class Content extends React.Component<Record<string, unknown>, State> {
 
     async componentDidMount() {
         this.setState({
-            items: await window.api.getItems()
+            items: await window.api.getItems(),
         });
     }
 
     render() {
-        return <>
-            <ItemCards
-                items={this.state.items}
-                onContextMenu={_e => {
-                    throw new Error('Function not implemented.');
-                }}
-            />
-        </>;
+        return (
+            <>
+                <ItemCards
+                    items={this.state.items}
+                    onContextMenu={_e => {
+                        throw new Error("Function not implemented.");
+                    }}
+                />
+            </>
+        );
     }
 }
 

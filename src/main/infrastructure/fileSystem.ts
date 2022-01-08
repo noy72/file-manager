@@ -13,11 +13,11 @@ export const recursiveReaddir = (location: string): string[] => {
         }
     });
     return files;
-}
+};
 
 export const getEncodedImage = (location: string): string => {
     const file = readFileSync(location);
-    return file.toString('base64');
+    return file.toString("base64");
 };
 
 export const exist = (location: string): boolean => {
