@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import "fomantic-ui/dist/semantic.min.css";
 import ItemCards from "../component/itemCards";
 import { ItemForRenderer } from "../../types";
 

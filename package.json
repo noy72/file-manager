@@ -105,7 +105,7 @@
     },
     "dependencies": {
         "electron-squirrel-startup": "^1.0.0",
-        "fomantic-ui": "^2.8.8",
+        "fomantic-ui": "^2.9.0-beta.194",
         "lodash": "^4.17.21",
         "lowdb": "^3.0.0",
         "react": "^17.0.2",
