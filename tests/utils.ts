@@ -1,29 +1,43 @@
-import { Data, Item } from "../src/types";
-import uuid from 'uuid';
+import path from "path";
+import uuid from "uuid";
+import { Data, Item, ItemForRenderer } from "../src/types";
 
-export const createData = (): Data => ({
-    locations: [
-        "/path/1",
-        "/path/2",
-    ],
+export const createData = (data: any = {}): Data => ({
+    locations: [],
     commands: {
-        "com1": ["a", "b", "c"],
-        "com2": ["1", "2"],
+        image: [],
+        images: [],
+        video: [],
+        videos: [],
+        other: [],
     },
-    tags: {
-        "group1": ["aa"],
-        "group2": ["xx"]
-    },
-    items: []
+    tags: {},
+    items: [],
+    ...data,
 });
 
+export const createItem = (item: any = {}): Item => {
+    const location = uuid.v4();
+    return {
+        location,
+        tags: [],
+        thumbnail: `${location}/thumbnail`,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        type: "other",
+        ...item,
+    };
+};
 
-export const createItem = (item: any = {}): Item => ({
-    location: uuid.v4(),
-    tags: [],
-    thumbnail: "/path/to/thumbnail",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    type: 'other',
-    ...item,
-});
+export const createItemForRenderer = (item: any = {}): ItemForRenderer => {
+    return {
+        exist: false,
+        name: "",
+        thumbnailExt: "",
+        encodedThumbnail: "",
+        ...createItem(),
+        ...item,
+    };
+};
+
+export const assetsPath = path.resolve(".", "tests", "assets");

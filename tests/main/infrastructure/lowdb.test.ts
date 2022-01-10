@@ -1,48 +1,65 @@
-import { addItem, getCommands, getItems, getLocations, getTags, removeItem, updateData, updateItem, updateItemTags } from ' ../../../src/main/infrastructure/lowdb';
-import { createData, createItem } from '../../utils';
+import {
+    addItem,
+    addItems,
+    getCommands,
+    getItems,
+    getLocations,
+    getTags,
+    removeItem,
+    updateData,
+    updateItem,
+    updateItemTags,
+} from " ../../../src/main/infrastructure/lowdb";
+import { createData, createItem } from "../../utils";
 
-
-
-describe('read', () => {
+describe("read", () => {
     beforeAll(() => {
-        updateData(createData());
+        const data = createData();
+        data.locations = ["/path/1", "/path/2"];
+        data.tags = { group1: ["aa"] };
+        data.commands.image = ["a", "b", "c"];
+        updateData(data);
         ["/path/1/a", "/path/1/b"].forEach(location =>
-            addItem(createItem({ location })));
+            addItem(createItem({ location }))
+        );
     });
 
-    test('getLocations', () => {
-        expect(getLocations()).toEqual([
-            "/path/1", "/path/2"
-        ]);
-    })
+    test("getLocations", () => {
+        expect(getLocations()).toEqual(["/path/1", "/path/2"]);
+    });
 
-    test('getItems', () => {
+    test("getItems", () => {
         const items = getItems();
         expect(items.length).toBe(2);
         expect(items[0].location).toBe("/path/1/a");
     });
 
-    test('getTags', () => {
+    test("getTags", () => {
         expect(getTags()["group1"]).toEqual(["aa"]);
     });
 
-    test('getCommands', () => {
-        expect(getCommands()["com1"]).toEqual(["a", "b", "c"]);
+    test("getCommands", () => {
+        expect(getCommands()["image"]).toEqual(["a", "b", "c"]);
     });
 });
 
-describe('items', () => {
+describe("items", () => {
     beforeEach(() => {
         updateData(createData());
     });
 
-    test('addItem', () => {
+    test("addItem", () => {
         addItem(createItem());
         addItem(createItem());
         expect(getItems().length).toBe(2);
     });
 
-    test('removeItem', () => {
+    test("addItems", () => {
+        addItems([createItem(), createItem()]);
+        expect(getItems().length).toBe(2);
+    });
+
+    test("removeItem", () => {
         const location = "location";
         addItem(createItem({ location }));
         addItem(createItem());
@@ -53,7 +70,7 @@ describe('items', () => {
         expect(items[0].location).not.toBe(location);
     });
 
-    test('updateItem', () => {
+    test("updateItem", () => {
         const tags = ["a"];
         const item = createItem({ tags });
         addItem(item);
@@ -65,7 +82,7 @@ describe('items', () => {
         expect(getItems()[0].tags).toEqual(tags2);
     });
 
-    test('updateItemTags', () => {
+    test("updateItemTags", () => {
         const location = "location";
         const tags = ["a"];
         const item = createItem({ location, tags });

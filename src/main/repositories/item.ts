@@ -1,24 +1,18 @@
-/*
-クエリストリングからアイテムを検索する
-並び替え
-特定のアイテムを取得する
-アイテムを特定のソフトウェアで開く
-アイテムを削除する
-アイテムのタグを付け替える
-タグの一覧を取得する
-*/
-
 import { getItems } from "../infrastructure/lowdb";
 import { basename } from "path";
 import { Item } from "../../types";
 
 type SearchQuery = {
-    word: string
-    perfectMatch: boolean
-    isTag: boolean
+    word: string;
+    perfectMatch: boolean;
+    isTag: boolean;
 };
 
-export const findItemByQuery = (query: string, key: keyof Item, desc: boolean) => {
+export const findItemByQuery = (
+    query: string,
+    key: keyof Item,
+    desc: boolean
+): Item[] => {
     const searchQueries = splitQuery(query.trim());
     const items = getItems();
     const filteredItems = filterItems(items, searchQueries);
@@ -35,7 +29,7 @@ export const splitQuery = (query: string): SearchQuery[] => {
     };
     for (let i = 0; i < query.length; i++) {
         if (closed) {
-            if (query[i] === "\"") {
+            if (query[i] === '"') {
                 closed = false;
             } else {
                 tmp.word += query[i];
@@ -50,7 +44,7 @@ export const splitQuery = (query: string): SearchQuery[] => {
                 };
             } else if (query[i] === "#") {
                 tmp.isTag = true;
-            } else if (query[i] === "\"") {
+            } else if (query[i] === '"') {
                 tmp.perfectMatch = true;
                 closed = true;
             } else {
@@ -62,29 +56,39 @@ export const splitQuery = (query: string): SearchQuery[] => {
     return searchQuery;
 };
 
-export const filterItems = (items: Item[], searchQuery: SearchQuery[]): Item[] => {
+export const filterItems = (
+    items: Item[],
+    searchQuery: SearchQuery[]
+): Item[] => {
     let filteredItems = items;
     searchQuery.forEach(query => {
         if (query.isTag) {
-            filteredItems = filteredItems.filter(item => item.tags.some(
-                tag => query.perfectMatch ?
-                    tag === query.word :
-                    tag.includes(query.word)
-            ));
+            filteredItems = filteredItems.filter(item =>
+                item.tags.some(tag =>
+                    query.perfectMatch
+                        ? tag === query.word
+                        : tag.includes(query.word)
+                )
+            );
         } else {
-            filteredItems = filteredItems.filter(item => query.perfectMatch ?
-                basename(item.location) === query.word :
-                basename(item.location).includes(query.word)
+            filteredItems = filteredItems.filter(item =>
+                query.perfectMatch
+                    ? basename(item.location) === query.word
+                    : basename(item.location).includes(query.word)
             );
         }
     });
     return filteredItems;
 };
 
-export const sortItems = (items: Item[], key: keyof Item, desc: boolean): Item[] =>
+export const sortItems = (
+    items: Item[],
+    key: keyof Item,
+    desc: boolean
+): Item[] =>
     items.sort((a: Item, b: Item) => {
-        const aVal = key === 'location' ? basename(a[key]) : a[key];
-        const bVal = key === 'location' ? basename(b[key]) : b[key];
+        const aVal = key === "location" ? basename(a[key]) : a[key];
+        const bVal = key === "location" ? basename(b[key]) : b[key];
         if (aVal === bVal) return 0;
         return (aVal < bVal ? -1 : 1) * (desc ? -1 : 1);
     });
