@@ -1,116 +1,48 @@
-import lodash from "lodash";
-import { MemorySync, LowSync, JSONFileSync } from "lowdb";
-import { accessSync, writeFileSync } from "fs";
-import path from "path";
-import { Commands, Data, Item, Locations, Tags } from "../../types";
+//import lodashId from 'lodash-id';
+import low from 'lowdb';
+import FileSync from 'lowdb/adapters/FileSync';
+import { Data, Item } from '../models/Item';
 
-const getDataFilePath = () => {
-    const pathString = getPathString();
-    try {
-        accessSync(path.join(pathString));
-    } catch {
-        createEmptyDataFile(pathString);
-    }
-    return pathString;
-};
+let adapter: low.AdapterSync<Data>;
+let db: low.LowdbSync<Data>;
 
-const getPathString = () => {
-    if (process.env.NODE_ENV === "development") {
-        return path.resolve("data.json");
-    } else if (process.platform === "win32") {
-        return path.join(process.env.APPDATA, "explower", "data.json");
-    } else {
-        throw new Error("data.json の保存先が設定されていません。");
-    }
+// renderer プロセスごとに FileSync するせいで，変更が反映されない．
+// 変更する後に FileSync を更新することで変更を反映する．
+// renderer で nodejs のコードを実装するのがそもそも良くない．
+// TODO: main と renderer の実装を切り離す
+const flash = (): void => {
+    adapter = new FileSync<Data>(
+        'data.json'
+    );
+    db = low(adapter);
 };
+flash();
 
-const createEmptyDataFile = (pathString: string) => {
-    const data: Data = {
-        locations: [],
-        tags: {},
-        items: [],
-        commands: {
-            image: [],
-            images: [],
-            video: [],
-            videos: [],
-            other: [],
-        },
-    };
-    writeFileSync(pathString, JSON.stringify(data));
-};
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const get = (key: string): any => db.get(key).value();
+const getLocations = (): string[] => get('locations');
+const getItems = (): Item[] => get('items');
+const getTags = (): { [index: string]: string[] } => get('tags');
+const getCommand = (key: string): string[] => get('commands')[key];
 
-const adapter =
-    process.env.NODE_ENV === "test"
-        ? new MemorySync<Data>()
-        : new JSONFileSync<Data>(getDataFilePath());
-const db = new LowSync(adapter);
+const getItem = (location: string): Item => db.get('items').find({ location: location }).value();
 
-const get = () => {
-    db.read();
-    return db.data;
-};
-const getChain = () => {
-    db.read();
-    return lodash.chain(db.data);
-};
-const getLocations = (): Locations => get().locations;
-const getItems = (): Item[] => get().items;
-const getItemByLocation = (location: string): Item =>
-    getChain().get("items").find({ location }).value();
-const getTags = (): Tags => get().tags;
-const getCommands = (): Commands => get().commands;
+const addItem = (item: Item): ArrayLike<Item> => db.get('items').push(item).write();
 
-const addItem = (item: Item): void => {
-    const items = getChain().get("items").push(item).value();
-    db.data.items = items;
-    db.write();
-};
+const removeItem = (location: string): ArrayLike<Item> => db.get('items').remove({ location: location }).write();
+const updateItem = (item: Item): Item => db.get('items').find({ location: item.location }).assign(item).write();
+const updateAttachedTags = (location: string, tags: string[]): Item => db.get('items').find({ location: location }).assign({ tags: tags }).write();
 
-const addItems = (newItems: Item[]): void => {
-    const items = getChain()
-        .get("items")
-        .push(...newItems)
-        .value();
-    db.data.items = items;
-    db.write();
-};
-
-const removeItem = (location: string): void => {
-    getChain().get("items").remove({ location }).value();
-    db.write();
-};
-
-const updateData = (data: Data): void => {
-    db.data = data;
-    db.write();
-};
-const updateItem = (item: Item): void => {
-    const index = getChain()
-        .get("items")
-        .findIndex({ location: item.location })
-        .value();
-    getChain()
-        .get("items")
-        .update(`items[${index}]`, () => item)
-        .value();
-    db.write();
-};
-const updateItemTags = (location: string, tags: string[]): void => {
-    const item = getItemByLocation(location);
-    item.tags = tags;
-    updateItem(item);
-};
 
 export {
     getLocations,
     getItems,
     getTags,
-    getCommands,
+    getCommand,
+    getItem,
     addItem,
-    addItems,
     removeItem,
-    updateData,
     updateItem,
-    updateItemTags,
+    updateAttachedTags,
+    flash
 };
