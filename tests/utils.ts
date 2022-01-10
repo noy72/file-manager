@@ -1,20 +1,7 @@
-import path from "path";
-import uuid from "uuid";
-import { Data, Item, ItemForRenderer } from "../src/types";
+import { writeFileSync } from "fs";
+import rootpath from "../rootpath";
 
-export const createData = (data: any = {}): Data => ({
-    locations: [],
-    commands: {
-        image: [],
-        images: [],
-        video: [],
-        videos: [],
-        other: [],
-    },
-    tags: {},
-    items: [],
-    ...data,
-});
+export const sampleDirPath = rootpath('/tests/sample_dir');
 
 export const createItem = (item: any = {}): Item => {
     const v4 = uuid.v4();
@@ -28,17 +15,5 @@ export const createItem = (item: any = {}): Item => {
         type: "other",
         ...item,
     };
+    writeFileSync(rootpath('tests/data/data.json'), JSON.stringify(data));
 };
-
-export const createItemForRenderer = (item: any = {}): ItemForRenderer => {
-    return {
-        exist: false,
-        name: "",
-        thumbnailExt: "",
-        encodedThumbnail: "",
-        ...createItem(),
-        ...item,
-    };
-};
-
-export const assetsPath = path.resolve(".", "tests", "assets");
