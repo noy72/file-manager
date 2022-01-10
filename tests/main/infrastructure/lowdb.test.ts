@@ -1,99 +1,97 @@
+import {
+    addItem,
+    addItems,
+    getCommands,
+    getItems,
+    getLocations,
+    getTags,
+    removeItem,
+    updateData,
+    updateItem,
+    updateItemTags,
+} from " ../../../src/main/infrastructure/lowdb";
+import { createData, createItem } from "../../utils";
 
-import * as assert from 'assert';
-import path from "path";
-import * as db from '../../../src/main/infrastructure/lowdb';
-import { createItem } from '../utils';
-import rootpath from '../../../rootpath';
-import { resetDataJson } from '../../utils';
-
-
-describe('lowdb test', () => {
-    beforeEach(function () {
-        resetDataJson();
-        db.flash();
-    });
-
-
-    it('getLocations', () => {
-        assert.deepStrictEqual(
-            db.getLocations(),
-            [path.join(__dirname, '../../sample_dir')]
+describe("read", () => {
+    beforeAll(() => {
+        const data = createData();
+        data.locations = ["/path/1", "/path/2"];
+        data.tags = { group1: ["aa"] };
+        data.commands.image = ["a", "b", "c"];
+        updateData(data);
+        ["/path/1/a", "/path/1/b"].forEach(location =>
+            addItem(createItem({ location }))
         );
     });
 
-    it('getItems', () => {
-        const item = db.getItems()[0];
-        assert.strictEqual(
-            item.location,
-            path.join(__dirname, '../../sample_dir/dir01')
-        );
-        assert.deepStrictEqual(
-            item.tags,
-            ["1"]
-        );
-        assert.strictEqual(
-            item.thumbnail,
-            path.join(__dirname, '../../sample_dir/dir01/code01.png')
-        );
+    test("getLocations", () => {
+        expect(getLocations()).toEqual(["/path/1", "/path/2"]);
     });
 
-    it('getTags', () => {
-        assert.deepStrictEqual(
-            db.getTags(),
-            {
-                '日本語タグ': [
-                    'タグ'
-                ],
-                group_1: [
-                    '1'
-                ],
-                group_2: [
-                    'a'
-                ]
-            }
-        );
+    test("getItems", () => {
+        const items = getItems();
+        expect(items.length).toBe(2);
+        expect(items[0].location).toBe("/path/1/a");
     });
 
-    it('getCommands', () => {
-        assert.deepStrictEqual(
-            db.getCommand('directory'),
-            ["cp", rootpath("tests/renderer/tmp_files/directory.txt")],
-        );
+    test("getTags", () => {
+        expect(getTags()["group1"]).toEqual(["aa"]);
     });
 
-    it('addItem', () => {
-        const location = '/path/sample_dir';
-        const item = createItem(location, ['tag1', 'tag2']);
-        db.addItem(item);
-        const savedItem = db.getItem(location);
-        assert.deepStrictEqual(item, savedItem);
+    test("getCommands", () => {
+        expect(getCommands()["image"]).toEqual(["a", "b", "c"]);
+    });
+});
+
+describe("items", () => {
+    beforeEach(() => {
+        updateData(createData());
     });
 
-    it('removeItem', () => {
-        const location = '/path/sample_dir01';
-        const item = createItem(location, ['tag1', 'tag2']);
-        db.addItem(item);
-        assert.deepStrictEqual(item, db.getItem(location));
-        db.removeItem(location);
-        assert.deepStrictEqual(undefined, db.getItem(location));
+    test("addItem", () => {
+        addItem(createItem());
+        addItem(createItem());
+        expect(getItems().length).toBe(2);
     });
 
-    it('updateItem', () => {
-        const location = '/path/sample_dir';
-        const item = createItem(location, ['tag1', 'tag2']);
-        db.addItem(item);
-        assert.deepStrictEqual(['tag1', 'tag2'], db.getItem(location).tags);
-        item.tags = ['x'];
-        db.updateItem(item);
-        assert.deepStrictEqual(['x'], db.getItem(location).tags);
+    test("addItems", () => {
+        addItems([createItem(), createItem()]);
+        expect(getItems().length).toBe(2);
     });
 
-    it('updateAttachedTags', () => {
-        const location = '/path/sample_dir01';
-        const item = createItem(location, ['tag1', 'tag2']);
-        db.addItem(item);
-        assert.deepStrictEqual(['tag1', 'tag2'], db.getItem(location).tags);
-        db.updateAttachedTags(location, ['y']);
-        assert.deepStrictEqual(['y'], db.getItem(location).tags);
+    test("removeItem", () => {
+        const location = "location";
+        addItem(createItem({ location }));
+        addItem(createItem());
+        removeItem(location);
+
+        const items = getItems();
+        expect(items.length).toBe(1);
+        expect(items[0].location).not.toBe(location);
+    });
+
+    test("updateItem", () => {
+        const tags = ["a"];
+        const item = createItem({ tags });
+        addItem(item);
+        expect(getItems()[0].tags).toEqual(tags);
+
+        const tags2 = ["b"];
+        item.tags = tags2;
+        updateItem(item);
+        expect(getItems()[0].tags).toEqual(tags2);
+    });
+
+    test("updateItemTags", () => {
+        const location = "location";
+        const tags = ["a"];
+        const item = createItem({ location, tags });
+        addItem(item);
+        expect(getItems()[0].tags).toEqual(tags);
+
+        const tags2 = ["b"];
+        item.tags = tags2;
+        updateItemTags(location, tags2);
+        expect(getItems()[0].tags).toEqual(tags2);
     });
 });
