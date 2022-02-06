@@ -8,7 +8,7 @@ type State = {
     items: ItemForRenderer[];
 };
 
-class Content extends React.Component<Record<string, unknown>, State> {
+class Top extends React.Component<Record<string, unknown>, State> {
     constructor(props: Record<string, unknown>) {
         super(props);
         this.state = {
@@ -37,4 +37,4 @@ class Content extends React.Component<Record<string, unknown>, State> {
     }
 }
 
-export default Content;
+export default Top;
