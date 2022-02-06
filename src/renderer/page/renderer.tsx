@@ -1,8 +1,8 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import "fomantic-ui/dist/semantic.min.css";
 import ItemCards from "../component/itemCards";
 import { ItemForRenderer } from "../../types";
+import { Link } from "react-router-dom";
 
 type State = {
     items: ItemForRenderer[];
@@ -25,6 +25,7 @@ class Content extends React.Component<Record<string, unknown>, State> {
     render() {
         return (
             <>
+                <Link to="test/123435">test</Link>
                 <ItemCards
                     items={this.state.items}
                     onContextMenu={_e => {
@@ -36,5 +37,4 @@ class Content extends React.Component<Record<string, unknown>, State> {
     }
 }
 
-const content = document.getElementById("content");
-ReactDOM.render(<Content />, content);
+export default Content;

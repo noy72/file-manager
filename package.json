@@ -54,7 +54,7 @@
                             "entryPoints": [
                                 {
                                     "html": "./src/static/index.html",
-                                    "js": "./src/renderer/page/renderer.tsx",
+                                    "js": "./src/renderer/main.tsx",
                                     "name": "main_window",
                                     "preload": {
                                         "js": "./src/renderer/preload.ts"
@@ -110,6 +110,7 @@
         "lowdb": "^3.0.0",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
+        "react-router-dom": "6",
         "semantic-ui-react": "^2.0.4",
         "uuid": "^8.3.2"
     }
