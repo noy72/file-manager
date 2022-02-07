@@ -1,4 +1,5 @@
 import path from "path";
+import { v4 } from 'uuid';
 import { statSync, readdirSync } from "fs";
 import { ContentType, Item, ItemForRenderer } from "../../types";
 import {
@@ -6,7 +7,7 @@ import {
     recursiveReaddir,
     exist,
 } from "../infrastructure/fileSystem";
-import { addItems, getItems, getLocations } from "../infrastructure/lowdb";
+import { addItems, getItemById, getItems, getLocations } from "../infrastructure/lowdb";
 
 export const extTypes = {
     image: [".gif", ".jpg", ".jpeg", ".png", ".webp"],
@@ -37,20 +38,24 @@ export const specifyContentType = (location: string): ContentType => {
 };
 
 export const getItemsForRenderer = (): ItemForRenderer[] =>
-    getItems().map(item => {
-        const existThumbnail = exist(item.thumbnail);
-        return {
-            ...item,
-            exist: exist(item.location),
-            name: path.basename(item.location),
-            encodedThumbnail: existThumbnail
-                ? getEncodedImage(item.thumbnail)
-                : "TODO",
-            thumbnailExt: existThumbnail
-                ? path.extname(item.thumbnail)
-                : "TODO",
-        };
-    });
+    getItems().map(itemToItemForRenderer);
+
+export const getItemForRenderer = (id: string): ItemForRenderer => itemToItemForRenderer(getItemById(id));
+
+const itemToItemForRenderer = (item: Item): ItemForRenderer => {
+    const existThumbnail = exist(item.thumbnail);
+    return {
+        ...item,
+        exist: exist(item.location),
+        name: path.basename(item.location),
+        encodedThumbnail: existThumbnail
+            ? getEncodedImage(item.thumbnail)
+            : "TODO",
+        thumbnailExt: existThumbnail
+            ? path.extname(item.thumbnail)
+            : "TODO",
+    };
+}
 
 export const syncItemsFromLocations = (): void => {
     const existItemLocations = new Set(getItems().map(item => item.location));
@@ -68,6 +73,7 @@ export const syncItemsFromLocations = (): void => {
 const createItem = (location: string): Item => {
     const now = new Date();
     return {
+        id: v4(),
         location,
         thumbnail: getThumbnail(location),
         tags: [],

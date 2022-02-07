@@ -4,7 +4,7 @@ import {
     specifyContentType,
     syncItemsFromLocations,
 } from "../../../src/main/domain/item";
-import { getItems, updateData } from "../../../src/main/infrastructure/lowdb";
+import { getItemById, getItems, updateData } from "../../../src/main/infrastructure/lowdb";
 import { assetsPath, createData, createItem } from "../../utils";
 
 const loc = (name: string) => path.join(assetsPath, "sample_dir", name);
@@ -21,6 +21,20 @@ test("specifyContentType", () => {
 describe("items", () => {
     beforeEach(() => {
         updateData(createData());
+    });
+
+    test("getItemWithRenderer", () => {
+        const id = "12345asdf";
+        const data = createData();
+        data.items = [
+            createItem(),
+            createItem({ id, location: "ok" }),
+            createItem(),
+        ];
+        updateData(data);
+
+        const item = getItemById(id);
+        expect(item.location).toBe("ok");
     });
 
     test("getItemsWithExistance", () => {
