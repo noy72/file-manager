@@ -1,7 +1,9 @@
+import { v1, v3, v4, v5 } from 'uuid';
 import {
     addItem,
     addItems,
     getCommands,
+    getItemById,
     getItems,
     getLocations,
     getTags,
@@ -20,7 +22,7 @@ describe("read", () => {
         data.commands.image = ["a", "b", "c"];
         updateData(data);
         ["/path/1/a", "/path/1/b"].forEach(location =>
-            addItem(createItem({ location }))
+            addItem(createItem({ id: location, location }))  // id を location で代用
         );
     });
 
@@ -32,6 +34,14 @@ describe("read", () => {
         const items = getItems();
         expect(items.length).toBe(2);
         expect(items[0].location).toBe("/path/1/a");
+    });
+
+    test("getItemById", () => {
+        const item = getItemById("/path/1/a");
+        expect(item.location).toBe("/path/1/a");
+        expect(item.id).toBe("/path/1/a")
+
+        expect(getItemById("undefined")).toBeUndefined();
     });
 
     test("getTags", () => {

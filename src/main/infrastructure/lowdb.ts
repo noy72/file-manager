@@ -56,6 +56,8 @@ const getChain = () => {
 };
 const getLocations = (): Locations => get().locations;
 const getItems = (): Item[] => get().items;
+const getItemById = (id: string): Item | undefined =>
+    getChain().get("items").find({ id }).value();
 const getItemByLocation = (location: string): Item =>
     getChain().get("items").find({ location }).value();
 const getTags = (): Tags => get().tags;
@@ -105,6 +107,7 @@ const updateItemTags = (location: string, tags: string[]): void => {
 export {
     getLocations,
     getItems,
+    getItemById,
     getTags,
     getCommands,
     addItem,

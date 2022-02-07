@@ -15,7 +15,8 @@ export type Commands = {
 };
 export type Tags = { [index: string]: string[] };
 export type Item = {
-    location: string; // Primary Key
+    id: string;
+    location: string;
     tags: string[];
     thumbnail: string;
     createdAt: Date;

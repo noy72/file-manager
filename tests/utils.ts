@@ -17,11 +17,12 @@ export const createData = (data: any = {}): Data => ({
 });
 
 export const createItem = (item: any = {}): Item => {
-    const location = uuid.v4();
+    const v4 = uuid.v4();
     return {
-        location,
+        id: v4,
+        location: v4,
         tags: [],
-        thumbnail: `${location}/thumbnail`,
+        thumbnail: `${v4}/thumbnail`,
         createdAt: new Date(),
         updatedAt: new Date(),
         type: "other",
