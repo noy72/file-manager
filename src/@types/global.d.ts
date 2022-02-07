@@ -1,4 +1,4 @@
-import { ItemWithExistance } from "../types";
+import { ItemForRenderer } from "../types";
 
 declare global {
     interface Window {
@@ -7,5 +7,6 @@ declare global {
 }
 
 export interface API {
-    getItems: () => Promise<ItemWithExistance[]>;
+    getItems: () => Promise<ItemForRenderer[]>;
+    getItem: (id: string) => Promise<ItemForRenderer>;
 }

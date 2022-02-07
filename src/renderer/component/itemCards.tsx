@@ -34,9 +34,8 @@ const ItemCard = ({
 }): JSX.Element => (
     <Card
         data-testid={`card=${index}`}
-        image={`data:image/${item.thumbnailExt.slice(1)};base64,${
-            item.encodedThumbnail
-        }`}
+        image={`data:image/${item.thumbnailExt.slice(1)};base64,${item.encodedThumbnail
+            }`}
         header={item.name}
         fluid={true}
         link={true}
