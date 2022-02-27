@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import "fomantic-ui/dist/semantic.min.css";
 import ItemCards from "../component/itemCards";
 import { ItemForRenderer } from "../../types";
@@ -8,7 +8,7 @@ type State = {
     items: ItemForRenderer[];
 };
 
-class Top extends React.Component<Record<string, unknown>, State> {
+class Top extends Component<Record<string, unknown>, State> {
     constructor(props: Record<string, unknown>) {
         super(props);
         this.state = {
@@ -16,19 +16,19 @@ class Top extends React.Component<Record<string, unknown>, State> {
         };
     }
 
-    async componentDidMount() {
+    async componentDidMount(): Promise<void> {
         this.setState({
             items: await window.api.getItems(),
         });
     }
 
-    render() {
+    render(): JSX.Element {
         return (
             <>
-                <Link to="test/123435">test</Link>
+                <Link to="content/123435">test</Link>
                 <ItemCards
                     items={this.state.items}
-                    onContextMenu={_e => {
+                    onContextMenu={() => {
                         throw new Error("Function not implemented.");
                     }}
                 />

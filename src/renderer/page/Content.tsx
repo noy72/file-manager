@@ -1,22 +1,24 @@
-
-import React from "react";
-import ReactDOM from "react-dom";
+import React, { useEffect, useState } from "react";
 import "fomantic-ui/dist/semantic.min.css";
-import ItemCards from "../component/itemCards";
 import { ItemForRenderer } from "../../types";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-// タグ一覧、タグ入力欄、タグ入力欄にオートコンプリート
-// 入力したらタグを更新する
-// tag がステートになる
-const Content = async () => {
+const Content = (): JSX.Element => {
     const { id } = useParams();
-    const item = await window.api.getItems()
+    const [item, setItem] = useState({} as ItemForRenderer);
+
+    useEffect(() => {
+        const getItem = async () => {
+            const item = await window.api.getItem(id);
+            setItem(item);
+        };
+        getItem();
+    }, []);
 
     return <>
-        <p>{id}</p>
+        {item.name && <p>{item.name}</p>}
+        {item.name && item.tags.map(tag => <p>{tag}</p>)}
     </>;
-
 };
 
 

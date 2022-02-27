@@ -1,4 +1,5 @@
 import React, { MouseEvent } from "react";
+import { Link } from "react-router-dom";
 import { Card } from "semantic-ui-react";
 import { ItemForRenderer } from "../../types";
 
@@ -33,13 +34,14 @@ const ItemCard = ({
     onContextMenu: Event;
 }): JSX.Element => (
     <Card
+        as={Link}
+        to={`content/${item.id}`}
         data-testid={`card=${index}`}
-        image={`data:image/${item.thumbnailExt.slice(1)};base64,${item.encodedThumbnail
-            }`}
+        image={
+            `data:image/${item.thumbnailExt.slice(1)};base64,${item.encodedThumbnail}`
+        }
         header={item.name}
         fluid={true}
-        link={true}
-        href={encodeURI(item.location)}
         color={item.exist ? "grey" : "red"}
         onContextMenu={onContextMenu}
     />
