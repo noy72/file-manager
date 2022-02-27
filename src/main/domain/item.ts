@@ -40,7 +40,11 @@ export const specifyContentType = (location: string): ContentType => {
 export const getItemsForRenderer = (): ItemForRenderer[] =>
     getItems().map(itemToItemForRenderer);
 
-export const getItemForRenderer = (id: string): ItemForRenderer => itemToItemForRenderer(getItemById(id));
+export const getItemForRenderer = (id: string): ItemForRenderer => {
+    const item = itemToItemForRenderer(getItemById(id));
+    if (item) return itemToItemForRenderer(item);
+    throw Error(`id: ${id} not found.`);
+};
 
 const itemToItemForRenderer = (item: Item): ItemForRenderer => {
     const existThumbnail = exist(item.thumbnail);
