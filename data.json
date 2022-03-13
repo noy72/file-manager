@@ -1,0 +1,80 @@
+{
+  "locations": [
+    "/Users/noy/ghq/github.com/noy72/file-manager/tests/assets/sample_dir"
+  ],
+  "tags": {
+    "group1": [
+      "a"
+    ],
+    "group2": [
+      "1",
+      "2"
+    ]
+  },
+  "items": [
+    {
+      "id": "60916a01-bddc-4d3f-9c7d-b505c6f7d1af",
+      "location": "/Users/noy/ghq/github.com/noy72/file-manager/tests/assets/sample_dir/dir01",
+      "thumbnail": "/Users/noy/ghq/github.com/noy72/file-manager/tests/assets/sample_dir/dir01/img01.png",
+      "tags": [
+        "a",
+        "1"
+      ],
+      "createdAt": "2022-02-27T03:25:21.106Z",
+      "updatedAt": "2022-02-27T03:25:21.106Z",
+      "type": "images"
+    },
+    {
+      "id": "b7aea998-bcca-4d2d-9baf-ffa51e6a0128",
+      "location": "/Users/noy/ghq/github.com/noy72/file-manager/tests/assets/sample_dir/dir02",
+      "thumbnail": "TODO",
+      "tags": [],
+      "createdAt": "2022-02-27T03:25:21.113Z",
+      "updatedAt": "2022-02-27T03:25:21.113Z",
+      "type": "videos"
+    },
+    {
+      "id": "b676d8c5-0b2a-40b9-82a5-43875b95cd25",
+      "location": "/Users/noy/ghq/github.com/noy72/file-manager/tests/assets/sample_dir/dir03",
+      "thumbnail": "/Users/noy/ghq/github.com/noy72/file-manager/tests/assets/sample_dir/dir03/img.png",
+      "tags": [],
+      "createdAt": "2022-02-27T03:25:21.113Z",
+      "updatedAt": "2022-02-27T03:25:21.113Z",
+      "type": "other"
+    },
+    {
+      "id": "a1a9f851-df75-426a-86cb-1fccd2e60457",
+      "location": "/Users/noy/ghq/github.com/noy72/file-manager/tests/assets/sample_dir/img.jpg",
+      "thumbnail": "TODO",
+      "tags": [],
+      "createdAt": "2022-02-27T03:25:21.114Z",
+      "updatedAt": "2022-02-27T03:25:21.114Z",
+      "type": "image"
+    },
+    {
+      "id": "697a103a-666b-454a-aae3-01a5bc556961",
+      "location": "/Users/noy/ghq/github.com/noy72/file-manager/tests/assets/sample_dir/text.txt",
+      "thumbnail": "TODO",
+      "tags": [],
+      "createdAt": "2022-02-27T03:25:21.114Z",
+      "updatedAt": "2022-02-27T03:25:21.114Z",
+      "type": "other"
+    },
+    {
+      "id": "c2bdf1c4-f230-44ca-b8d5-1b4c8fbb7d1c",
+      "location": "/Users/noy/ghq/github.com/noy72/file-manager/tests/assets/sample_dir/video.mp4",
+      "thumbnail": "TODO",
+      "tags": [],
+      "createdAt": "2022-02-27T03:25:21.114Z",
+      "updatedAt": "2022-02-27T03:25:21.114Z",
+      "type": "video"
+    }
+  ],
+  "commands": {
+    "image": [],
+    "images": [],
+    "video": [],
+    "videos": [],
+    "other": []
+  }
+}
