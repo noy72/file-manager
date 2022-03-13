@@ -1,40 +1,30 @@
-import React, { Component } from "react";
+import React, { Component, useEffect, useState } from "react";
 import "fomantic-ui/dist/semantic.min.css";
 import ItemCards from "../component/itemCards";
 import { ItemForRenderer } from "../../types";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import SearchBar from "../component/searchBar";
 
-type State = {
-    items: ItemForRenderer[];
+const Top = (): JSX.Element => {
+    const { query } = useParams();
+    const [items, setItems] = useState([] as ItemForRenderer[]);
+
+    useEffect(() => {
+        (async () => {
+            const items = await window.api.getItems();
+            setItems(items);
+        })();
+    }, []);
+
+    return <>
+        <ItemCards
+            items={items}
+            onContextMenu={() => {
+                throw new Error("Function not implemented.");
+            }}
+        />
+    </>;
 };
 
-class Top extends Component<Record<string, unknown>, State> {
-    constructor(props: Record<string, unknown>) {
-        super(props);
-        this.state = {
-            items: [],
-        };
-    }
-
-    async componentDidMount(): Promise<void> {
-        this.setState({
-            items: await window.api.getItems(),
-        });
-    }
-
-    render(): JSX.Element {
-        return (
-            <>
-                <Link to="content/123435">test</Link>
-                <ItemCards
-                    items={this.state.items}
-                    onContextMenu={() => {
-                        throw new Error("Function not implemented.");
-                    }}
-                />
-            </>
-        );
-    }
-}
 
 export default Top;
