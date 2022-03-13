@@ -5,6 +5,7 @@ import { fireEvent, render } from "@testing-library/react";
 import { createItemForRenderer } from "../../utils";
 import ItemCards from "../../../src/renderer/component/itemCards";
 import { ItemForRenderer } from "../../../src/types";
+import { HashRouter } from "react-router-dom";
 
 const items: ItemForRenderer[] = [
     createItemForRenderer({ exist: true }),
@@ -15,14 +16,18 @@ const items: ItemForRenderer[] = [
 describe("ItemCards", () => {
     test("display three cards", () => {
         const { getByTestId } = render(
-            <ItemCards items={items} onContextMenu={jest.fn()} />
+            <HashRouter>
+                <ItemCards items={items} onContextMenu={jest.fn()} />
+            </HashRouter>
         );
         expect(getByTestId("cards").children.length).toBe(3);
     });
 
     test("the color of non-existent location is red", () => {
         const { getByTestId } = render(
-            <ItemCards items={items} onContextMenu={jest.fn()} />
+            <HashRouter>
+                <ItemCards items={items} onContextMenu={jest.fn()} />
+            </HashRouter>
         );
         ["grey", "grey", "red"].forEach((color, index) => {
             expect(
@@ -34,7 +39,9 @@ describe("ItemCards", () => {
     test("onContextMenu", () => {
         const onContextMenu = jest.fn();
         const { getByTestId } = render(
-            <ItemCards items={items} onContextMenu={onContextMenu} />
+            <HashRouter>
+                <ItemCards items={items} onContextMenu={onContextMenu} />
+            </HashRouter>
         );
         fireEvent.contextMenu(getByTestId(`card=0`));
         expect(onContextMenu.mock.calls.length).toBe(1);
