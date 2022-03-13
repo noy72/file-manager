@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "fomantic-ui/dist/semantic.min.css";
-import { ItemForRenderer } from "../../types";
 import { useParams } from "react-router-dom";
+import { Container, Grid, Image, List, Segment, Loader, Dimmer } from 'semantic-ui-react'
+import { ItemForRenderer, ItemForRendererWithGroupedTags } from "../../types";
+import Loading from "../component/Loader";
+import TagList from "../component/tagList";
 
 const Content = (): JSX.Element => {
     const { id } = useParams();
-    const [item, setItem] = useState({} as ItemForRenderer);
+    const [item, setItem] = useState(undefined as ItemForRendererWithGroupedTags);
 
     useEffect(() => {
         const getItem = async () => {
@@ -15,10 +18,25 @@ const Content = (): JSX.Element => {
         getItem();
     }, []);
 
-    return <>
-        {item.name && <p>{item.name}</p>}
-        {item.name && item.tags.map(tag => <p>{tag}</p>)}
-    </>;
+    return item ?
+        <Container>
+            <Grid style={{ marginTop: "2rem" }}>
+                <Grid.Column width={6}>
+                    <Image src={
+                        `data:image/${item.thumbnailExt.slice(1)};base64,${item.encodedThumbnail}`
+                    } />
+                    <p>{item.createdAt}</p>
+                    <p>{item.updatedAt}</p>
+                </Grid.Column>
+                <Grid.Column width={10}>
+                    <TagList tags={item.tags} />
+                </Grid.Column>
+            </Grid>
+            <List divided selection size="big">
+                <List.Item>hoge</List.Item>
+                <List.Item>fuga</List.Item>
+            </List>
+        </Container> : <Loading size="massive" />
 };
 
 
