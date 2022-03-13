@@ -1,5 +1,6 @@
 import path from "path";
 import {
+    getItemForRendererWithGroupdedTags,
     getItemsForRenderer,
     specifyContentType,
     syncItemsFromLocations,
@@ -35,6 +36,29 @@ describe("items", () => {
 
         const item = getItemById(id);
         expect(item.location).toBe("ok");
+    });
+
+    test("ItemForRendererWithGroupedTags", () => {
+        const id = "12345asdf";
+        const data = createData();
+        data.tags = {
+            "1": ["a"],
+            "2": ["b", "c"],
+            "3": ["d", "e"],
+        }
+        data.items = [
+            createItem(),
+            createItem({ id, location: "ok", tags: ["a", "b", "c"] }),
+            createItem(),
+        ];
+        updateData(data);
+
+        const item = getItemForRendererWithGroupdedTags(id);
+        expect(item.location).toBe("ok");
+        expect(item.tags).toEqual({
+            "1": ["a"],
+            "2": ["b", "c"],
+        })
     });
 
     test("getItemsWithExistance", () => {

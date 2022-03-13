@@ -29,5 +29,8 @@ export type ItemForRenderer = Item & {
     encodedThumbnail: string;
     thumbnailExt: string;
 };
+export type ItemForRendererWithGroupedTags = Omit<ItemForRenderer, 'tags'> & {
+    tags: Tags
+}
 
 export type ContentType = keyof Commands;

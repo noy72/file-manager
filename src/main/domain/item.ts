@@ -1,13 +1,13 @@
 import path from "path";
 import { v4 } from 'uuid';
 import { statSync, readdirSync } from "fs";
-import { ContentType, Item, ItemForRenderer } from "../../types";
+import { ContentType, Item, ItemForRenderer, ItemForRendererWithGroupedTags, Tags } from "../../types";
 import {
     getEncodedImage,
     recursiveReaddir,
     exist,
 } from "../infrastructure/fileSystem";
-import { addItems, getItemById, getItems, getLocations } from "../infrastructure/lowdb";
+import { addItems, getItemById, getItems, getLocations, getTags } from "../infrastructure/lowdb";
 
 export const extTypes = {
     image: [".gif", ".jpg", ".jpeg", ".png", ".webp"],
@@ -40,10 +40,25 @@ export const specifyContentType = (location: string): ContentType => {
 export const getItemsForRenderer = (): ItemForRenderer[] =>
     getItems().map(itemToItemForRenderer);
 
-export const getItemForRenderer = (id: string): ItemForRenderer => {
-    const item = itemToItemForRenderer(getItemById(id));
-    if (item) return itemToItemForRenderer(item);
-    throw Error(`id: ${id} not found.`);
+export const getItemForRendererWithGroupdedTags = (id: string): ItemForRendererWithGroupedTags => {
+    const item = getItemById(id);
+    if (!item) throw Error(`id: ${id} not found.`);
+    const itemForRenderer = itemToItemForRenderer(item);
+
+    const allTags = getTags();
+    const groupedTags: Tags = {};
+    for (const [group, tags] of Object.entries(allTags)) {
+        const tagSet = new Set(tags);
+        for (const attachedTag of itemForRenderer.tags) {
+            if (!tagSet.has(attachedTag)) continue;
+            if (groupedTags[group] === undefined) groupedTags[group] = [];
+            groupedTags[group].push(attachedTag);
+        }
+    }
+    return {
+        ...itemForRenderer,
+        tags: groupedTags
+    }
 };
 
 const itemToItemForRenderer = (item: Item): ItemForRenderer => {
