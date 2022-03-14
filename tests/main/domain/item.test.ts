@@ -2,6 +2,7 @@ import path from "path";
 import {
     getItemForRendererWithGroupdedTags,
     getItemsForRenderer,
+    parseQuery,
     specifyContentType,
     syncItemsFromLocations,
 } from "../../../src/main/domain/item";
@@ -89,5 +90,81 @@ describe("items", () => {
         updateData(data);
         syncItemsFromLocations();
         expect(getItems().length).toBe(6);
+    });
+
+    test("ItemForRendererWithGroupedTags", () => {
+        const id = "12345asdf";
+        const data = createData();
+        data.tags = {
+            "1": ["a"],
+            "2": ["b", "c"],
+            "3": ["d", "e"],
+        }
+        data.items = [
+            createItem(),
+            createItem({ id, location: "ok", tags: ["a", "b", "c"] }),
+            createItem(),
+        ];
+        updateData(data);
+
+        const item = getItemForRendererWithGroupdedTags(id);
+        expect(item.location).toBe("ok");
+        expect(item.tags).toEqual({
+            "1": ["a"],
+            "2": ["b", "c"],
+        })
+    });
+});
+
+
+test('parseQuery', () => {
+    const query = parseQuery('a b "a b" #x y #"x y"');
+    expect(query).toEqual({
+        complete: {
+            tag: ['x y'],
+            title: ['a b'],
+        },
+        part: {
+            tag: ['x'],
+            title: ['a', 'b', 'y'],
+        }
+    });
+});
+
+describe('search items', () => {
+    beforeAll(() => {
+        const data = createData();
+        data.items = [
+            createItem({ location: "abc", tags: ["x", "y"] }),
+            createItem({ location: "abc", tags: ["xy"] }),
+            createItem({ location: "ab", tags: ["x", "y"] }),
+            createItem({ location: "a", tags: ["xyz"] }),
+        ];
+        updateData(data);
+    });
+
+    test('query: ab', () => {
+        const items = getItemsForRenderer('ab');
+        expect(items.length).toBe(3);
+    });
+
+    test('query: "ab"', () => {
+        const items = getItemsForRenderer('"ab"');
+        expect(items.length).toBe(1);
+    });
+
+    test('query: ab #x', () => {
+        const items = getItemsForRenderer('ab #x');
+        expect(items.length).toBe(3);
+    });
+
+    test('query: #"xy"', () => {
+        const items = getItemsForRenderer('#"xy"');
+        expect(items.length).toBe(1);
+    });
+
+    test('query: c #"y"', () => {
+        const items = getItemsForRenderer('c #"y"');
+        expect(items.length).toBe(1);
     });
 });
