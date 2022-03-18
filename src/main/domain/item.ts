@@ -37,7 +37,7 @@ export const specifyContentType = (location: string): ContentType => {
     return "other";
 };
 
-export const getItemsForRenderer = (query: string = ""): ItemForRenderer[] =>
+export const getItemsForRenderer = (query = ""): ItemForRenderer[] =>
     filterItems(getItems().map(itemToItemForRenderer), query);
 
 export const filterItems = (items: ItemForRenderer[], query: string): ItemForRenderer[] => {
@@ -53,7 +53,7 @@ export const filterItems = (items: ItemForRenderer[], query: string): ItemForRen
             .every(tag => item.tags.some(attachedTag => attachedTag.includes(tag))));
 };
 
-export const parseQuery = (query: string) => {
+export const parseQuery = (query: string): ParsedQuery => {
     const result: ParsedQuery = {
         complete: {
             tag: [],

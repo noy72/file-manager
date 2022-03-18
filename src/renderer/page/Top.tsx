@@ -1,22 +1,31 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "fomantic-ui/dist/semantic.min.css";
 import ItemCards from "../component/itemCards";
 import { ItemForRenderer } from "../../types";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import SearchBar from "../component/searchBar";
 
 const Top = (): JSX.Element => {
     const { query } = useParams();
     const [items, setItems] = useState([] as ItemForRenderer[]);
+    const searchBoxRef = useRef(null);
 
     useEffect(() => {
         (async () => {
-            const items = await window.api.getItems();
+            const items = await window.api.getItems(
+                ""
+            );
             setItems(items);
         })();
     }, []);
 
     return <>
+        <SearchBar
+            ref={searchBoxRef}
+            onSubmit={() => { }}
+            timesOnClick={() => { searchBoxRef.current.value = "" }}
+            searchOnClick={() => { }}
+        />
         <ItemCards
             items={items}
             onContextMenu={() => {

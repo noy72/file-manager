@@ -1,9 +1,8 @@
 
-import React, { RefObject } from "react";
-import { Form } from "semantic-ui-react";
+import React from "react";
 import { Tags } from "../../types";
 
-const TagList = ({ tags }: { tags: Tags }) => <>
+const TagList = ({ tags }: { tags: Tags }): JSX.Element => <>
     {
         Object.entries(tags).map(([key, values]) =>
             <>

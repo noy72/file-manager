@@ -1,4 +1,4 @@
-import React, { RefObject } from "react";
+import React, { RefObject, forwardRef } from "react";
 
 type Event = () => void;
 
@@ -9,8 +9,8 @@ type Props = {
 };
 
 
-const SearchBar = React.forwardRef(
-    (props: Props, ref: RefObject<any>) => (
+const SearchBar = forwardRef(
+    (props: Props, ref: RefObject<HTMLInputElement>) => (
         <div className="ui big fluid form" onSubmit={props.onSubmit}>
             <input data-testid="input" ref={ref} type="text" placeholder="title #tag" />
             <i data-testid="times-icon" className="times link icon" onClick={props.timesOnClick} style={{ marginRight: "2rem" }}></i>
