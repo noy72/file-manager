@@ -11,10 +11,10 @@ type Props = {
 
 const SearchBar = forwardRef(
     (props: Props, ref: RefObject<HTMLInputElement>) => (
-        <div className="ui big fluid form" onSubmit={props.onSubmit}>
+        <div className="ui big fluid icon input" onSubmit={props.onSubmit}>
             <input data-testid="input" ref={ref} type="text" placeholder="title #tag" />
-            <i data-testid="times-icon" className="times link icon" onClick={props.timesOnClick} style={{ marginRight: "2rem" }}></i>
-            <i data-testid="search-icon" className="search link icon" onClick={props.searchOnClick}></i>
+            <i data-testid="times-icon" className="circular times link icon" onClick={props.timesOnClick} style={{ marginRight: "3rem" }}></i>
+            <i data-testid="search-icon" className="circular search link icon" onClick={props.searchOnClick}></i>
         </div>
     )
 );
