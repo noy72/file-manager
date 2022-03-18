@@ -12,19 +12,27 @@ const Top = (): JSX.Element => {
 
     useEffect(() => {
         (async () => {
-            const items = await window.api.getItems(
-                ""
-            );
+            const items = await window.api.getItems(query ? query : "");
             setItems(items);
         })();
     }, []);
 
+    const clearInput = () => {
+        searchBoxRef.current.value = "";
+    };
+
+    const search = () => {
+        window.api.getItems(searchBoxRef.current.value)
+            .then(items => setItems(items))
+            .catch(err => console.log(err));
+    };
+
     return <>
         <SearchBar
             ref={searchBoxRef}
-            onSubmit={() => { }}
-            timesOnClick={() => { searchBoxRef.current.value = "" }}
-            searchOnClick={() => { }}
+            onSubmit={search}
+            timesOnClick={clearInput}
+            searchOnClick={search}
         />
         <ItemCards
             items={items}
