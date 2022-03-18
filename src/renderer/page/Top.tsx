@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { FormEvent, useEffect, useRef, useState } from "react";
 import "fomantic-ui/dist/semantic.min.css";
 import ItemCards from "../component/itemCards";
 import { ItemForRenderer } from "../../types";
@@ -17,15 +17,18 @@ const Top = (): JSX.Element => {
         })();
     }, []);
 
-    const clearInput = () => {
-        searchBoxRef.current.value = "";
-    };
-
-    const search = () => {
+    const search = (e?: FormEvent) => {
+        e?.preventDefault();
         window.api.getItems(searchBoxRef.current.value)
             .then(items => setItems(items))
             .catch(err => console.log(err));
     };
+
+    const clearInput = () => {
+        searchBoxRef.current.value = "";
+        search();
+    };
+
 
     return <>
         <SearchBar
