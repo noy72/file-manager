@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "fomantic-ui/dist/semantic.min.css";
 import { useParams } from "react-router-dom";
-import { Container, Grid, Image, List, Segment, Loader, Dimmer } from 'semantic-ui-react'
-import { ItemForRenderer, ItemForRendererWithGroupedTags } from "../../types";
+import { Container, Grid, Image, List } from 'semantic-ui-react'
+import { ItemForRendererWithGroupedTags } from "../../types";
 import Loading from "../component/Loader";
 import TagList from "../component/tagList";
 
