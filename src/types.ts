@@ -33,7 +33,12 @@ export type ItemForRendererWithGroupedTags = Omit<ItemForRenderer, 'tags'> & {
     tags: Tags
 }
 
-export type ContentType = keyof Commands;
+export type LocalItem = {
+    location: string
+    name: string
+};
+
+export type ContentType = keyof Commands | 'exe';
 
 export type ParsedQuery = {
     complete: {

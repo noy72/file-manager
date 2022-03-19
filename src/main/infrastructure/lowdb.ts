@@ -108,6 +108,7 @@ export {
     getLocations,
     getItems,
     getItemById,
+    getItemByLocation,
     getTags,
     getCommands,
     addItem,

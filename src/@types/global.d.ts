@@ -1,4 +1,4 @@
-import { ItemForRenderer } from "../types";
+import { ItemForRenderer, ItemForRendererWithGroupedTags, LocalItem } from "../types";
 
 declare global {
     interface Window {
@@ -9,4 +9,6 @@ declare global {
 export interface API {
     getItems: (query: string) => Promise<ItemForRenderer[]>;
     getItem: (id: string) => Promise<ItemForRendererWithGroupedTags>;
+    getLocalItems: (id: string) => Promose<LocalItem[]>;
+    open: (location: string) => Promise<void>;
 }
