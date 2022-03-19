@@ -1,26 +1,19 @@
-import React, { RefObject } from "react";
-import { Form } from "semantic-ui-react";
-
-type Event = () => void;
+import React, { RefObject, forwardRef, FormEvent } from "react";
 
 type Props = {
-    onSubmit: Event;
-    timesOnClick: Event;
-    searchOnClick: Event;
+    onSubmit: (e?: FormEvent) => void;
+    timesOnClick: () => void;
+    searchOnClick: (e?: FormEvent) => void;
 };
 
-const SearchBar = React.forwardRef(
+
+const SearchBar = forwardRef(
     (props: Props, ref: RefObject<HTMLInputElement>) => (
-        <Form onSubmit={props.onSubmit} data-testid="form">
-            <input
-                data-testid="input"
-                ref={ref}
-                type="text"
-                placeholder="title #tag"
-            />
-            <i className="times link icon" onClick={props.timesOnClick}></i>
-            <i className="search link icon" onClick={props.searchOnClick}></i>
-        </Form>
+        <form className="ui big fluid icon input" onSubmit={props.onSubmit}>
+            <input data-testid="input" ref={ref} type="text" placeholder="title #tag" />
+            <i data-testid="times-icon" className="circular times link icon" onClick={props.timesOnClick} style={{ marginRight: "3rem" }}></i>
+            <i data-testid="search-icon" className="circular search link icon" onClick={props.searchOnClick}></i>
+        </form>
     )
 );
 

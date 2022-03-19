@@ -7,6 +7,6 @@ declare global {
 }
 
 export interface API {
-    getItems: () => Promise<ItemForRenderer[]>;
+    getItems: (query: string) => Promise<ItemForRenderer[]>;
     getItem: (id: string) => Promise<ItemForRendererWithGroupedTags>;
 }

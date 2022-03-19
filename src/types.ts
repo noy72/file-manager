@@ -34,3 +34,14 @@ export type ItemForRendererWithGroupedTags = Omit<ItemForRenderer, 'tags'> & {
 }
 
 export type ContentType = keyof Commands;
+
+export type ParsedQuery = {
+    complete: {
+        tag: string[],
+        title: string[],
+    },
+    part: {
+        tag: string[],
+        title: string[],
+    }
+};

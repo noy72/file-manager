@@ -1,7 +1,7 @@
 import path from "path";
 import { v4 } from 'uuid';
 import { statSync, readdirSync } from "fs";
-import { ContentType, Item, ItemForRenderer, ItemForRendererWithGroupedTags, Tags } from "../../types";
+import { ContentType, Item, ItemForRenderer, ItemForRendererWithGroupedTags, ParsedQuery, Tags } from "../../types";
 import {
     getEncodedImage,
     recursiveReaddir,
@@ -37,8 +37,53 @@ export const specifyContentType = (location: string): ContentType => {
     return "other";
 };
 
-export const getItemsForRenderer = (): ItemForRenderer[] =>
-    getItems().map(itemToItemForRenderer);
+export const getItemsForRenderer = (query = ""): ItemForRenderer[] =>
+    filterItems(getItems().map(itemToItemForRenderer), query);
+
+export const filterItems = (items: ItemForRenderer[], query: string): ItemForRenderer[] => {
+    const parsedQuery = parseQuery(query);
+    return items
+        .filter(item => parsedQuery['complete']['title']
+            .every(title => item.name === title))
+        .filter(item => parsedQuery['complete']['tag']
+            .every(tag => item.tags.includes(tag)))
+        .filter(item => parsedQuery['part']['title']
+            .every(title => item.name.includes(title)))
+        .filter(item => parsedQuery['part']['tag']
+            .every(tag => item.tags.some(attachedTag => attachedTag.includes(tag))));
+};
+
+export const parseQuery = (query: string): ParsedQuery => {
+    const result: ParsedQuery = {
+        complete: {
+            tag: [],
+            title: [],
+        },
+        part: {
+            tag: [],
+            title: [],
+        }
+    };
+    let isTag = false;
+    let enclose = 0;
+    let word = "";
+    for (const c of `${query} `) {
+        if (c === "\"") {
+            enclose += 1;
+        } else if (c === "#") {
+            isTag = true;
+        } else if (c === " " && enclose !== 1) {
+            result[enclose === 2 ? "complete" : "part"][isTag ? "tag" : "title"].push(word);
+            word = "";
+            enclose = 0;
+            isTag = false;
+        } else {
+            word += c;
+        }
+    }
+    return result;
+}
+
 
 export const getItemForRendererWithGroupdedTags = (id: string): ItemForRendererWithGroupedTags => {
     const item = getItemById(id);
