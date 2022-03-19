@@ -1,7 +1,7 @@
 import path from "path";
 import { v4 } from 'uuid';
 import { statSync, readdirSync } from "fs";
-import { ContentType, Item, ItemForRenderer, ItemForRendererWithGroupedTags, ParsedQuery, Tags } from "../../types";
+import { ContentType, Item, ItemForRenderer, ItemForRendererWithGroupedTags, LocalItem, ParsedQuery, Tags } from "../../types";
 import {
     getEncodedImage,
     recursiveReaddir,
@@ -158,3 +158,15 @@ const getThumbnail = (location: string) => {
     }
     return "TODO";
 };
+
+export const getLocalItems = (id: string): LocalItem[] => {
+    const item = getItemById(id);
+    return readdirSync(item.location)
+        .filter(name => name[0] !== '.')
+        .map(name => ({ location: item.location.concat('/', name), name }))
+        .sort((a, b) => {
+            const x = a.name;
+            const y = b.name;
+            return x == y ? 0 : (x < y ? -1 : 1);
+        });
+}

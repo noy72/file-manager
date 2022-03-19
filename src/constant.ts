@@ -1,3 +1,10 @@
-export const RENDER_ITEMS = "render_items";
-export const GET_ITEMS = "get_items";
-export const GET_ITEM = "get_item";
+export const CHANNELS = {
+    GET_ITEMS: "getItems",
+    GET_ITEM: "getItem",
+    GET_LOCAL_ITEMS: "getLocalItems",
+    OPEN: "open",
+} as const;
+
+export type CHANNELS = typeof CHANNELS[keyof typeof CHANNELS];
+
+

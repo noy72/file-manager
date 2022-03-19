@@ -2,6 +2,7 @@ import path from "path";
 import {
     getItemForRendererWithGroupdedTags,
     getItemsForRenderer,
+    getLocalItems,
     parseQuery,
     specifyContentType,
     syncItemsFromLocations,
@@ -113,6 +114,23 @@ describe("items", () => {
             "1": ["a"],
             "2": ["b", "c"],
         })
+    });
+
+    test('getLocalItems', () => {
+        const id = "12345asdf";
+        const location = loc('dir01');
+        const data = createData();
+        data.items = [
+            createItem({ id, location })
+        ];
+        updateData(data);
+
+        const localItems = getLocalItems(id);
+        expect(localItems).toEqual(
+            ["img01.png", "img02.jpeg", "img03.jpg", "img04.gif", "sub_dir"].map(
+                name => ({ name, location: location.concat('/', name) })
+            )
+        );
     });
 });
 

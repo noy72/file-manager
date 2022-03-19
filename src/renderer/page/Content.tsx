@@ -2,20 +2,25 @@ import React, { useEffect, useState } from "react";
 import "fomantic-ui/dist/semantic.min.css";
 import { useParams } from "react-router-dom";
 import { Container, Grid, Image, List } from 'semantic-ui-react'
-import { ItemForRendererWithGroupedTags } from "../../types";
+import { ItemForRendererWithGroupedTags, LocalItem } from "../../types";
 import Loading from "../component/Loader";
 import TagList from "../component/tagList";
+import LocalItemList from "../component/localItemList";
 
 const Content = (): JSX.Element => {
     const { id } = useParams();
     const [item, setItem] = useState(undefined as ItemForRendererWithGroupedTags);
+    const [localItems, setLocalItems] = useState([] as LocalItem[]);
 
     useEffect(() => {
-        const getItem = async () => {
+        (async () => {
             const item = await window.api.getItem(id);
             setItem(item);
-        };
-        getItem();
+        })();
+        (async () => {
+            const localItems = await window.api.getLocalItems(id);
+            setLocalItems(localItems);
+        })();
     }, []);
 
     return item ?
@@ -32,10 +37,10 @@ const Content = (): JSX.Element => {
                     <TagList tags={item.tags} />
                 </Grid.Column>
             </Grid>
-            <List divided selection size="big">
-                <List.Item>hoge</List.Item>
-                <List.Item>fuga</List.Item>
-            </List>
+            <LocalItemList
+                localItems={localItems}
+                createOnClick={(location: string) => () => window.api.open(location)}
+            />
         </Container> : <Loading size="massive" />
 };
 
