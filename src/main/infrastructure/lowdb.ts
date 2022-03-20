@@ -60,8 +60,17 @@ const addItems = (newItems: Item[]): void => {
     db.chain.get("items").push(...newItems).value();
     db.write();
 };
+
+/** タグ一覧にタグを追加する。存在しないグループが追加されることはないと仮定する。
+ * 
+ * @param group タググループ名
+ * @param tag タグ
+ */
 const addTag = (group: string, tag: string): void => {
-    db.chain.get("tags").update([group], tag_list => [...tag_list, tag]);
+    // TODO: update を使う
+    const tags = getTags();
+    tags[group].push(tag);
+    db.chain.assign({ tags });
     db.write();
 };
 const addTagToItemById = (id: string, tag: string): void => {
@@ -73,6 +82,8 @@ const addTagToItemById = (id: string, tag: string): void => {
         .update(["items", index], (item: Item) => ({ ...item, tags: [...item.tags, tag] }))
         .value();
     db.write();
+    console.log("lowdb")
+    console.log(db.chain.get('items').value()[0])
 };
 
 /* Get */

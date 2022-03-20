@@ -2,6 +2,7 @@ import { v1, v3, v4, v5 } from 'uuid';
 import {
     addItem,
     addItems,
+    addTag,
     addTagToItemById,
     getCommands,
     getItemById,
@@ -95,6 +96,14 @@ describe("Add", () => {
     test("Items", () => {
         addItems([createItem(), createItem()]);
         expect(getItems().length).toBe(2);
+    });
+
+    test("Tag", () => {
+        const group = "group1";
+        const tag = "tag2";
+        updateData(createData({ tags: { [group]: ["tag1"] } }))
+        addTag(group, tag);
+        expect(getTags()[group]).toEqual(["tag1", tag]);
     });
 
     test("TagToItemById", () => {
