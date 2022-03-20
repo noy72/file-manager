@@ -1,6 +1,6 @@
 import React, { MouseEvent } from "react";
 import { Link } from "react-router-dom";
-import { Card } from "semantic-ui-react";
+import { Card, Image } from "semantic-ui-react";
 import { ItemForRenderer } from "../../types";
 
 type Event = (e: MouseEvent<HTMLElement>) => void;
@@ -37,14 +37,20 @@ const ItemCard = ({
         as={Link}
         to={`content/${item.id}`}
         data-testid={`card=${index}`}
-        image={
-            `data:image/${item.thumbnailExt.slice(1)};base64,${item.encodedThumbnail}`
-        }
-        header={item.name}
         fluid={true}
         color={item.exist ? "grey" : "red"}
         onContextMenu={onContextMenu}
-    />
+    >
+        <Image
+            src={`data:image/${item.thumbnailExt.slice(1)};base64,${item.encodedThumbnail}`}
+            ui={false}
+            className="img-one-third"
+        />
+        <Card.Content>
+            <Card.Header>{item.name}</Card.Header>
+            <Card.Meta>{item.tags.slice(0, 5).join(', ')}</Card.Meta>
+        </Card.Content>
+    </Card>
 );
 
 export default ItemCards;
