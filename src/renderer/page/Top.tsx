@@ -4,6 +4,7 @@ import ItemCards from "../component/itemCards";
 import { ItemForRenderer } from "../../types";
 import { useLocation } from "react-router-dom";
 import SearchBar from "../component/searchBar";
+import { Container } from "semantic-ui-react";
 
 const useQuery = () => {
     const { search } = useLocation();
@@ -38,7 +39,7 @@ const Top = (): JSX.Element => {
     };
 
 
-    return <>
+    return <Container>
         <SearchBar
             ref={searchBoxRef}
             onSubmit={search}
@@ -51,7 +52,7 @@ const Top = (): JSX.Element => {
                 throw new Error("Function not implemented.");
             }}
         />
-    </>;
+    </ Container>;
 };
 
 
