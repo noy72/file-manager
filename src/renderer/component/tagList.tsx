@@ -1,6 +1,5 @@
-
 import React from "react";
-import { Label } from "semantic-ui-react";
+import { Header, Label } from "semantic-ui-react";
 import { Tags } from "../../types";
 import { Link } from "react-router-dom";
 
@@ -8,7 +7,7 @@ const TagList = ({ tags }: { tags: Tags }): JSX.Element => <>
     {
         Object.entries(tags).map(([key, values]) =>
             <>
-                <h3 key={key}>{key}</h3>
+                <Header as="h3" key={key}>{key}</Header>
                 {
                     values.map(value =>
                         <Label key={`${key}-${value}`} as={Link} basic size="small" to={{
