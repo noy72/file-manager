@@ -82,6 +82,7 @@ const addTagToItemById = (id: string, tag: string): void => {
         .update(["items", index], (item: Item) => ({
             ...item,
             tags: Array.from(new Set([...item.tags, tag])),
+            updatedAt: new Date(),
         }))
         .value();
     db.write();
@@ -104,7 +105,7 @@ const updateData = (data: Data): void => {
 };
 const updateItem = (item: Item): void => {
     const index = db.chain.get("items").findIndex({ id: item.id }).value();
-    db.chain.update(["items", index], () => item).value();
+    db.chain.update(["items", index], () => ({ ...item, updatedAt: new Date() })).value();
     db.write();
 };
 
