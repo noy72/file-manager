@@ -10,7 +10,7 @@ const LocalItemList = ({ localItems, createOnClick }:
     <List divided selection size="big">
         {
             localItems.map(item =>
-                <List.Item onClick={createOnClick(item.location)}>{item.name}</List.Item>
+                <List.Item key={item.location} onClick={createOnClick(item.location)}>{item.name}</List.Item>
             )
         }
     </List>

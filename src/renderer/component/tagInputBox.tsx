@@ -11,7 +11,7 @@ type Props = {
 const Datalist = ({ tags }: { tags: Tags }) => <>
     <datalist id="taglist">
         {
-            Object.values(tags).flat().map(tag => <option value={tag} />)
+            Object.values(tags).flat().map(tag => <option value={tag} key={tag} />)
         }
     </datalist>
 </>;
