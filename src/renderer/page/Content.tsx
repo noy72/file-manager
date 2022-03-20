@@ -1,7 +1,7 @@
-import React, { FormEvent, useEffect, useRef, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import "fomantic-ui/dist/semantic.min.css";
-import { useParams } from "react-router-dom";
-import { Container, Grid, Image, List } from 'semantic-ui-react'
+import { Link, useParams } from "react-router-dom";
+import { Container, Grid, Image } from 'semantic-ui-react'
 import { ItemForRendererWithGroupedTags, LocalItem, Tags } from "../../types";
 import Loading from "../component/Loader";
 import TagList from "../component/tagList";
@@ -56,6 +56,12 @@ const Content = (): JSX.Element => {
     return item ?
         <Container>
             <Grid style={{ marginTop: "2rem" }}>
+                <Grid.Column>
+                    <Link to="/">Top</Link>
+                </Grid.Column>
+
+            </Grid>
+            <Grid>
                 <Grid.Column width={6}>
                     <Image src={
                         `data:image/${item.thumbnailExt.slice(1)};base64,${item.encodedThumbnail}`
