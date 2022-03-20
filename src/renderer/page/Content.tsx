@@ -68,7 +68,7 @@ const Content = (): JSX.Element => {
             </Grid>
             <Grid>
                 <Grid.Column width={6}>
-                    <Image src={
+                    <Image centered className="img-one-third" src={
                         `data:image/${item.thumbnailExt.slice(1)};base64,${item.encodedThumbnail}`
                     } />
                 </Grid.Column>
