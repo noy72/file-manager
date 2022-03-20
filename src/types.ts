@@ -21,6 +21,7 @@ export type Item = {
     thumbnail: string;
     createdAt: Date;
     updatedAt: Date;
+    openedAt: Date;
     type: ContentType;
 };
 export type ItemForRenderer = Item & {

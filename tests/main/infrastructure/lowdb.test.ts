@@ -13,6 +13,7 @@ import {
     removeItemById,
     updateData,
     updateItem,
+    updateOpenedAtById,
 } from " ../../../src/main/infrastructure/lowdb";
 import { createData, createItem } from "../../utils";
 
@@ -78,6 +79,16 @@ describe("Update", () => {
         item.tags = tags2;
         updateItem(item);
         expect(getItems()[0].tags).toEqual(tags2);
+    });
+
+    test("OpenedAtById", () => {
+        const item = createItem();
+        addItem(item);
+        const before = item.openedAt;
+
+        updateOpenedAtById(item.id);
+        const after = item.openedAt;
+        expect(before.getTime()).toBeLessThan(after.getTime());
     });
 });
 

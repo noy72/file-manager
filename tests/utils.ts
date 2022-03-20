@@ -25,6 +25,7 @@ export const createItem = (item: any = {}): Item => {
         thumbnail: `${v4}/thumbnail`,
         createdAt: new Date(),
         updatedAt: new Date(),
+        openedAt: new Date(),
         type: "other",
         ...item,
     };

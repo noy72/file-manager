@@ -108,6 +108,10 @@ const updateItem = (item: Item): void => {
     db.chain.update(["items", index], () => ({ ...item, updatedAt: new Date() })).value();
     db.write();
 };
+const updateOpenedAtById = (id: string): void => {
+    db.chain.get("items").find({ id }).update('openedAt', () => new Date()).value();
+    db.write();
+}
 
 /* Delete */
 const removeItemById = (id: string): Item[] => {
@@ -130,4 +134,5 @@ export {
     removeItemById,
     updateData,
     updateItem,
+    updateOpenedAtById,
 };
