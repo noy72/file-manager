@@ -106,11 +106,31 @@ describe("Add", () => {
         expect(getTags()[group]).toEqual(["tag1", tag]);
     });
 
+    test("Duplicate a tag", () => {
+        const group = "group1";
+        const tag = "tag";
+        updateData(createData({ tags: { [group]: [tag] } }))
+        addTag(group, tag);
+        expect(getTags()[group]).toEqual([tag]);
+
+    });
+
     test("TagToItemById", () => {
         const id = "id";
         const item = createItem({ id });
         addItem(item);
         expect(getItems()[0].tags).toEqual([]);
+        addTagToItemById(id, 'a');
+        expect(getItems()[0].tags).toEqual(["a"]);
+    });
+
+    test("Duplicatre TagToItemById", () => {
+        const id = "id";
+        const item = createItem({ id });
+        addItem(item);
+        expect(getItems()[0].tags).toEqual([]);
+        addTagToItemById(id, 'a');
+        expect(getItems()[0].tags).toEqual(["a"]);
         addTagToItemById(id, 'a');
         expect(getItems()[0].tags).toEqual(["a"]);
     });

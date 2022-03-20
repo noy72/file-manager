@@ -1,4 +1,4 @@
-import lodash, { LoDashExplicitWrapper } from "lodash";
+import lodash, { LoDashExplicitWrapper, setWith } from "lodash";
 import { MemorySync, LowSync, JSONFileSync } from "lowdb";
 import { accessSync, writeFileSync } from "fs";
 import path from "path";
@@ -69,7 +69,7 @@ const addItems = (newItems: Item[]): void => {
 const addTag = (group: string, tag: string): void => {
     // TODO: update を使う
     const tags = getTags();
-    tags[group].push(tag);
+    tags[group] = Array.from(new Set([...tags[group], tag]));
     db.chain.assign({ tags });
     db.write();
 };
@@ -79,7 +79,8 @@ const addTagToItemById = (id: string, tag: string): void => {
         .findIndex({ id })
         .value();
     db.chain
-        .update(["items", index], (item: Item) => ({ ...item, tags: [...item.tags, tag] }))
+        .update(["items", index], (item: Item) =>
+            ({ ...item, tags: Array.from(new Set([...item.tags, tag])) }))
         .value();
     db.write();
     console.log("lowdb")
