@@ -10,6 +10,11 @@ import TagInputBox from "../component/tagInputBox";
 
 
 
+const dateFTime = (jsonDate: string): string => {
+    const d = new Date(jsonDate);
+    return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()} ${d.getHours()}:${d.getMinutes()}`;
+}
+
 const Content = (): JSX.Element => {
     const { id } = useParams();
     const [item, setItem] = useState(undefined as ItemForRendererWithGroupedTags);
@@ -73,8 +78,8 @@ const Content = (): JSX.Element => {
             </Grid>
             <Grid>
                 <Grid.Column width={6}>
-                    <p>{item.createdAt}</p>
-                    <p>{item.updatedAt}</p>
+                    <p>{dateFTime(item.createdAt as any as string)}</p>
+                    <p>{dateFTime(item.updatedAt as any as string)}</p>
                 </Grid.Column>
                 <Grid.Column width={10}>
                     <TagInputBox
