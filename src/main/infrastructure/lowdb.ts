@@ -2,6 +2,7 @@ import { MemorySync, LowSync, JSONFileSync } from "lowdb";
 import { accessSync, writeFileSync } from "fs";
 import path from "path";
 import { Commands, Data, Item, Locations, Tags } from "../../types";
+import lodash from "lodash";
 
 const getDataFilePath = () => {
     const pathString = getPathString();
