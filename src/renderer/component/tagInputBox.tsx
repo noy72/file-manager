@@ -31,7 +31,7 @@ const TagInputBox = ({ tags, onSubmit, onChange }: Props) => {
                     placeholder='Tag Group'
                 />
                 <Form.Field
-                    autocomplete="on" list="taglist"
+                    autoComplete="on" list="taglist"
                     control={Input}
                     onChange={onChange}
                     placeholder='Tag'
