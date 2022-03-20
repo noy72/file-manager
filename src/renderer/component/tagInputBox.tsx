@@ -5,7 +5,6 @@ import { Tags } from "../../types";
 type Props = {
     tags: Tags;
     onSubmit: (e: FormEvent<HTMLFormElement>) => void;
-    onChange: (e: FormEvent<HTMLInputElement | HTMLSelectElement>) => void;
 };
 
 const Datalist = ({ tags }: { tags: Tags }) => (
@@ -20,7 +19,7 @@ const Datalist = ({ tags }: { tags: Tags }) => (
     </>
 );
 
-const TagInputBox = ({ tags, onSubmit, onChange }: Props): JSX.Element => {
+const TagInputBox = ({ tags, onSubmit }: Props): JSX.Element => {
     const tagGroupOptions = Object.keys(tags).map(key => ({
         text: key,
         value: key,
@@ -33,17 +32,16 @@ const TagInputBox = ({ tags, onSubmit, onChange }: Props): JSX.Element => {
                 <Form.Group>
                     <Form.Field
                         control={Select}
-                        onChange={onChange}
                         options={tagGroupOptions}
                         placeholder="Tag Group"
+                        id="tag-group"
                     />
                     <Form.Field
                         autoComplete="on"
                         list="taglist"
                         control={Input}
-                        onChange={onChange}
                         placeholder="Tag"
-                        name="tag"
+                        id="tag"
                     />
                     <Form.Field control={Button} type="submit" inline>
                         Submit

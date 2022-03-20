@@ -20,7 +20,6 @@ const Content = (): JSX.Element => {
     );
     const [localItems, setLocalItems] = useState([] as LocalItem[]);
     const [tags, setTags] = useState({} as Tags);
-    const [tagInput, setTagInput] = useState({ tagGroup: "", tag: "" });
 
     useEffect(() => {
         (async () => {
@@ -38,23 +37,16 @@ const Content = (): JSX.Element => {
     const tagInputBoxOnSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        const target = e.currentTarget;
+        const group = target.querySelector('#tag-group').children[0].innerHTML;
+        const tag = (target.querySelector('#tag') as HTMLInputElement).value;
+
         (async () => {
-            await window.api.addItemTag(id, tagInput.tagGroup, tagInput.tag);
+            await window.api.addItemTag(id, group, tag);
 
             const item = await window.api.getItem(id);
             setItem(item);
         })();
-    };
-
-    const tagInputBoxOnChange = (
-        e: FormEvent<HTMLInputElement | HTMLSelectElement>
-    ) => {
-        e.preventDefault();
-
-        const target = e.currentTarget;
-        const name = target.name ? target.name : "tagGroup";
-        const value = target.value ? target.value : target.innerText;
-        setTagInput({ ...tagInput, [name]: value });
     };
 
     return item ? (
@@ -69,9 +61,8 @@ const Content = (): JSX.Element => {
                     <Image
                         centered
                         className="img-one-third"
-                        src={`data:image/${item.thumbnailExt.slice(1)};base64,${
-                            item.encodedThumbnail
-                        }`}
+                        src={`data:image/${item.thumbnailExt.slice(1)};base64,${item.encodedThumbnail
+                            }`}
                     />
                 </Grid.Column>
                 <Grid.Column width={10}>
@@ -84,11 +75,7 @@ const Content = (): JSX.Element => {
                     <p>{dateFTime(item.updatedAt as unknown as string)}</p>
                 </Grid.Column>
                 <Grid.Column width={10}>
-                    <TagInputBox
-                        tags={tags}
-                        onSubmit={tagInputBoxOnSubmit}
-                        onChange={tagInputBoxOnChange}
-                    />
+                    <TagInputBox tags={tags} onSubmit={tagInputBoxOnSubmit} />
                 </Grid.Column>
             </Grid>
             <LocalItemList
