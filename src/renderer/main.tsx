@@ -3,7 +3,7 @@ import { render } from "react-dom";
 import { Routes, Route, HashRouter } from "react-router-dom";
 import Top from "./page/Top";
 import Content from "./page/Content";
-import '../static/index.css';
+import "../static/index.css";
 
 const content = document.getElementById("content");
 render(

@@ -10,7 +10,7 @@
         "make": "electron-forge make",
         "publish": "electron-forge publish",
         "lint": "eslint --ext .ts,.tsx src",
-        "format": "prettier --write .",
+        "format": "prettier --write src",
         "jest": "cross-env NODE_OPTIONS=--experimental-vm-modules jest"
     },
     "keywords": [],

@@ -11,8 +11,8 @@ describe("SearchBar", () => {
             <SearchBar
                 ref={ref}
                 onSubmit={mockOnSubmit}
-                timesOnClick={() => { }}
-                searchOnClick={() => { }}
+                timesOnClick={() => {}}
+                searchOnClick={() => {}}
             />
         );
         const input = getByTestId("input");
@@ -32,7 +32,7 @@ describe("SearchBar", () => {
         const { getByTestId } = render(
             <SearchBar
                 ref={ref}
-                onSubmit={() => { }}
+                onSubmit={() => {}}
                 timesOnClick={mockTimesOnClick}
                 searchOnClick={mockSearchOnClick}
             />

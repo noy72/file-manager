@@ -39,16 +39,17 @@ const ItemCard = ({
         data-testid={`card=${index}`}
         fluid={true}
         color={item.exist ? "grey" : "red"}
-        onContextMenu={onContextMenu}
-    >
+        onContextMenu={onContextMenu}>
         <Image
-            src={`data:image/${item.thumbnailExt.slice(1)};base64,${item.encodedThumbnail}`}
+            src={`data:image/${item.thumbnailExt.slice(1)};base64,${
+                item.encodedThumbnail
+            }`}
             ui={false}
             className="img-one-third"
         />
         <Card.Content>
             <Card.Header>{item.name}</Card.Header>
-            <Card.Meta>{item.tags.slice(0, 5).join(', ')}</Card.Meta>
+            <Card.Meta>{item.tags.slice(0, 5).join(", ")}</Card.Meta>
         </Card.Content>
     </Card>
 );

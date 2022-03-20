@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect, useRef, useState } from "react";
+import React, { useMemo, FormEvent, useEffect, useRef, useState } from "react";
 import "fomantic-ui/dist/semantic.min.css";
 import ItemCards from "../component/itemCards";
 import { ItemForRenderer } from "../../types";
@@ -8,8 +8,8 @@ import { Container } from "semantic-ui-react";
 
 const useQuery = () => {
     const { search } = useLocation();
-    return React.useMemo(() => new URLSearchParams(search), [search]);
-}
+    return useMemo(() => new URLSearchParams(search), [search]);
+};
 
 const Top = (): JSX.Element => {
     const query = useQuery();
@@ -18,7 +18,7 @@ const Top = (): JSX.Element => {
 
     useEffect(() => {
         (async () => {
-            const searchString = query.get('search') ? query.get('search') : ""
+            const searchString = query.get("search") ? query.get("search") : "";
             const items = await window.api.getItems(searchString);
             setItems(items);
 
@@ -28,9 +28,10 @@ const Top = (): JSX.Element => {
 
     const search = (e?: FormEvent) => {
         e?.preventDefault();
-        window.api.getItems(searchBoxRef.current.value)
+        window.api
+            .getItems(searchBoxRef.current.value)
             .then(items => setItems(items))
-            .catch(err => console.log(err));
+            .catch(err => console.error(err));
     };
 
     const clearInput = () => {
@@ -38,22 +39,22 @@ const Top = (): JSX.Element => {
         search();
     };
 
-
-    return <Container>
-        <SearchBar
-            ref={searchBoxRef}
-            onSubmit={search}
-            timesOnClick={clearInput}
-            searchOnClick={search}
-        />
-        <ItemCards
-            items={items}
-            onContextMenu={() => {
-                throw new Error("Function not implemented.");
-            }}
-        />
-    </ Container>;
+    return (
+        <Container>
+            <SearchBar
+                ref={searchBoxRef}
+                onSubmit={search}
+                timesOnClick={clearInput}
+                searchOnClick={search}
+            />
+            <ItemCards
+                items={items}
+                onContextMenu={() => {
+                    throw new Error("Function not implemented.");
+                }}
+            />
+        </Container>
+    );
 };
-
 
 export default Top;

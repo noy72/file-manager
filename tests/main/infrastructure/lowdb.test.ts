@@ -1,4 +1,4 @@
-import { v1, v3, v4, v5 } from 'uuid';
+import { v1, v3, v4, v5 } from "uuid";
 import {
     addItem,
     addItems,
@@ -25,7 +25,7 @@ describe("Get", () => {
             items: [
                 createItem({ id: "id_1", location: "/path/1/a" }),
                 createItem({ id: "id_2", location: "/path/2/b" }),
-            ]
+            ],
         });
         updateData(data);
     });
@@ -79,7 +79,6 @@ describe("Update", () => {
         updateItem(item);
         expect(getItems()[0].tags).toEqual(tags2);
     });
-
 });
 
 describe("Add", () => {
@@ -101,7 +100,7 @@ describe("Add", () => {
     test("Tag", () => {
         const group = "group1";
         const tag = "tag2";
-        updateData(createData({ tags: { [group]: ["tag1"] } }))
+        updateData(createData({ tags: { [group]: ["tag1"] } }));
         addTag(group, tag);
         expect(getTags()[group]).toEqual(["tag1", tag]);
     });
@@ -109,10 +108,9 @@ describe("Add", () => {
     test("Duplicate a tag", () => {
         const group = "group1";
         const tag = "tag";
-        updateData(createData({ tags: { [group]: [tag] } }))
+        updateData(createData({ tags: { [group]: [tag] } }));
         addTag(group, tag);
         expect(getTags()[group]).toEqual([tag]);
-
     });
 
     test("TagToItemById", () => {
@@ -120,7 +118,7 @@ describe("Add", () => {
         const item = createItem({ id });
         addItem(item);
         expect(getItems()[0].tags).toEqual([]);
-        addTagToItemById(id, 'a');
+        addTagToItemById(id, "a");
         expect(getItems()[0].tags).toEqual(["a"]);
     });
 
@@ -129,9 +127,9 @@ describe("Add", () => {
         const item = createItem({ id });
         addItem(item);
         expect(getItems()[0].tags).toEqual([]);
-        addTagToItemById(id, 'a');
+        addTagToItemById(id, "a");
         expect(getItems()[0].tags).toEqual(["a"]);
-        addTagToItemById(id, 'a');
+        addTagToItemById(id, "a");
         expect(getItems()[0].tags).toEqual(["a"]);
     });
 });

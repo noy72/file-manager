@@ -7,7 +7,11 @@ import {
     specifyContentType,
     syncItemsFromLocations,
 } from "../../../src/main/domain/item";
-import { getItemById, getItems, updateData } from "../../../src/main/infrastructure/lowdb";
+import {
+    getItemById,
+    getItems,
+    updateData,
+} from "../../../src/main/infrastructure/lowdb";
 import { assetsPath, createData, createItem } from "../../utils";
 
 const loc = (name: string) => path.join(assetsPath, "sample_dir", name);
@@ -47,7 +51,7 @@ describe("items", () => {
             "1": ["a"],
             "2": ["b", "c"],
             "3": ["d", "e"],
-        }
+        };
         data.items = [
             createItem(),
             createItem({ id, location: "ok", tags: ["a", "b", "c"] }),
@@ -60,7 +64,7 @@ describe("items", () => {
         expect(item.tags).toEqual({
             "1": ["a"],
             "2": ["b", "c"],
-        })
+        });
     });
 
     test("getItemsWithExistance", () => {
@@ -100,7 +104,7 @@ describe("items", () => {
             "1": ["a"],
             "2": ["b", "c"],
             "3": ["d", "e"],
-        }
+        };
         data.items = [
             createItem(),
             createItem({ id, location: "ok", tags: ["a", "b", "c"] }),
@@ -113,43 +117,44 @@ describe("items", () => {
         expect(item.tags).toEqual({
             "1": ["a"],
             "2": ["b", "c"],
-        })
+        });
     });
 
-    test('getLocalItems', () => {
+    test("getLocalItems", () => {
         const id = "12345asdf";
-        const location = loc('dir01');
+        const location = loc("dir01");
         const data = createData();
-        data.items = [
-            createItem({ id, location })
-        ];
+        data.items = [createItem({ id, location })];
         updateData(data);
 
         const localItems = getLocalItems(id);
         expect(localItems).toEqual(
-            ["img01.png", "img02.jpeg", "img03.jpg", "img04.gif", "sub_dir"].map(
-                name => ({ name, location: location.concat('/', name) })
-            )
+            [
+                "img01.png",
+                "img02.jpeg",
+                "img03.jpg",
+                "img04.gif",
+                "sub_dir",
+            ].map(name => ({ name, location: location.concat("/", name) }))
         );
     });
 });
 
-
-test('parseQuery', () => {
+test("parseQuery", () => {
     const query = parseQuery('a b "a b" #x y #"x y"');
     expect(query).toEqual({
         complete: {
-            tag: ['x y'],
-            title: ['a b'],
+            tag: ["x y"],
+            title: ["a b"],
         },
         part: {
-            tag: ['x'],
-            title: ['a', 'b', 'y'],
-        }
+            tag: ["x"],
+            title: ["a", "b", "y"],
+        },
     });
 });
 
-describe('search items', () => {
+describe("search items", () => {
     beforeAll(() => {
         const data = createData();
         data.items = [
@@ -161,8 +166,8 @@ describe('search items', () => {
         updateData(data);
     });
 
-    test('query: ab', () => {
-        const items = getItemsForRenderer('ab');
+    test("query: ab", () => {
+        const items = getItemsForRenderer("ab");
         expect(items.length).toBe(3);
     });
 
@@ -171,8 +176,8 @@ describe('search items', () => {
         expect(items.length).toBe(1);
     });
 
-    test('query: ab #x', () => {
-        const items = getItemsForRenderer('ab #x');
+    test("query: ab #x", () => {
+        const items = getItemsForRenderer("ab #x");
         expect(items.length).toBe(3);
     });
 

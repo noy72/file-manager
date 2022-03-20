@@ -8,5 +8,3 @@ export const CHANNELS = {
 } as const;
 
 export type CHANNELS = typeof CHANNELS[keyof typeof CHANNELS];
-
-

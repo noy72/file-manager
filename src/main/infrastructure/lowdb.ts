@@ -1,4 +1,3 @@
-import lodash, { LoDashExplicitWrapper, setWith } from "lodash";
 import { MemorySync, LowSync, JSONFileSync } from "lowdb";
 import { accessSync, writeFileSync } from "fs";
 import path from "path";
@@ -42,7 +41,7 @@ const createEmptyDataFile = (pathString: string) => {
 
 /* LowDB config */
 class LowSyncWithLodash<T> extends LowSync<T> {
-    chain: lodash.ExpChain<this['data']> = lodash.chain(this).get('data')
+    chain: lodash.ExpChain<this["data"]> = lodash.chain(this).get("data");
 }
 const adapter =
     process.env.NODE_ENV === "test"
@@ -57,12 +56,15 @@ const addItem = (newItem: Item): void => {
     db.write();
 };
 const addItems = (newItems: Item[]): void => {
-    db.chain.get("items").push(...newItems).value();
+    db.chain
+        .get("items")
+        .push(...newItems)
+        .value();
     db.write();
 };
 
 /** タグ一覧にタグを追加する。存在しないグループが追加されることはないと仮定する。
- * 
+ *
  * @param group タググループ名
  * @param tag タグ
  */
@@ -74,28 +76,25 @@ const addTag = (group: string, tag: string): void => {
     db.write();
 };
 const addTagToItemById = (id: string, tag: string): void => {
-    const index = db.chain
-        .get("items")
-        .findIndex({ id })
-        .value();
+    const index = db.chain.get("items").findIndex({ id }).value();
     db.chain
-        .update(["items", index], (item: Item) =>
-            ({ ...item, tags: Array.from(new Set([...item.tags, tag])) }))
+        .update(["items", index], (item: Item) => ({
+            ...item,
+            tags: Array.from(new Set([...item.tags, tag])),
+        }))
         .value();
     db.write();
-    console.log("lowdb")
-    console.log(db.chain.get('items').value()[0])
 };
 
 /* Get */
-const getLocations = (): Locations => db.chain.get('locations').value();
-const getItems = (): Item[] => db.chain.get('items').value();
+const getLocations = (): Locations => db.chain.get("locations").value();
+const getItems = (): Item[] => db.chain.get("items").value();
 const getItemById = (id: string): Item | undefined =>
     db.chain.get("items").find({ id }).value();
 const getItemByLocation = (location: string): Item =>
     db.chain.get("items").find({ location }).value();
-const getTags = (): Tags => db.chain.get('tags').value();
-const getCommands = (): Commands => db.chain.get('commands').value();
+const getTags = (): Tags => db.chain.get("tags").value();
+const getCommands = (): Commands => db.chain.get("commands").value();
 
 /* Update */
 const updateData = (data: Data): void => {
@@ -103,13 +102,8 @@ const updateData = (data: Data): void => {
     db.write();
 };
 const updateItem = (item: Item): void => {
-    const index = db.chain
-        .get("items")
-        .findIndex({ id: item.id })
-        .value();
-    db.chain
-        .update(["items", index], () => item)
-        .value();
+    const index = db.chain.get("items").findIndex({ id: item.id }).value();
+    db.chain.update(["items", index], () => item).value();
     db.write();
 };
 
@@ -119,7 +113,6 @@ const removeItemById = (id: string): Item[] => {
     db.write();
     return items;
 };
-
 
 export {
     getLocations,
