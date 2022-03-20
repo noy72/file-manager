@@ -30,14 +30,17 @@ const Content = (): JSX.Element => {
         })();
     }, []);
 
-    useEffect(() => {
-        (async () => { })();
-    }, [tags]);
-
     const tagInputBoxOnSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        console.log(e);
 
-        console.log(tagInput);
+        (async () => {
+            await window.api.addItemTag(id, tagInput.tagGroup, tagInput.tag);
+
+            const item = await window.api.getItem(id);
+            console.log(item)
+            setItem(item);
+        })();
     };
 
     const tagInputBoxOnChange = (e: FormEvent<HTMLInputElement | HTMLSelectElement>) => {

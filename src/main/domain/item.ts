@@ -7,7 +7,7 @@ import {
     recursiveReaddir,
     exist,
 } from "../infrastructure/fileSystem";
-import { addItems, getItemById, getItems, getLocations, getTags } from "../infrastructure/lowdb";
+import { addItems, addTag, addTagToItemById, getItemById, getItems, getLocations, getTags } from "../infrastructure/lowdb";
 
 export const extTypes = {
     image: [".gif", ".jpg", ".jpeg", ".png", ".webp"],
@@ -170,3 +170,15 @@ export const getLocalItems = (id: string): LocalItem[] => {
             return x == y ? 0 : (x < y ? -1 : 1);
         });
 }
+
+export const addItemTag = (id: string, group: string, tag: string): Tags => {
+    console.log("addItemTag")
+    const item = getItemForRendererWithGroupdedTags(id);
+    console.log(item)
+    console.log(id, group, tag)
+    addTag(group, tag);
+    addTagToItemById(id, tag);
+    const item2 = getItemForRendererWithGroupdedTags(id);
+    console.log(item2)
+    return item.tags;
+};
