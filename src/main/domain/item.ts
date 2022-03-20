@@ -200,9 +200,8 @@ export const getLocalItems = (id: string): LocalItem[] => {
 };
 
 export const addItemTag = (id: string, group: string, tag: string): Tags => {
-    const item = getItemForRendererWithGroupdedTags(id);
     addTag(group, tag);
     addTagToItemById(id, tag);
-    const item2 = getItemForRendererWithGroupdedTags(id);
+    const item = getItemForRendererWithGroupdedTags(id);
     return item.tags;
 };
