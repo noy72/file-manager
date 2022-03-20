@@ -29,24 +29,24 @@ export type ItemForRenderer = Item & {
     encodedThumbnail: string;
     thumbnailExt: string;
 };
-export type ItemForRendererWithGroupedTags = Omit<ItemForRenderer, 'tags'> & {
-    tags: Tags
-}
-
-export type LocalItem = {
-    location: string
-    name: string
+export type ItemForRendererWithGroupedTags = Omit<ItemForRenderer, "tags"> & {
+    tags: Tags;
 };
 
-export type ContentType = keyof Commands | 'exe';
+export type LocalItem = {
+    location: string;
+    name: string;
+};
+
+export type ContentType = keyof Commands | "exe";
 
 export type ParsedQuery = {
     complete: {
-        tag: string[],
-        title: string[],
-    },
+        tag: string[];
+        title: string[];
+    };
     part: {
-        tag: string[],
-        title: string[],
-    }
+        tag: string[];
+        title: string[];
+    };
 };

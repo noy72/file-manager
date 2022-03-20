@@ -1,4 +1,9 @@
-import { ItemForRenderer, ItemForRendererWithGroupedTags, LocalItem } from "../types";
+import {
+    ItemForRenderer,
+    ItemForRendererWithGroupedTags,
+    LocalItem,
+    Tags,
+} from "../types";
 
 declare global {
     interface Window {
