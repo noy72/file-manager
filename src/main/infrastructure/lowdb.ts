@@ -61,7 +61,7 @@ const addItems = (newItems: Item[]): void => {
     db.write();
 };
 const addTag = (group: string, tag: string): void => {
-    db.chain.get("tags").update([group], tag_list => tag_list.push(tag));
+    db.chain.get("tags").update([group], tag_list => [...tag_list, tag]);
     db.write();
 };
 const addTagToItemById = (id: string, tag: string): void => {
@@ -70,9 +70,7 @@ const addTagToItemById = (id: string, tag: string): void => {
         .findIndex({ id })
         .value();
     db.chain
-        .update(["items", index], (item: Item) =>
-            ({ ...item, tags: [...item.tags, tag] })
-        )
+        .update(["items", index], (item: Item) => ({ ...item, tags: [...item.tags, tag] }))
         .value();
     db.write();
 };
@@ -104,9 +102,10 @@ const updateItem = (item: Item): void => {
 };
 
 /* Delete */
-const removeItem = (location: string): void => {
-    db.chain.get("items").remove({ location }).value();
+const removeItemById = (id: string): Item[] => {
+    const items = db.chain.get("items").remove({ id }).value();
     db.write();
+    return items;
 };
 
 
@@ -121,7 +120,7 @@ export {
     addItems,
     addTag,
     addTagToItemById,
-    removeItem,
+    removeItemById,
     updateData,
     updateItem,
 };

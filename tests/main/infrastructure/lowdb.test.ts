@@ -5,44 +5,52 @@ import {
     addTagToItemById,
     getCommands,
     getItemById,
+    getItemByLocation,
     getItems,
     getLocations,
     getTags,
-    removeItem,
+    removeItemById,
     updateData,
     updateItem,
 } from " ../../../src/main/infrastructure/lowdb";
 import { createData, createItem } from "../../utils";
 
-describe("read", () => {
+describe("Get", () => {
     beforeAll(() => {
-        const data = createData();
-        data.locations = ["/path/1", "/path/2"];
-        data.tags = { group1: ["aa"] };
-        data.commands.image = ["a", "b", "c"];
+        const data = createData({
+            locations: ["/path/1", "/path/2"],
+            tags: { group1: ["aa"] },
+            commands: { image: ["a", "b", "c"] },
+            items: [
+                createItem({ id: "id_1", location: "/path/1/a" }),
+                createItem({ id: "id_2", location: "/path/2/b" }),
+            ]
+        });
         updateData(data);
-        ["/path/1/a", "/path/1/b"].forEach(location =>
-            addItem(createItem({ id: location, location }))  // id を location で代用
-        );
     });
 
-    test("getLocations", () => {
+    test("Locations", () => {
         expect(getLocations()).toEqual(["/path/1", "/path/2"]);
     });
 
-    test("getItems", () => {
+    test("Items", () => {
         const items = getItems();
-        console.log(items)
         expect(items.length).toBe(2);
-        expect(items[0].location).toBe("/path/1/a");
+        expect(items[0].id).toBe("id_1");
     });
 
-    test("getItemById", () => {
-        const item = getItemById("/path/1/a");
+    test("ItemById", () => {
+        const item = getItemById("id_1");
+        expect(item.id).toBe("id_1");
         expect(item.location).toBe("/path/1/a");
-        expect(item.id).toBe("/path/1/a")
-
         expect(getItemById("undefined")).toBeUndefined();
+    });
+
+    test("ItemByLocation", () => {
+        const item = getItemByLocation("/path/1/a");
+        expect(item.id).toBe("id_1");
+        expect(item.location).toBe("/path/1/a");
+        expect(getItemByLocation("undefined")).toBeUndefined();
     });
 
     test("getTags", () => {
@@ -54,34 +62,12 @@ describe("read", () => {
     });
 });
 
-describe("items", () => {
+describe("Update", () => {
     beforeEach(() => {
         updateData(createData());
     });
 
-    test("addItem", () => {
-        addItem(createItem());
-        addItem(createItem());
-        expect(getItems().length).toBe(2);
-    });
-
-    test("addItems", () => {
-        addItems([createItem(), createItem()]);
-        expect(getItems().length).toBe(2);
-    });
-
-    test("removeItem", () => {
-        const location = "location";
-        addItem(createItem({ location }));
-        addItem(createItem());
-        removeItem(location);
-
-        const items = getItems();
-        expect(items.length).toBe(1);
-        expect(items[0].location).not.toBe(location);
-    });
-
-    test("updateItem", () => {
+    test("Item", () => {
         const tags = ["a"];
         const item = createItem({ tags });
         addItem(item);
@@ -93,12 +79,49 @@ describe("items", () => {
         expect(getItems()[0].tags).toEqual(tags2);
     });
 
-    test("addTagToItemById", () => {
+});
+
+describe("Add", () => {
+    beforeEach(() => {
+        updateData(createData());
+    });
+
+    test("Item", () => {
+        addItem(createItem());
+        addItem(createItem());
+        expect(getItems().length).toBe(2);
+    });
+
+    test("Items", () => {
+        addItems([createItem(), createItem()]);
+        expect(getItems().length).toBe(2);
+    });
+
+    test("TagToItemById", () => {
         const id = "id";
         const item = createItem({ id });
         addItem(item);
         expect(getItems()[0].tags).toEqual([]);
         addTagToItemById(id, 'a');
         expect(getItems()[0].tags).toEqual(["a"]);
+    });
+});
+
+describe("Delete", () => {
+    beforeEach(() => {
+        updateData(createData());
+    });
+
+    test("Item", () => {
+        const id = "id";
+        expect(getItems().length).toBe(0);
+
+        addItem(createItem({ id }));
+        expect(getItems().length).toBe(1);
+
+        const removedItem = removeItemById(id);
+        expect(removedItem[0].id).toBe(id);
+
+        expect(getItems().length).toBe(0);
     });
 });
