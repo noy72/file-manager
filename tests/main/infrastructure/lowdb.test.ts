@@ -2,6 +2,7 @@ import { v1, v3, v4, v5 } from 'uuid';
 import {
     addItem,
     addItems,
+    addTagToItemById,
     getCommands,
     getItemById,
     getItems,
@@ -10,7 +11,6 @@ import {
     removeItem,
     updateData,
     updateItem,
-    updateItemTags,
 } from " ../../../src/main/infrastructure/lowdb";
 import { createData, createItem } from "../../utils";
 
@@ -32,6 +32,7 @@ describe("read", () => {
 
     test("getItems", () => {
         const items = getItems();
+        console.log(items)
         expect(items.length).toBe(2);
         expect(items[0].location).toBe("/path/1/a");
     });
@@ -92,16 +93,12 @@ describe("items", () => {
         expect(getItems()[0].tags).toEqual(tags2);
     });
 
-    test("updateItemTags", () => {
-        const location = "location";
-        const tags = ["a"];
-        const item = createItem({ location, tags });
+    test("addTagToItemById", () => {
+        const id = "id";
+        const item = createItem({ id });
         addItem(item);
-        expect(getItems()[0].tags).toEqual(tags);
-
-        const tags2 = ["b"];
-        item.tags = tags2;
-        updateItemTags(location, tags2);
-        expect(getItems()[0].tags).toEqual(tags2);
+        expect(getItems()[0].tags).toEqual([]);
+        addTagToItemById(id, 'a');
+        expect(getItems()[0].tags).toEqual(["a"]);
     });
 });
