@@ -13,7 +13,6 @@ test("recursiveReaddir", () => {
         path.basename(file)
     );
     expect(files).toEqual([
-        ".DS_Store",
         ".dot.txt",
         "img01.png",
         "img02.jpeg",
