@@ -53,7 +53,7 @@ const Content = (): JSX.Element => {
     };
 
     return item ? (
-        <Container>
+        <Container style={{ marginTop: "2rem" }}>
             <Grid>
                 <Grid.Column width={6}>
                     <Image
