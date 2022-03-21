@@ -53,11 +53,6 @@ const Content = (): JSX.Element => {
 
     return item ? (
         <Container>
-            <Grid style={{ marginTop: "2rem" }}>
-                <Grid.Column>
-                    <Link to="/">Top</Link>
-                </Grid.Column>
-            </Grid>
             <Grid>
                 <Grid.Column width={6}>
                     <Image
@@ -82,6 +77,7 @@ const Content = (): JSX.Element => {
             </Grid>
             <LocalItemList
                 localItems={localItems}
+                openOnClick={() => window.api.open(item.location)}
                 createOnClick={(location: string) => () =>
                     window.api.open(location)}
             />
