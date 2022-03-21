@@ -19,4 +19,5 @@ export interface API {
     updateOpenedAtById: (id: string) => Promise<void>;
     addItemTag: (id: string, group: string, name: string) => Promise<Tags>;
     open: (location: string) => Promise<void>;
+    popupItemCardMenu: (location: string) => Promise<void>;
 }

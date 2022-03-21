@@ -7,10 +7,10 @@ type Event = (e: MouseEvent<HTMLElement>) => void;
 
 const ItemCards = ({
     items,
-    onContextMenu,
+    createOnContextMenu,
 }: {
     items: ItemForRenderer[];
-    onContextMenu: Event;
+    createOnContextMenu: (location: string) => () => void;
 }): JSX.Element => (
     <Card.Group itemsPerRow={4} data-testid={"cards"}>
         {items.map((item, index) => (
@@ -18,7 +18,7 @@ const ItemCards = ({
                 index={index}
                 key={item.location}
                 item={item}
-                onContextMenu={onContextMenu}
+                onContextMenu={createOnContextMenu(item.location)}
             />
         ))}
     </Card.Group>
@@ -41,9 +41,8 @@ const ItemCard = ({
         color={item.exist ? "grey" : "red"}
         onContextMenu={onContextMenu}>
         <Image
-            src={`data:image/${item.thumbnailExt.slice(1)};base64,${
-                item.encodedThumbnail
-            }`}
+            src={`data:image/${item.thumbnailExt.slice(1)};base64,${item.encodedThumbnail
+                }`}
             ui={false}
             className="img-one-third"
         />

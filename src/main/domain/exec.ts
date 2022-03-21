@@ -11,3 +11,7 @@ export const open = (location: string): void => {
         execCommand(type, location);
     }
 };
+
+export const openAsOther = (location: string): void => {
+    execCommand('other', location);
+}

@@ -15,4 +15,6 @@ contextBridge.exposeInMainWorld("api", {
         ipcRenderer.invoke(CHANNELS.ADD_TEIM_TAG, id, group, tag),
     open: (location: string): Promise<void> =>
         ipcRenderer.invoke(CHANNELS.OPEN, location),
+    popupItemCardMenu: (location: string): Promise<void> =>
+        ipcRenderer.invoke(CHANNELS.POPUP_ITEM_CARD_MENU, location),
 });

@@ -50,6 +50,8 @@ const Top = (): JSX.Element => {
         setItems(copy);
     };
 
+    const createOnContextMenu = (location: string) => () => window.api.popupItemCardMenu(location);
+
     return (
         <Container>
             <SearchBar
@@ -61,9 +63,7 @@ const Top = (): JSX.Element => {
             <Select placeholder='order' options={itemOrderOptions} onChange={itemOrderOnChange} />
             <ItemCards
                 items={items}
-                onContextMenu={() => {
-                    throw new Error("Function not implemented.");
-                }}
+                createOnContextMenu={createOnContextMenu}
             />
         </Container>
     );
