@@ -17,7 +17,7 @@ describe("ItemCards", () => {
     test("display three cards", () => {
         const { getByTestId } = render(
             <HashRouter>
-                <ItemCards items={items} onContextMenu={jest.fn()} />
+                <ItemCards items={items} createOnContextMenu={jest.fn()} />
             </HashRouter>
         );
         expect(getByTestId("cards").children.length).toBe(3);
@@ -26,7 +26,7 @@ describe("ItemCards", () => {
     test("the color of non-existent location is red", () => {
         const { getByTestId } = render(
             <HashRouter>
-                <ItemCards items={items} onContextMenu={jest.fn()} />
+                <ItemCards items={items} createOnContextMenu={jest.fn()} />
             </HashRouter>
         );
         ["grey", "grey", "red"].forEach((color, index) => {
@@ -36,11 +36,11 @@ describe("ItemCards", () => {
         });
     });
 
-    test("onContextMenu", () => {
+    test("createOnContextMenu", () => {
         const onContextMenu = jest.fn();
         const { getByTestId } = render(
             <HashRouter>
-                <ItemCards items={items} onContextMenu={onContextMenu} />
+                <ItemCards items={items} createOnContextMenu={() => onContextMenu} />
             </HashRouter>
         );
         fireEvent.contextMenu(getByTestId(`card=0`));
