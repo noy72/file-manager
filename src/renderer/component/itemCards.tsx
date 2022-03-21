@@ -12,7 +12,7 @@ const ItemCards = ({
     items: ItemForRenderer[];
     createOnContextMenu: (location: string) => () => void;
 }): JSX.Element => (
-    <Card.Group itemsPerRow={5} data-testid={"cards"}>
+    <Card.Group itemsPerRow={5} data-testid={"cards"} style={{ marginBottom: "1rem" }} >
         {items.map((item, index) => (
             <ItemCard
                 index={index}
