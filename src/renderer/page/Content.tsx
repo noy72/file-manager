@@ -31,6 +31,8 @@ const Content = (): JSX.Element => {
 
             const tags = await window.api.getTags();
             setTags(tags);
+
+            window.api.updateOpenedAtById(id);
         })();
     }, []);
 

@@ -4,6 +4,7 @@ export const CHANNELS = {
     GET_LOCAL_ITEMS: "getLocalItems",
     GET_TAGS: "tags",
     ADD_TEIM_TAG: "addItemTag",
+    UPDATE_OPENED_AT: "updateOpenedAt",
     OPEN: "open",
 } as const;
 

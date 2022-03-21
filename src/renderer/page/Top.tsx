@@ -1,10 +1,13 @@
-import React, { useMemo, FormEvent, useEffect, useRef, useState } from "react";
+import React, { useMemo, FormEvent, useEffect, useRef, useState, ChangeEvent } from "react";
 import "fomantic-ui/dist/semantic.min.css";
 import ItemCards from "../component/itemCards";
 import { ItemForRenderer } from "../../types";
 import { useLocation } from "react-router-dom";
 import SearchBar from "../component/searchBar";
-import { Container } from "semantic-ui-react";
+import { Container, DropdownProps, Select } from "semantic-ui-react";
+import { itemOrderOptions, itemOrders } from "../utils/itemOrders";
+
+
 
 const useQuery = () => {
     const { search } = useLocation();
@@ -39,6 +42,14 @@ const Top = (): JSX.Element => {
         search();
     };
 
+    const itemOrderOnChange = (_e: React.SyntheticEvent<HTMLElement, Event>, data: DropdownProps) => {
+        const key = data.value as string;
+        const copy = items
+            .map(items => items)
+            .sort(itemOrders[key]);
+        setItems(copy);
+    };
+
     return (
         <Container>
             <SearchBar
@@ -47,6 +58,7 @@ const Top = (): JSX.Element => {
                 timesOnClick={clearInput}
                 searchOnClick={search}
             />
+            <Select placeholder='order' options={itemOrderOptions} onChange={itemOrderOnChange} />
             <ItemCards
                 items={items}
                 onContextMenu={() => {

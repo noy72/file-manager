@@ -171,6 +171,7 @@ const createItem = (location: string): Item => {
         tags: [],
         createdAt: now,
         updatedAt: now,
+        openedAt: now,
         type: specifyContentType(location),
     };
 };
