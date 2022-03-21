@@ -2,3 +2,8 @@
     height: 33vh;
     object-fit: contain;
 }
+
+.item-card-img {
+    max-height: 33vh;
+    object-fit: contain;
+}

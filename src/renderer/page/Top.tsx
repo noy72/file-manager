@@ -60,7 +60,7 @@ const Top = (): JSX.Element => {
                 timesOnClick={clearInput}
                 searchOnClick={search}
             />
-            <Select placeholder='order' options={itemOrderOptions} onChange={itemOrderOnChange} />
+            <Select placeholder='order' options={itemOrderOptions} onChange={itemOrderOnChange} style={{ marginBottom: "1rem" }} />
             <ItemCards
                 items={items}
                 createOnContextMenu={createOnContextMenu}

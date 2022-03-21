@@ -15,6 +15,7 @@ const dateFTime = (jsonDate: string): string => {
 
 const Content = (): JSX.Element => {
     const { id } = useParams();
+    // TODO: state 一つにまとめる
     const [item, setItem] = useState(
         undefined as ItemForRendererWithGroupedTags
     );
@@ -52,7 +53,7 @@ const Content = (): JSX.Element => {
     };
 
     return item ? (
-        <Container>
+        <Container style={{ marginTop: "2rem" }}>
             <Grid>
                 <Grid.Column width={6}>
                     <Image
