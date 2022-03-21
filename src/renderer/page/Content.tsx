@@ -15,6 +15,7 @@ const dateFTime = (jsonDate: string): string => {
 
 const Content = (): JSX.Element => {
     const { id } = useParams();
+    // TODO: state 一つにまとめる
     const [item, setItem] = useState(
         undefined as ItemForRendererWithGroupedTags
     );
