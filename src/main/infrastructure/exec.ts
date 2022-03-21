@@ -6,7 +6,7 @@ export const execCommand = (
     type: ContentType,
     location: string
 ): ChildProcessWithoutNullStreams => {
-    console.log(type, location)
+    console.log(type, location);
     if (type === "exe") {
         return spawn(location);
     }

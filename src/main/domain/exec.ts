@@ -13,5 +13,5 @@ export const open = (location: string): void => {
 };
 
 export const openAsOther = (location: string): void => {
-    execCommand('other', location);
-}
+    execCommand("other", location);
+};
