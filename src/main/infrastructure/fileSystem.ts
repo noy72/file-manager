@@ -29,4 +29,5 @@ export const exist = (location: string): boolean => {
     }
 };
 
-export const isDir = (location: string): boolean => statSync(location).isDirectory();
+export const isDir = (location: string): boolean =>
+    statSync(location).isDirectory();

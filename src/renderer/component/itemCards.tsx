@@ -12,7 +12,10 @@ const ItemCards = ({
     items: ItemForRenderer[];
     createOnContextMenu: (location: string) => () => void;
 }): JSX.Element => (
-    <Card.Group itemsPerRow={5} data-testid={"cards"}>
+    <Card.Group
+        itemsPerRow={5}
+        data-testid={"cards"}
+        style={{ marginBottom: "1rem" }}>
         {items.map((item, index) => (
             <ItemCard
                 index={index}
@@ -41,8 +44,9 @@ const ItemCard = ({
         color={item.exist ? "grey" : "red"}
         onContextMenu={onContextMenu}>
         <Image
-            src={`data:image/${item.thumbnailExt.slice(1)};base64,${item.encodedThumbnail
-                }`}
+            src={`data:image/${item.thumbnailExt.slice(1)};base64,${
+                item.encodedThumbnail
+            }`}
             ui={false}
             className="item-card-img"
         />

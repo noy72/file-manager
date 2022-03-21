@@ -1,6 +1,6 @@
 import React, { FormEvent, useEffect, useState } from "react";
 import "fomantic-ui/dist/semantic.min.css";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Container, Grid, Image } from "semantic-ui-react";
 import { ItemForRendererWithGroupedTags, LocalItem, Tags } from "../../types";
 import Loading from "../component/Loader";
@@ -41,8 +41,8 @@ const Content = (): JSX.Element => {
         e.preventDefault();
 
         const target = e.currentTarget;
-        const group = target.querySelector('#tag-group').children[0].innerHTML;
-        const tag = (target.querySelector('#tag') as HTMLInputElement).value;
+        const group = target.querySelector("#tag-group").children[0].innerHTML;
+        const tag = (target.querySelector("#tag") as HTMLInputElement).value;
 
         (async () => {
             await window.api.addItemTag(id, group, tag);
@@ -59,8 +59,9 @@ const Content = (): JSX.Element => {
                     <Image
                         centered
                         className="img-one-third"
-                        src={`data:image/${item.thumbnailExt.slice(1)};base64,${item.encodedThumbnail
-                            }`}
+                        src={`data:image/${item.thumbnailExt.slice(1)};base64,${
+                            item.encodedThumbnail
+                        }`}
                     />
                 </Grid.Column>
                 <Grid.Column width={10}>

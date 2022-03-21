@@ -79,19 +79,25 @@ ipcMain.handle(
         addItemTag(id, group, tag)
 );
 ipcMain.handle(CHANNELS.OPEN, (_event, location: string) => open(location));
-ipcMain.handle(CHANNELS.UPDATE_OPENED_AT, (_event, id: string) => updateOpenedAtById(id));
+ipcMain.handle(CHANNELS.UPDATE_OPENED_AT, (_event, id: string) =>
+    updateOpenedAtById(id)
+);
 
 ipcMain.handle(CHANNELS.POPUP_ITEM_CARD_MENU, (_event, location: string) => {
     const menu = new Menu();
-    menu.append(new MenuItem({
-        label: 'Open',
-        click: () => open(location)
-    }));
+    menu.append(
+        new MenuItem({
+            label: "Open",
+            click: () => open(location),
+        })
+    );
     if (isDir(location)) {
-        menu.append(new MenuItem({
-            label: 'Open as other',
-            click: () => openAsOther(location)
-        }));
+        menu.append(
+            new MenuItem({
+                label: "Open as other",
+                click: () => openAsOther(location),
+            })
+        );
     }
     menu.popup({ window: BrowserWindow.getFocusedWindow() });
 });

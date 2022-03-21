@@ -10,3 +10,5 @@ export const CHANNELS = {
 } as const;
 
 export type CHANNELS = typeof CHANNELS[keyof typeof CHANNELS];
+
+export const PAGE_SIZE = 30;
