@@ -82,7 +82,7 @@ describe("Update", () => {
     });
 
     test("OpenedAtById", () => {
-        const item = createItem();
+        const item = createItem({ openedAt: new Date(0) });
         addItem(item);
         const before = item.openedAt;
 
